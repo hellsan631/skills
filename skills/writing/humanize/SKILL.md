@@ -1,6 +1,7 @@
 ---
 name: humanize
-description: Strip AI tells from prose: puffery, filler, borrowed significance, bold-header lists, em dashes. Use when asked to humanize or de-slop text, and before delivering a draft the user will publish or share.
+description: Strip AI tells from prose and verify the result with a deterministic checker.
+disable-model-invocation: true
 ---
 
 # Humanize

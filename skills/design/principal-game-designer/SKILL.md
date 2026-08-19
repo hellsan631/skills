@@ -92,6 +92,6 @@ Deliver when both halves hold, rather than when the section starts to look finis
 
 ## Prose
 
-Run the finished text through the prose checker before delivering. Call the Skill tool
-with "humanize". Use its `doc` profile, which allows the bold-header lists and title-case
+Run the finished text through the prose checker before delivering, by working from
+the `humanize` skill. Use its `doc` profile, which allows the bold-header lists and title-case
 headings that most design docs use as house style.

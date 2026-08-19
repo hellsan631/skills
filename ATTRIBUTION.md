@@ -49,6 +49,14 @@ Lauren Tan.
 - [principle-redesign-from-first-principles](./skills/principles/principle-redesign-from-first-principles/SKILL.md)
 - [principle-separate-before-serializing-shared-state](./skills/principles/principle-separate-before-serializing-shared-state/SKILL.md)
 
+## Borrowed framing
+
+[unslop](./skills/writing/unslop/SKILL.md) is written here rather than copied, but it
+takes its name and its premise, that a prose skill should be cheap enough to apply to
+everything, from Lauren Tan's `unslop` in the same pstack repo. The contents differ: ours
+carries the shapes of the categories our own checker treats as unconditional, and leaves
+the rest to the checker.
+
 ## The license both grants
 
 Both upstreams ship the MIT License, reproduced here in full because the copies carry it.

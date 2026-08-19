@@ -14,6 +14,11 @@ while IFS= read -r suite; do
   if (cd "$(dirname "$(dirname "$suite")")" && python3 "$suite"); then :; else failed=1; fi
 done < <(find "$REPO/skills" -path '*/tests/run_tests.py' | sort)
 
+echo
+echo "== cross-skill invariants =="
+printf '%-24s ' "unslop coverage"
+python3 "$REPO/scripts/check-unslop-coverage.py" || failed=1
+
 CHECKER="$REPO/skills/writing/humanize/scripts/humanize_lint.py"
 
 # Imported skills are ours to edit, but they arrived written to someone else's bar, so

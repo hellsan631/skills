@@ -1,6 +1,6 @@
 # Agent skills that check their own work
 
-Twenty-seven skills for writing, design, and engineering. The one that gives the repo its
+Twenty-eight skills for writing, design, and engineering. The one that gives the repo its
 name ships a deterministic checker: most writing skills hand the agent a checklist and
 hope, while [humanize](./skills/writing/humanize/SKILL.md) makes it prove the prose is
 clean rather than reread its own draft and declare victory.
@@ -49,11 +49,15 @@ behind your back. Afterward, run `skills/writing/humanize/scripts/install-shim.s
 
 ## What is in here
 
-Skills split on who can invoke them. A **model-invoked** skill can be reached by you or by
-the agent on its own, so it costs a permanently loaded description in exchange for firing
-without being asked. A **user-invoked** skill is reachable only when you type its name,
-which costs nothing to carry and nothing fires by accident. Eight of the twenty-seven are
-model-invoked; the rest wait to be called.
+Skills split on who can invoke them. A **model-invoked** skill can be reached by the agent
+on its own, so it costs a permanently loaded description in every session. A
+**user-invoked** skill is reachable only when you type its name, which costs nothing to
+carry and never fires by accident.
+
+Exactly one of the twenty-eight is model-invoked:
+[unslop](./skills/writing/unslop/SKILL.md), the prose reflex, because writing quality
+applies to every reply whether or not anyone asks for it. Everything else waits to be
+called, which keeps a collection this size close to free.
 
 Each bucket has its own README with the full list and what each skill is for.
 
@@ -100,6 +104,14 @@ The pattern corpus lives in
 [`rules/patterns.json`](./skills/writing/humanize/rules/patterns.json), out of the agent's
 context until the checker runs. That is the whole point of the design. The rules can grow
 without the skill costing more to load.
+
+[unslop](./skills/writing/unslop/SKILL.md) is the cheap half of the same idea. Nineteen of
+the corpus's categories are wrong every time they appear, and none of them fired once
+across the twenty-five imported skills, which is what a rule being unconditional looks
+like in practice. Those compress into seven shapes an agent can hold while writing, so
+unslop carries them and stays model-invoked. The rules that do fire constantly here are
+passive voice, bold density, and triples, and every one of them is sometimes correct, so
+they stay with the checker where they can be counted instead of guessed at.
 
 ## Working on this repo
 

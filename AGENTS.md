@@ -6,9 +6,13 @@ one, not before.
 
 A skill is a directory holding `SKILL.md`, an `agents/openai.yaml` for Codex picker
 metadata, and whatever reference files, scripts, rules, and tests it owns. Everything a
-skill needs lives inside it, so a single directory copied anywhere still works. Reach
-another skill's material by calling the Skill tool with its name, never by a
-`../other-skill/FILE.md` path.
+skill needs lives inside it, so a single directory copied anywhere still works.
+
+Point at another skill by name, as `` `codebase-design` ``, and let the agent find it.
+Never write a `../other-skill/FILE.md` path, which holds only until someone installs that
+skill on its own. Say "work from" rather than "call the Skill tool with", because almost
+every skill here is user-invoked and so cannot be invoked by an agent at all; its
+`SKILL.md` is read instead.
 
 ## Adding a skill
 
@@ -37,15 +41,19 @@ which is how a good idea upstream gets adopted on purpose rather than merged in 
 
 Every `SKILL.md` is user-invoked or model-invoked, and the two harnesses have to agree.
 
-Model-invoked is the default: omit `disable-model-invocation`, and write a model-facing
-`description` carrying the trigger branches so auto-invocation fires. User-invoked means
-`disable-model-invocation: true` in the frontmatter plus
-`policy.allow_implicit_invocation: false` in `agents/openai.yaml`, and the `description`
-becomes a human-facing one-liner with trigger lists stripped.
+User-invoked is the norm here, and means `disable-model-invocation: true` in the
+frontmatter plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, with a
+`description` that is a human-facing one-liner. Trigger lists belong to auto-invocation, so
+they come out; a skill chosen by name only needs to say what it is for.
 
-Pick model-invoked only when the agent should reach the skill on its own, or another skill
-must. A skill that only ever fires by hand should be user-invoked, because a description is
-permanent context load.
+Model-invoked means omitting `disable-model-invocation` and writing a description that
+carries the trigger branches. Every model-invoked description is permanent context load in
+every session, which is the whole cost, so the bar is that the agent would be wrong not to
+reach the skill on its own. Exactly one skill clears it today: `unslop`, because prose
+quality applies to every reply whether or not anyone asks.
+
+Needing another skill's material is not a reason to make it model-invoked. Read its
+`SKILL.md` instead.
 
 ## Writing
 

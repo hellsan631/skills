@@ -47,6 +47,7 @@
     "./skills/workflow/show-me-your-work",
     "./skills/workflow/wayfinder",
     "./skills/writing/humanize",
+    "./skills/writing/unslop",
     "./skills/writing/writing-for-agents"
   ]
 }

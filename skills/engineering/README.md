@@ -5,11 +5,11 @@
 
 Skills for designing, changing, and de-risking code.
 
-The four model-invoked ones supply vocabulary and legwork the agent should reach for
-unprompted. The rest are heavier moves you start deliberately, because each one spends
-real time or produces an artifact you then have to read.
+All of them are user-invoked, so none costs context until you name one. The first group
+supplies vocabulary and legwork that other skills also read; the second are heavier moves,
+because each spends real time or produces an artifact you then have to read.
 
-**Model-invoked**
+**Vocabulary and legwork**
 
 - **[codebase-design](./codebase-design/SKILL.md)**: the deep-module vocabulary. `module`,
   `interface`, `depth`, `seam`, `adapter`, `leverage`, `locality`, and the principles that
@@ -23,7 +23,7 @@ real time or produces an artifact you then have to read.
 - **[wizard](./wizard/SKILL.md)**: generate an interactive bash wizard for the steps only
   a human can do, such as provisioning infrastructure or clicking through a dashboard.
 
-**User-invoked**
+**Heavier moves**
 
 - **[blast-radius](./blast-radius/SKILL.md)**: find what a change could break outside its
   own diff, and prove the safety claim by running code rather than reasoning about it.

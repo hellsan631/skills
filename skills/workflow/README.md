@@ -5,13 +5,10 @@
 
 Skills that change how a piece of work is run rather than what the code says.
 
-**Model-invoked**
+All are user-invoked, so none costs context until you name one.
 
 - **[grilling](./grilling/SKILL.md)**: the interview primitive. Interrogate a plan or a
-  decision until the soft parts give way. Other skills call it rather than restating it.
-
-**User-invoked**
-
+  decision until the soft parts give way. Other skills read it rather than restating it.
 - **[grill-with-docs](./grill-with-docs/SKILL.md)**: the same interview, except it writes
   the ADRs and glossary entries as the answers arrive.
 - **[arena](./arena/SKILL.md)**: run N attempts at one task in parallel, pick the
