@@ -204,6 +204,48 @@ def test_redundant_label_survives_the_doc_profile() -> None:
     check("redundant-label" in found, "doc profile should still reject a redundant label")
 
 
+def test_arrows_read_as_notation_not_decoration() -> None:
+    """Technical writing maps one thing to another with an arrow. That is not an emoji."""
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+
+    def categories_for(text: str) -> set:
+        return {f.category for f in lint.analyze(text, categories, "markdown",
+                                                 profile_named("reference"))}
+
+    for arrow in ("\u2192", "\u2190", "\u2194", "\u21d2"):
+        found = categories_for(f"Send the state question {arrow} the logic branch.\n")
+        check("emoji" not in found, f"{arrow!r} is notation and should not read as emoji")
+
+    check("emoji" in categories_for("The release shipped \U0001f680 this morning.\n"),
+          "a pictograph should still be flagged")
+    check("emoji" in categories_for("The release shipped \u27a1\ufe0f this morning.\n"),
+          "an arrow given emoji presentation should still be flagged")
+
+
+def test_ignore_file_exempts_one_category_everywhere() -> None:
+    """A term the document defines is vocabulary. Repeating it is correct, not a tell."""
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+    source = (
+        "<!-- humanize-lint: ignore-file ai-vocabulary -->\n"
+        "# Depth and leverage\n\n"
+        "Leverage is what callers get from depth. Leverage compounds across call sites,\n"
+        "and leverage is why a deep module repays the cost of building it.\n\n"
+        "The museum boasts four rooms.\n"
+    )
+    found = {f.category for f in lint.analyze(source, categories, "markdown",
+                                              profile_named("reference"))}
+    check("ai-vocabulary" not in found, "the named category should be exempt file-wide")
+    check("puffery" in found, "ignore-file must not mute a category it did not name")
+
+
+def test_bare_ignore_file_is_not_a_master_switch() -> None:
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+    source = "<!-- humanize-lint: ignore-file -->\nThe museum boasts four rooms.\n"
+    found = {f.category for f in lint.analyze(source, categories, "markdown",
+                                              profile_named("reference"))}
+    check("puffery" in found, "ignore-file without a category should suppress nothing")
+
+
 def test_unknown_profile_is_rejected() -> None:
     import contextlib
     import io

@@ -39,8 +39,12 @@ DEFAULT_RULES = resolve_default_rules()
 PROSE_FORMATS = {"markdown", "md", "plain", "text", "wikitext", "email", "html"}
 NON_MARKDOWN_FORMATS = {"plain", "text", "wikitext", "email"}
 
+# The Arrows block (U+2190-U+21FF) is deliberately absent. Those are typographic
+# notation, not decoration: technical writing uses them for mappings and rewrites, as in
+# "question -> file". Arrows drawn as emoji live in other blocks, and any character given
+# emoji presentation still matches through its U+FE0F variation selector.
 EMOJI_RANGES = re.compile(
-    "[\U0001f000-\U0001faff\u2190-\u21ff\u2300-\u23ff\u2600-\u27bf\ufe0f\u2b00-\u2bff]"
+    "[\U0001f000-\U0001faff\u2300-\u23ff\u2600-\u27bf\ufe0f\u2b00-\u2bff]"
 )
 
 FILLER_PARTICIPLES = {
@@ -235,12 +239,17 @@ def mask_non_prose(text: str) -> str:
     return apply_masks(mask_code(text), QUOTE_MASKS)
 
 
-DIRECTIVE = re.compile(r"humanize-lint:\s*(off|on|ignore)(?:\s+([a-z][a-z0-9-]*))?", re.IGNORECASE)
+# ignore-file precedes ignore in the alternation, or "ignore" would match first and
+# leave "-file" stranded, silently turning a file-wide directive into a line-wide one.
+DIRECTIVE = re.compile(
+    r"humanize-lint:\s*(off|on|ignore-file|ignore)(?:\s+([a-z][a-z0-9-]*))?",
+    re.IGNORECASE,
+)
 
 
-def suppression_map(text: str) -> Tuple[set, Dict[int, set]]:
-    """Read humanize-lint directives into (fully disabled lines, per-line category skips)."""
-    disabled, per_line = set(), {}
+def suppression_map(text: str) -> Tuple[set, Dict[int, set], set]:
+    """Read humanize-lint directives into disabled lines, per-line skips, and file-wide skips."""
+    disabled, per_line, whole_file = set(), {}, set()
     active = False
     for index, line in enumerate(text.split("\n"), start=1):
         match = DIRECTIVE.search(line)
@@ -251,17 +260,21 @@ def suppression_map(text: str) -> Tuple[set, Dict[int, set]]:
             elif action == "on":
                 active = False
             elif action == "ignore":
-                target = per_line.setdefault(index + 1, set())
-                target.add(category or "*")
+                per_line.setdefault(index + 1, set()).add(category or "*")
+            elif action == "ignore-file" and category:
+                # A bare ignore-file would mute the whole checker, which is what deleting
+                # the file from the run is for. Only a named category is honoured.
+                whole_file.add(category)
         if active or match:
             disabled.add(index)
-    return disabled, per_line
+    return disabled, per_line, whole_file
 
 
-def apply_suppressions(findings: List[Finding], disabled: set, per_line: Dict[int, set]) -> List[Finding]:
+def apply_suppressions(findings: List[Finding], disabled: set, per_line: Dict[int, set],
+                       whole_file: set = frozenset()) -> List[Finding]:
     kept = []
     for finding in findings:
-        if finding.line in disabled:
+        if finding.line in disabled or finding.category in whole_file:
             continue
         skips = per_line.get(finding.line, set())
         if "*" in skips or finding.category in skips:
@@ -821,8 +834,8 @@ def analyze(raw_text: str, categories: List[Category], target_format: str,
     findings.extend(run_structural(raw_text, masked, code_only, target_format))
     if profile is not None:
         findings = apply_profile(findings, profile)
-    disabled, per_line = suppression_map(raw_text)
-    findings = apply_suppressions(findings, disabled, per_line)
+    disabled, per_line, whole_file = suppression_map(raw_text)
+    findings = apply_suppressions(findings, disabled, per_line, whole_file)
     findings.sort(key=lambda f: (f.line, f.col, f.category))
     return findings
 

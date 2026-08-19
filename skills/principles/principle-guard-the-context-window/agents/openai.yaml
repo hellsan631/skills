@@ -1,0 +1,5 @@
+interface:
+  display_name: "Principle: Guard the Context Window"
+  short_description: "Apply when context is filling up: large outputs, long files, repeated reads, fan-out pl..."
+policy:
+  allow_implicit_invocation: false

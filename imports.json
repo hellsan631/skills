@@ -1,0 +1,149 @@
+{
+  "_comment": "Where each imported skill came from. These files are ours to edit: this record exists to credit the original authors and to let scripts/imports.py diff a skill against the upstream it was taken from, so their later improvements can be read and adopted deliberately rather than merged in blind.",
+  "sources": {
+    "mattpocock": {
+      "repo": "https://github.com/mattpocock/skills",
+      "license": "MIT",
+      "imported_at": "885e2ca4d842d139e9aef4e48d366c63cb1b8013"
+    },
+    "pstack": {
+      "repo": "https://github.com/backnotprop/pstack",
+      "license": "MIT",
+      "imported_at": "18e0e908a13553b0e58d065ab26dbc9a972ec8ba"
+    }
+  },
+  "skills": [
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/productivity/writing-for-agents",
+      "path": "skills/writing/writing-for-agents"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/codebase-design",
+      "path": "skills/engineering/codebase-design"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/domain-modeling",
+      "path": "skills/engineering/domain-modeling"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/improve-codebase-architecture",
+      "path": "skills/engineering/improve-codebase-architecture"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/prototype",
+      "path": "skills/engineering/prototype",
+      "imported_because": "referenced by wayfinder"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/research",
+      "path": "skills/engineering/research",
+      "imported_because": "referenced by wayfinder"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/wizard",
+      "path": "skills/engineering/wizard"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/setup-matt-pocock-skills",
+      "path": "skills/engineering/setup-matt-pocock-skills",
+      "imported_because": "wayfinder tells the user to run it when no issue tracker is configured"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/productivity/grilling",
+      "path": "skills/workflow/grilling",
+      "imported_because": "interview primitive behind grill-with-docs and improve-codebase-architecture"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/grill-with-docs",
+      "path": "skills/workflow/grill-with-docs"
+    },
+    {
+      "source": "mattpocock",
+      "upstream_path": "skills/engineering/wayfinder",
+      "path": "skills/workflow/wayfinder"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/arena",
+      "path": "skills/workflow/arena"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/bro",
+      "path": "skills/workflow/bro"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/show-me-your-work",
+      "path": "skills/workflow/show-me-your-work"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/blast-radius",
+      "path": "skills/engineering/blast-radius"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-build-the-lever",
+      "path": "skills/principles/principle-build-the-lever"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-boundary-discipline",
+      "path": "skills/principles/principle-boundary-discipline"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-experience-first",
+      "path": "skills/principles/principle-experience-first"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-laziness-protocol",
+      "path": "skills/principles/principle-laziness-protocol"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-guard-the-context-window",
+      "path": "skills/principles/principle-guard-the-context-window"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-redesign-from-first-principles",
+      "path": "skills/principles/principle-redesign-from-first-principles"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-outcome-oriented-execution",
+      "path": "skills/principles/principle-outcome-oriented-execution"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-encode-lessons-in-structure",
+      "path": "skills/principles/principle-encode-lessons-in-structure",
+      "imported_because": "referenced by build-the-lever and show-me-your-work"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-prove-it-works",
+      "path": "skills/principles/principle-prove-it-works",
+      "imported_because": "referenced by build-the-lever and arena"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/principle-separate-before-serializing-shared-state",
+      "path": "skills/principles/principle-separate-before-serializing-shared-state",
+      "imported_because": "referenced by arena"
+    }
+  ]
+}

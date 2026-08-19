@@ -9,16 +9,24 @@ Quoted material, blockquotes, code, and URLs are exempt already. For anything el
 directive in the source text.
 
 ```
-<!-- humanize-lint: ignore -->            skips the next line
-<!-- humanize-lint: ignore puffery -->    skips one category on the next line
-<!-- humanize-lint: off -->               starts an exempt region
-<!-- humanize-lint: on -->                ends it
+<!-- humanize-lint: ignore -->                    skips the next line
+<!-- humanize-lint: ignore puffery -->            skips one category on the next line
+<!-- humanize-lint: off -->                       starts an exempt region
+<!-- humanize-lint: on -->                        ends it
+<!-- humanize-lint: ignore-file ai-vocabulary --> skips one category in this file
 ```
 
 Reach for these rarely. A directive on prose you wrote yourself usually means the prose
 is wrong rather than the rule. A directive earns its place on quoted source text, on a
 proper noun that collides with a banned word, and on a placeholder an author put there on
 purpose.
+
+`ignore-file` covers the case a line directive handles badly: a document that defines a
+term the corpus happens to ban, and then uses it correctly throughout. A glossary of deep
+module vocabulary repeats `leverage` because that is the name of the concept, and marking
+every occurrence would bury the file in directives. Name the one category and nothing
+else relaxes; `ignore-file` with no category suppresses nothing, since a master switch for
+a whole file is just an argument for leaving the file out of the run.
 
 The density rules have one more legitimate exemption. They assume structure has crowded
 out explanation, which is true of a plan that decayed into bullets and false of a

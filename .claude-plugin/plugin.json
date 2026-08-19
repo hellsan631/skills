@@ -15,10 +15,38 @@
     "prose",
     "linting",
     "documentation",
-    "game-design"
+    "game-design",
+    "architecture",
+    "design-review",
+    "agent-skills"
   ],
   "skills": [
     "./skills/design/principal-game-designer",
-    "./skills/writing/humanize"
+    "./skills/engineering/blast-radius",
+    "./skills/engineering/codebase-design",
+    "./skills/engineering/domain-modeling",
+    "./skills/engineering/improve-codebase-architecture",
+    "./skills/engineering/prototype",
+    "./skills/engineering/research",
+    "./skills/engineering/setup-matt-pocock-skills",
+    "./skills/engineering/wizard",
+    "./skills/principles/principle-boundary-discipline",
+    "./skills/principles/principle-build-the-lever",
+    "./skills/principles/principle-encode-lessons-in-structure",
+    "./skills/principles/principle-experience-first",
+    "./skills/principles/principle-guard-the-context-window",
+    "./skills/principles/principle-laziness-protocol",
+    "./skills/principles/principle-outcome-oriented-execution",
+    "./skills/principles/principle-prove-it-works",
+    "./skills/principles/principle-redesign-from-first-principles",
+    "./skills/principles/principle-separate-before-serializing-shared-state",
+    "./skills/workflow/arena",
+    "./skills/workflow/bro",
+    "./skills/workflow/grill-with-docs",
+    "./skills/workflow/grilling",
+    "./skills/workflow/show-me-your-work",
+    "./skills/workflow/wayfinder",
+    "./skills/writing/humanize",
+    "./skills/writing/writing-for-agents"
   ]
 }
