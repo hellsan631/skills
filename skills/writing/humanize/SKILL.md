@@ -1,6 +1,6 @@
 ---
 name: humanize
-description: Strip AI tells from prose and verify the result with a deterministic checker.
+description: Use when asked to humanize or de-slop text, and before delivering a draft anyone will publish or share. Strips AI tells from prose and verifies the result with a deterministic checker.
 disable-model-invocation: true
 ---
 

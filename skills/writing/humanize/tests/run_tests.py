@@ -222,6 +222,71 @@ def test_arrows_read_as_notation_not_decoration() -> None:
           "an arrow given emoji presentation should still be flagged")
 
 
+def test_long_sentence_points_at_the_real_line() -> None:
+    """Blanking list lines must not shift offsets, or every line number drifts."""
+    long_sentence = " ".join(f"word{n}" for n in range(48)) + ".\n"
+    text = "# Heading\n\n- a bullet\n- another bullet\n\n" + long_sentence
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+    findings = [f for f in lint.analyze(text, categories, "markdown",
+                                        profile_named("reference"))
+                if f.category == "long-sentence"]
+
+    check(len(findings) == 1, f"expected one long sentence, got {len(findings)}")
+    check(findings[0].line == 6,
+          f"long sentence sits on line 6, reported line {findings[0].line}")
+
+
+def test_sentences_stop_at_a_paragraph_break() -> None:
+    """A paragraph ending in a colon must not weld to the one after the list."""
+    text = (
+        "Two budgets are in play here:\n\n"
+        "- the first budget\n- the second budget\n\n"
+        "Material behind a pointer escapes the load, at the price of the pointer.\n"
+    )
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+    findings = [f for f in lint.analyze(text, categories, "markdown",
+                                        profile_named("reference"))
+                if f.category == "long-sentence"]
+
+    check(not findings, f"paragraphs must be measured apart, got {findings}")
+
+
+def test_frontmatter_is_exempt_from_the_rhythm_rules() -> None:
+    """A description is a list of triggers, so its length is not a fault."""
+    triggers = " ".join(f"trigger{n}" for n in range(48))
+    text = f"---\nname: demo\ndescription: {triggers}.\n---\n\nA short body line.\n"
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+    findings = [f for f in lint.analyze(text, categories, "markdown",
+                                        profile_named("reference"))
+                if f.category == "long-sentence"]
+
+    check(not findings, f"frontmatter should not draw a length finding: {findings}")
+
+
+def test_copula_avoidance_needs_the_verb_sense() -> None:
+    """"Features" is a noun most of the time in software writing, and "offer" is an act."""
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+
+    def categories_for(text: str) -> set:
+        return {f.category for f in lint.analyze(text, categories, "markdown",
+                                                 profile_named("reference"))}
+
+    for noun in (
+        "Ship three features rather than ten rough ones.\n",
+        "Code and features both need the same treatment.\n",
+        "Offer an ADR once the decision has settled.\n",
+    ):
+        check("copula-avoidance" not in categories_for(noun),
+              f"noun and imperative senses should pass: {noun.strip()!r}")
+
+    for verb in (
+        "The main hall features four rooms.\n",
+        "The resort offers a heated pool.\n",
+    ):
+        check("copula-avoidance" in categories_for(verb),
+              f"the possessive sense should still fire: {verb.strip()!r}")
+
+
 def test_ignore_file_exempts_one_category_everywhere() -> None:
     """A term the document defines is vocabulary. Repeating it is correct, not a tell."""
     categories = lint.load_categories(lint.DEFAULT_RULES)

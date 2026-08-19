@@ -733,8 +733,22 @@ PASSIVE = re.compile(
 LONG_SENTENCE_WORDS = 40
 
 
+FRONTMATTER = re.compile(r"\A---\n.*?\n---", re.S)
+
+
+def blank_keeping_lines(text: str) -> str:
+    return "".join("\n" if char == "\n" else " " for char in text)
+
+
 def prose_only(masked: str) -> str:
-    return re.sub(r"^[#>|\-*+\d].*$", "", masked, flags=re.MULTILINE)
+    """Blank frontmatter, headings, and list lines, preserving offsets and line count.
+
+    Frontmatter is exempt from the rhythm rules because a description is a list of
+    triggers, and length is not a fault in one.
+    """
+    text = FRONTMATTER.sub(lambda m: blank_keeping_lines(m.group(0)), masked)
+    return re.sub(r"^[#>|\-*+\d].*$", lambda m: " " * len(m.group(0)),
+                  text, flags=re.MULTILINE)
 
 
 def check_weak_adverbs(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
@@ -761,16 +775,37 @@ def check_passive_voice(masked: str, starts: List[int], _fmt: str) -> List[Findi
     return findings
 
 
+def iter_sentences(prose: str) -> List[Tuple[str, int]]:
+    """Sentences paired with their offset, never spanning a paragraph break.
+
+    A paragraph that ends in a colon to introduce a list has no terminal
+    punctuation, so splitting on punctuation alone welds it to the paragraph
+    after the list and reports one enormous sentence that nobody wrote.
+    """
+    found: List[Tuple[str, int]] = []
+    block_cursor = 0
+    for block in PARAGRAPH_BREAK.split(prose):
+        block_start = prose.find(block, block_cursor) if block else -1
+        if block_start < 0:
+            continue
+        block_cursor = block_start + len(block)
+        cursor = 0
+        for sentence in SENTENCE_SPLIT.split(block):
+            index = block.find(sentence, cursor) if sentence else -1
+            if index < 0:
+                continue
+            cursor = index + len(sentence)
+            found.append((sentence, block_start + index))
+    return found
+
+
 def check_sentence_length(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
     findings = []
-    offset = 0
-    prose = prose_only(masked)
-    for sentence in SENTENCE_SPLIT.split(prose):
-        start = prose.find(sentence, offset)
-        offset = start + len(sentence) if start >= 0 else offset
-        if len(sentence.split()) <= LONG_SENTENCE_WORDS or start < 0:
+    for sentence, start in iter_sentences(prose_only(masked)):
+        if len(sentence.split()) <= LONG_SENTENCE_WORDS:
             continue
-        line, col = position_of(starts, start)
+        lead = len(sentence) - len(sentence.lstrip())
+        line, col = position_of(starts, start + lead)
         findings.append(
             Finding(line, col, "review", "long-sentence",
                     f"{len(sentence.split())} words", 
@@ -781,12 +816,14 @@ def check_sentence_length(masked: str, starts: List[int], _fmt: str) -> List[Fin
 
 
 SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
+PARAGRAPH_BREAK = re.compile(r"\n\s*\n")
 
 
 def check_sentence_rhythm(masked: str, _starts: List[int], _fmt: str) -> List[Finding]:
-    prose = prose_only(masked)
     lengths = [
-        len(s.split()) for s in SENTENCE_SPLIT.split(prose) if len(s.split()) >= 4
+        len(sentence.split())
+        for sentence, _ in iter_sentences(prose_only(masked))
+        if len(sentence.split()) >= 4
     ]
     if len(lengths) < 8:
         return []

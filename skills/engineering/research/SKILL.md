@@ -1,6 +1,6 @@
 ---
 name: research
-description: Investigate a question against primary sources and capture the findings in the repo.
+description: Use when a topic needs researching, when docs or API facts need gathering, or when reading legwork should go to a background agent. Investigates against primary sources and leaves the findings in the repo.
 disable-model-invocation: true
 ---
 

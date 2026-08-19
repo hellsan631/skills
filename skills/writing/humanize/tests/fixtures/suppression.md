@@ -18,7 +18,10 @@ Quoted material is cited, not authored:
 > serves as a testament to its enduring legacy.
 
 The style guide bans "serves as a testament" and "a vibrant tapestry" by name, which
-is why naming them here must not trip the checker.
+is why naming them here must not trip the checker. It also bans the word "boasts",
+along with a dozen other stock phrases that a checker can match without any help from
+a person reading along. That is the whole point of keeping the list in one file.
+Short rule. Long enough, though.
 
 One em dash per bullet is normal rhythm, not a density problem:
 

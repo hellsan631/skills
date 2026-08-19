@@ -5,8 +5,10 @@ missed.
 
 ## Suppressing a false positive
 
-Quoted material, blockquotes, code, and URLs are exempt already. For anything else, put a
-directive in the source text.
+Quoted material, blockquotes, code, and URLs are exempt already. So is YAML frontmatter,
+but only from the rhythm rules that count words: a skill description is a list of triggers,
+and length is not a fault in one. The slop patterns still apply to it. For anything else,
+put a directive in the source text.
 
 ```
 <!-- humanize-lint: ignore -->                    skips the next line

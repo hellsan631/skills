@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea until the soft parts give way.
+description: Use when a plan, decision, or idea needs stress-testing, or when the user asks to be grilled. Interrogates it until the soft parts give way.
 disable-model-invocation: true
 ---
 

@@ -1,3 +1,6 @@
+<!-- humanize-lint: ignore-file list-density — reference card: a catalogue of CLI operations is a list by nature -->
+<!-- humanize-lint: ignore-file inline-header-density — the bold label is the lookup key a reader scans for, so prose would bury the operation names -->
+
 # Issue tracker: GitLab
 
 Issues and specs for this repo live as GitLab issues. Use the [`glab`](https://gitlab.com/gitlab-org/cli) CLI for all operations.

@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: Build and sharpen a project's domain model, writing the glossary and ADRs as terms settle.
+description: Use when codebase terminology is in dispute, when writing or editing a CONTEXT.md, or when recording an ADR. Builds and sharpens the project's domain model as terms settle.
 disable-model-invocation: true
 ---
 

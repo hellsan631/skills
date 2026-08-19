@@ -1,6 +1,6 @@
 ---
 name: writing-for-agents
-description: Write documents an agent has to execute, such as skills, AGENTS.md, and CLAUDE.md.
+description: Use when creating or editing a skill, or when modifying AGENTS.md or CLAUDE.md. Covers writing any document an agent has to execute.
 disable-model-invocation: true
 ---
 
@@ -73,6 +73,12 @@ Hunt for opportunities to refactor with leading words. A triad spelled out at th
 You win twice: fewer tokens, and a sharper hook for the agent to hang its thinking on. Assume every document is carrying restatements that leading words retire. Go find them.
 
 **Negation** is the failure mode beside this lever: steering by prohibition drags the forbidden behaviour into context and makes it _more_ available, not less. _Don't think of an elephant_, and the elephant is all there is; the negation is a weak modifier the strongly-activated concept overruns, so the ban half-reads as an instruction to do the thing. Prompt the **positive**: state the target behaviour ("write one-line comments") so the banned one is never spoken. A prohibition earns its place only as a hard guardrail you cannot phrase positively; even then, pair it with the positive target so attention lands on what to do.
+
+## Voice leak
+
+**Voice leak** is the document's prose reproducing itself in the agent's output. An agent writing under a document imitates it, and style is the least deliberate thing a document teaches and the most reliably transmitted: a skill written in inflated, hedging, bold-label-everything prose yields inflated, hedging, bold-label-everything output for as long as it is loaded, whatever the skill was nominally about. Several documents loaded at once compound it, because they agree with each other about register and the agent reads that agreement as house style. The leak is worst in exactly the documents you would least suspect, since a reference file nobody rereads is still conditioning every reply while it sits in context.
+
+So prose quality in an agent document is a functional property, not a courtesy to human readers, and it is one of the few levers that acts on output the document never mentions. Write the voice you want back. Then verify it the way you verify any other output, by running a checker over the document, since rereading applies the instincts the draft was written with.
 
 ## Pruning
 

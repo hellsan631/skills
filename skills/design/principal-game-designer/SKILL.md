@@ -1,6 +1,6 @@
 ---
 name: principal-game-designer
-description: Write, revise, review, and audit game design documents.
+description: Use when drafting a game system's design, revising one, critiquing a design document, or checking whether a spec is actually buildable.
 disable-model-invocation: true
 ---
 

@@ -42,15 +42,20 @@ which is how a good idea upstream gets adopted on purpose rather than merged in 
 Every `SKILL.md` is user-invoked or model-invoked, and the two harnesses have to agree.
 
 User-invoked is the norm here, and means `disable-model-invocation: true` in the
-frontmatter plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, with a
-`description` that is a human-facing one-liner. Trigger lists belong to auto-invocation, so
-they come out; a skill chosen by name only needs to say what it is for.
+frontmatter plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`.
 
-Model-invoked means omitting `disable-model-invocation` and writing a description that
-carries the trigger branches. Every model-invoked description is permanent context load in
-every session, which is the whole cost, so the bar is that the agent would be wrong not to
-reach the skill on its own. Exactly one skill clears it today: `unslop`, because prose
-quality applies to every reply whether or not anyone asks.
+Model-invoked means omitting `disable-model-invocation`.
+
+Every description is written as triggers, in both modes: name the situations that should
+reach the skill, not the subject it covers. A user-invoked description is free, since
+nothing loads it until the skill runs. It still has two jobs: turn a list of skill names
+into an index the human can use, and tell the agent which situation it is in when the
+skill fires. `SKILL-MECHANICS.md` in `writing-for-agents` has the full argument.
+
+A model-invoked description is permanent context load in every session, which is the whole
+cost of the mode, so the bar is that the agent would be wrong not to reach the skill on its
+own. Exactly one skill clears it today: `unslop`, because prose quality applies to every
+reply whether or not anyone asks.
 
 Needing another skill's material is not a reason to make it model-invoked. Read its
 `SKILL.md` instead.
@@ -62,6 +67,11 @@ Documents here are written for agents to execute, not for people to admire. The
 The levers that matter most: push branch-gated material behind a pointer so the main file
 stays legible, end every step on a criterion the agent can check, and state the target
 behaviour rather than banning its opposite.
+
+Prose here is functional, not decorative. A skill sits in the agent's context while it
+works, so the skill's own writing is a sample the agent imitates, and a sloppy one leaks
+into replies that have nothing to do with the skill. That is why the bar applies to skills
+we will never publish.
 
 Prose in this repo passes its own checker, on two tiers. Anything we wrote is gated on
 errors and reviews alike. An imported skill is gated on errors only, because it arrived

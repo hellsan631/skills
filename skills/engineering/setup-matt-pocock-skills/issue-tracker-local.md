@@ -1,3 +1,6 @@
+<!-- humanize-lint: ignore-file list-density — reference card: a catalogue of file conventions and tracker operations is a list by nature -->
+<!-- humanize-lint: ignore-file inline-header-density — the bold label is the lookup key a reader scans for, so prose would bury the operation names -->
+
 # Issue tracker: Local Markdown
 
 Issues and specs for this repo live as markdown files in `.scratch/`.

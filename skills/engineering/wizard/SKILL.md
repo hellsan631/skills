@@ -1,6 +1,6 @@
 ---
 name: wizard
-description: Generate an interactive bash wizard for the steps only a human can perform.
+description: Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Generates an interactive bash wizard for the steps only a human can do.
 disable-model-invocation: true
 ---
 

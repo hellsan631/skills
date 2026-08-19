@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut AI tells from prose as you write it. Applies to chat replies and files alike, and always applies.
+description: Use while writing any prose, in a chat reply or a file, to cut AI tells before they land. Always applies.
 ---
 
 # Unslop
@@ -16,7 +16,7 @@ it, or when a draft has to be right rather than merely clean.
 ## What to cut
 
 Seven habits cover every rule the checker treats as wrong every time it appears. The
-checker knows 328 phrasings of them; you only need the shapes.
+checker knows 210 phrasings of them; you only need the shapes.
 
 Claiming importance instead of showing it. Nothing is "a game-changer", "a cornerstone",
 or "a testament to" anything, and saying so stands in for the detail that would have

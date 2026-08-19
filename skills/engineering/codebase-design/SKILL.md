@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Shared vocabulary for designing deep modules: depth, seams, adapters, leverage, and locality.
+description: Use when designing or improving a module's interface, when deciding where a seam goes, when code needs to be more testable or navigable, or when another skill needs the deep-module vocabulary of depth, seams, adapters, leverage, and locality.
 disable-model-invocation: true
 ---
 

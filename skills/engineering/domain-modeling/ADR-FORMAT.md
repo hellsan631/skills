@@ -1,3 +1,5 @@
+<!-- humanize-lint: ignore-file list-density — format reference: the arguing already happens in the prose between the lists, and what remains is parallel sets whose entries pair a decision type with the sample ADR sentence that illustrates it -->
+
 # ADR Format
 
 ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.

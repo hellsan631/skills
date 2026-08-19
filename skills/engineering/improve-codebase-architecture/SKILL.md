@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
+description: Use when a codebase feels architecturally stuck and you want options. Scans for deepening opportunities, presents them as a visual HTML report, then grills through whichever one you pick.
 disable-model-invocation: true
 ---
 
@@ -64,7 +64,7 @@ Do NOT propose interfaces yet. After the file is written, ask the user: "Which o
 
 ### 3. Grilling loop
 
-Once the user picks a candidate, work from the `grilling` skill to walk the decision tree with them: constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
+Once the user picks a candidate, work from the `grilling` skill to walk the decision tree with them. The tree covers constraints, dependencies, the shape of the deepened module, what sits behind the seam, and what tests survive.
 
 Side effects happen inline as decisions crystallize; work from the `domain-modeling` skill to keep the domain model current as you go:
 
