@@ -17,7 +17,11 @@ need git
 need python3
 
 # Running from inside an existing clone should use that clone, not make a second one.
-here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." 2>/dev/null && pwd || true)"
+# Piped through `curl | bash` there is no BASH_SOURCE, so this stays empty and we clone.
+here=""
+if [ -n "${BASH_SOURCE[0]:-}" ]; then
+  here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." 2>/dev/null && pwd || true)"
+fi
 if [ -n "$here" ] && [ -d "$here/skills" ] && [ -d "$here/.git" ]; then
   REPO_DIR="$here"
   echo "using this clone: $REPO_DIR"
