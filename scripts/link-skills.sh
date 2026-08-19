@@ -48,4 +48,13 @@ for DEST in "${DESTS[@]}"; do
     ln -sfn "${srcs[$i]}" "$target"
     echo "linked ${names[$i]} -> ${srcs[$i]} ($DEST)"
   done
+
+  # Renaming or deleting a skill leaves its old link behind pointing at nothing, and a
+  # harness that reads the directory will keep offering a skill that no longer exists.
+  for link in "$DEST"/*; do
+    if [ -L "$link" ] && [ ! -e "$link" ]; then
+      rm "$link"
+      echo "pruned $(basename "$link") in $DEST (target is gone)"
+    fi
+  done
 done

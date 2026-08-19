@@ -53,7 +53,7 @@
     {
       "source": "mattpocock",
       "upstream_path": "skills/engineering/setup-matt-pocock-skills",
-      "path": "skills/engineering/setup-matt-pocock-skills",
+      "path": "skills/engineering/setup-engineering-skills",
       "imported_because": "wayfinder tells the user to run it when no issue tracker is configured"
     },
     {
@@ -144,6 +144,16 @@
       "upstream_path": "skills/principle-separate-before-serializing-shared-state",
       "path": "skills/principles/principle-separate-before-serializing-shared-state",
       "imported_because": "referenced by arena"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/how",
+      "path": "skills/engineering/how"
+    },
+    {
+      "source": "pstack",
+      "upstream_path": "skills/why",
+      "path": "skills/engineering/why"
     }
   ]
 }

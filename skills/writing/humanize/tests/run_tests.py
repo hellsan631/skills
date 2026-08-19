@@ -263,6 +263,20 @@ def test_frontmatter_is_exempt_from_the_rhythm_rules() -> None:
     check(not findings, f"frontmatter should not draw a length finding: {findings}")
 
 
+def test_underscore_reads_as_a_character_when_hyphenated() -> None:
+    """"underscore-cased" names a naming convention; "underscores the" is the tell."""
+    categories = lint.load_categories(lint.DEFAULT_RULES)
+
+    def categories_for(text: str) -> set:
+        return {f.category for f in lint.analyze(text, categories, "markdown",
+                                                 profile_named("reference"))}
+
+    check("ai-vocabulary" not in categories_for("Typed, underscore-cased properties.\n"),
+          "a naming convention should not read as vocabulary")
+    check("ai-vocabulary" in categories_for("The result underscores the finding.\n"),
+          "the verb sense should still fire")
+
+
 def test_copula_avoidance_needs_the_verb_sense() -> None:
     """"Features" is a noun most of the time in software writing, and "offer" is an act."""
     categories = lint.load_categories(lint.DEFAULT_RULES)

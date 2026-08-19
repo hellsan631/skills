@@ -1,6 +1,6 @@
 # Agent skills that check their own work
 
-Twenty-eight skills for writing, design, and engineering. The one that gives the repo its
+Thirty skills for writing, design, and engineering. The one that gives the repo its
 name ships a deterministic checker: most writing skills hand the agent a checklist and
 hope, while [humanize](./skills/writing/humanize/SKILL.md) makes it prove the prose is
 clean rather than reread its own draft and declare victory.

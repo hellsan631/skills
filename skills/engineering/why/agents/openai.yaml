@@ -1,0 +1,5 @@
+interface:
+  display_name: "Why"
+  short_description: "Recover why a decision was made, from the evidence trail"
+policy:
+  allow_implicit_invocation: false

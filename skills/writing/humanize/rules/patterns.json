@@ -239,7 +239,7 @@
       "patterns": [
         { "re": "\\bdelv(?:e|es|ing|ed)\\b", "severity": "error" },
         { "re": "\\btapestry\\b", "severity": "error" },
-        { "re": "\\bunderscor(?:e|es|ing|ed)\\b", "severity": "error" },
+        { "re": "\\bunderscor(?:e|es|ing|ed)\\b(?!-)", "severity": "error" },
         { "re": "\\btestament\\b", "severity": "error" },
         { "re": "\\bmeticulous(?:ly)?\\b", "severity": "error" },
         { "re": "\\bintricat(?:e|ely|ies)\\b", "severity": "error" },

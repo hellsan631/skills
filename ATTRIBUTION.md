@@ -22,7 +22,7 @@ Matt Pocock.
 - [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)
 - [prototype](./skills/engineering/prototype/SKILL.md)
 - [research](./skills/engineering/research/SKILL.md)
-- [setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)
+- [setup-engineering-skills](./skills/engineering/setup-engineering-skills/SKILL.md)
 - [wizard](./skills/engineering/wizard/SKILL.md)
 - [grill-with-docs](./skills/workflow/grill-with-docs/SKILL.md)
 - [grilling](./skills/workflow/grilling/SKILL.md)
@@ -35,6 +35,8 @@ From [backnotprop/pstack](https://github.com/backnotprop/pstack), MIT, Copyright
 Lauren Tan.
 
 - [blast-radius](./skills/engineering/blast-radius/SKILL.md)
+- [how](./skills/engineering/how/SKILL.md)
+- [why](./skills/engineering/why/SKILL.md)
 - [arena](./skills/workflow/arena/SKILL.md)
 - [bro](./skills/workflow/bro/SKILL.md)
 - [show-me-your-work](./skills/workflow/show-me-your-work/SKILL.md)
