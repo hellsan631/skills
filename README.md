@@ -54,6 +54,12 @@ behind your back. Afterward, run `skills/writing/humanize/scripts/install-shim.s
   prose and verify with a checker. Around 40 pattern categories plus structural checks
   for list density, sentence length, and bold-header lists.
 
+### Design
+
+- **[principal-game-designer](./skills/design/principal-game-designer/SKILL.md)**
+  (model-invoked): write, revise, review, and audit game design documents. Holds the line
+  on both halves of the job, whether the system is fun and whether anyone can build it.
+
 ## How humanize works
 
 Prose fails in two directions. **Slop** is the mechanical tells, the puffery and filler

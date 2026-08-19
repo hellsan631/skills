@@ -14,9 +14,11 @@
     "humanize",
     "prose",
     "linting",
-    "documentation"
+    "documentation",
+    "game-design"
   ],
   "skills": [
+    "./skills/design/principal-game-designer",
     "./skills/writing/humanize"
   ]
 }

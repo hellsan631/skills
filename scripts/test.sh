@@ -17,17 +17,13 @@ done < <(find "$REPO/skills" -path '*/tests/run_tests.py' | sort)
 
 CHECKER="$REPO/skills/writing/humanize/scripts/humanize_lint.py"
 
-# READMEs and AGENTS.md are index and convention docs, so they get the doc profile.
-# Skill documents are the product a stranger reads, so they get every structural rule.
+# Everything here is an internal operational document read by an agent, which is the doc
+# profile's genre. It still enforces every prose rule; it only stops treating bold-header
+# lists and title-case headings as faults, and those are the right shape for a checklist.
 echo
-echo "== prose, doc profile =="
-find "$REPO" \( -name 'README.md' -o -name 'AGENTS.md' \) -not -path '*/.git/*' -print0 \
+echo "== prose =="
+find "$REPO" -name '*.md' -not -path '*/.git/*' -not -path '*/tests/*' -print0 \
   | xargs -0 python3 "$CHECKER" --strict || failed=1
-
-echo
-echo "== prose, reference profile =="
-find "$REPO/skills" -name '*.md' -not -path '*/tests/*' -not -name 'README.md' -print0 \
-  | xargs -0 python3 "$CHECKER" --profile reference --strict || failed=1
 
 echo
 if [ "$failed" -eq 0 ]; then

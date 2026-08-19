@@ -20,6 +20,12 @@ is wrong rather than the rule. A directive earns its place on quoted source text
 proper noun that collides with a banned word, and on a placeholder an author put there on
 purpose.
 
+The density rules have one more legitimate exemption. They assume structure has crowded
+out explanation, which is true of a plan that decayed into bullets and false of a
+checklist, where a flat list of peer criteria is the shape the content wants. Turn
+`list-density` and `inline-header-density` off for a document that is genuinely a
+checklist, and leave them on everywhere else.
+
 ## Adding a rule
 
 The phrase corpus and the profile definitions live in `rules/patterns.json`, which sits
