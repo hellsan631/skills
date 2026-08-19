@@ -1,6 +1,7 @@
 ---
 name: principal-game-designer
-description: Write, revise, review, and audit game design documents: GDD sections, system specs, PRDs, progression and economy systems, onboarding beats. Use when drafting or reviewing design docs, checking a doc set for scope drift, or turning a game concept into something engineering can build.
+description: Write, revise, review, and audit game design documents.
+disable-model-invocation: true
 ---
 
 # Principal game designer

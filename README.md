@@ -48,6 +48,11 @@ behind your back. Afterward, run `skills/writing/humanize/scripts/install-shim.s
 
 ## What is in here
 
+Skills split on who can invoke them. A **model-invoked** skill can be reached by you or
+by the agent on its own, so it costs a permanently loaded description in exchange for
+firing without being asked. A **user-invoked** skill is reachable only when you type its
+name, which costs nothing to carry and nothing fires by accident.
+
 ### Writing
 
 - **[humanize](./skills/writing/humanize/SKILL.md)** (model-invoked): strip AI tells from
@@ -57,7 +62,7 @@ behind your back. Afterward, run `skills/writing/humanize/scripts/install-shim.s
 ### Design
 
 - **[principal-game-designer](./skills/design/principal-game-designer/SKILL.md)**
-  (model-invoked): write, revise, review, and audit game design documents. Holds the line
+  (user-invoked): write, revise, review, and audit game design documents. Holds the line
   on both halves of the job, whether the system is fun and whether anyone can build it.
 
 ## How humanize works

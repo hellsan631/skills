@@ -1,3 +1,5 @@
 interface:
   display_name: "Principal Game Designer"
   short_description: "Write, revise, review, and audit game design docs"
+policy:
+  allow_implicit_invocation: false
