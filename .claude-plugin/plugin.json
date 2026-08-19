@@ -1,0 +1,22 @@
+{
+  "name": "hellsan631-skills",
+  "version": "0.1.0",
+  "description": "Agent skills that verify their own output. Humanize strips AI tells from prose and proves it with a deterministic checker instead of a from-memory checklist.",
+  "author": {
+    "name": "Mathew Kleppin",
+    "url": "https://github.com/hellsan631"
+  },
+  "homepage": "https://github.com/hellsan631/skills",
+  "repository": "https://github.com/hellsan631/skills",
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "humanize",
+    "prose",
+    "linting",
+    "documentation"
+  ],
+  "skills": [
+    "./skills/writing/humanize"
+  ]
+}

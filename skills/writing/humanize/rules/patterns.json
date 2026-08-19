@@ -1,0 +1,566 @@
+{
+  "version": 2,
+  "note": "Pattern corpus for humanize_lint.py. Patterns are Python regex, case-insensitive by default. A pattern is either a string (inherits the category severity) or an object with 're' plus optional 'severity', 'flags', and 'note'. If a pattern defines a group named 'hit', the reported span is that group instead of the whole match.",
+  "profiles": {
+    "doc": {
+      "label": "Internal docs, plans, specs, PRDs, and READMEs",
+      "detail": "Bold-header lists and title-case headings are house style here, so they are not flagged one by one. Density checks still catch a document that has turned into nothing but lists.",
+      "overrides": {
+        "inline-header-list": "off",
+        "heading-case": "off",
+        "rule-of-three": "note",
+        "bold-density": "note",
+        "small-table": "note",
+        "sentence-rhythm": "note",
+        "engineering-jargon": "note",
+        "plain-word": "note"
+      }
+    },
+    "reference": {
+      "label": "Wiki articles, essays, bios, and public-facing prose",
+      "detail": "Every structural rule applies. Use this for anything a stranger will read as a finished piece.",
+      "overrides": {}
+    }
+  },
+  "default_profile": "doc",
+  "categories": [
+    {
+      "id": "significance-bloat",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Cut the importance claim. State the fact that makes it matter, or delete the sentence.",
+      "patterns": [
+        "\\b(?:stands|serves|stood|served)\\s+as\\s+(?:a|an|the)\\b",
+        "\\b(?:is|was|are|were)\\s+a\\s+testament\\s+to\\b",
+        "\\b(?:is|was)\\s+a\\s+(?:stark\\s+|powerful\\s+)?reminder\\s+(?:of|that)\\b",
+        "\\ba\\s+(?:vital|significant|crucial|pivotal|key|central|critical|defining)\\s+(?:role|moment|part|component|figure|element|chapter)\\b",
+        "\\bplay(?:s|ed|ing)?\\s+(?:a|an)\\s+\\w+\\s+role\\b",
+        "\\bunderscor(?:es|ing|ed)\\s+(?:its|the|their|his|her)\\s+(?:importance|significance|role|value|status)\\b",
+        "\\bhighlight(?:s|ing|ed)\\s+(?:its|the|their|his|her)\\s+(?:importance|significance|status)\\b",
+        "\\breflect(?:s|ing|ed)\\s+broader\\b",
+        "\\bsymboliz(?:es|ing|ed)\\s+(?:its|the|their)\\s+(?:ongoing|enduring|lasting|continued)\\b",
+        "\\bsett?ing\\s+the\\s+stage\\s+for\\b",
+        "\\bset\\s+the\\s+stage\\s+for\\b",
+        "\\bmark(?:s|ed|ing)\\s+(?:a|an)\\s+(?:pivotal|significant|key|major|turning|defining|watershed|important|new\\s+era)\\b",
+        "\\brepresent(?:s|ed|ing)\\s+a\\s+(?:shift|significant|major|pivotal|turning|departure|milestone)\\b",
+        "\\bkey\\s+turning\\s+point\\b",
+        "\\bevolving\\s+landscape\\b",
+        "\\bindelible\\s+mark\\b",
+        "\\bdeeply\\s+rooted\\b",
+        "\\benduring\\s+(?:legacy|impact|influence|appeal|symbol|presence)\\b",
+        "\\blasting\\s+(?:legacy|impact|testament|imprint)\\b",
+        "\\bcement(?:s|ed|ing)\\s+(?:its|his|her|their)\\b",
+        "\\bsolidif(?:y|ies|ied|ying)\\s+(?:its|his|her|their)\\s+(?:role|position|status|place|reputation)\\b",
+        "\\bfocal\\s+point\\s+(?:of|for)\\b",
+        "\\bpaved?\\s+the\\s+way\\s+for\\b",
+        "\\busher(?:s|ed|ing)?\\s+in\\s+(?:a|an|the)\\b",
+        "\\bat\\s+the\\s+forefront\\s+of\\b",
+        "\\bcornerstone\\s+of\\b",
+        "\\bmilestone\\s+in\\s+the\\s+(?:history|development|evolution)\\b",
+        "\\bwatershed\\s+moment\\b",
+        "\\bhas\\s+come\\s+to\\s+(?:symbolize|represent|define)\\b"
+      ]
+    },
+    {
+      "id": "notability-performance",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Say what the source actually said instead of name-dropping where coverage appeared.",
+      "patterns": [
+        "\\b(?:has|have)\\s+been\\s+(?:featured|profiled|highlighted)\\s+in\\b",
+        "\\b(?:featured|profiled)\\s+in\\s+(?:such\\s+)?(?:prominent|major|leading|national|numerous|various|top)\\b",
+        "\\bcited\\s+by\\s+(?:national|major|numerous|various|several|leading)\\s+(?:media|outlets|publications)\\b",
+        "\\b(?:covered|mentioned)\\s+by\\s+(?:several|numerous|various|multiple)\\s+(?:publications|outlets|media)\\b",
+        "\\bmaintains?\\s+an?\\s+active\\s+(?:social\\s+media\\s+|online\\s+)?presence\\b",
+        "\\band\\s+other\\s+(?:prominent|leading|major|notable|respected)\\s+(?:media\\s+)?(?:outlets|publications)\\b",
+        "\\bgarner(?:ed|ing|s)?\\s+(?:widespread|significant|considerable|international)\\s+(?:attention|acclaim|praise|recognition)\\b",
+        "\\bwidely\\s+(?:recognized|regarded|acclaimed|praised)\\s+(?:as|for)\\b",
+        "\\bneeds?\\s+no\\s+introduction\\b"
+      ]
+    },
+    {
+      "id": "superficial-analysis",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Delete the trailing clause. It adds no factual content.",
+      "patterns": [
+        "\\bhighlighting\\s+(?:its|the|their)\\s+(?:significance|importance|role)\\b",
+        "\\bensuring\\s+(?:continued|its|the|a)\\b",
+        "\\breflecting\\s+the\\s+(?:region|city|area|country|company|community)'?s?\\b",
+        "\\bcontributing\\s+to\\s+the\\s+(?:broader|overall|socio-economic|economic|cultural|continued)\\b",
+        "\\bfostering\\s+a\\s+sense\\s+of\\b",
+        "\\bemphasizing\\s+the\\s+importance\\s+of\\b",
+        "\\bthereby\\s+(?:ensuring|contributing|creating|allowing|enabling|making)\\b",
+        "\\bwhile\\s+also\\s+(?:ensuring|contributing|highlighting|providing|offering|maintaining)\\b",
+        "\\bfurther\\s+(?:cementing|solidifying|enhancing|underscoring|reinforcing)\\b",
+        "\\ballowing\\s+(?:it|them|him|her|users|visitors)\\s+to\\s+(?:fully|truly|better)\\b",
+        "\\bmaking\\s+it\\s+(?:a|an)\\s+(?:popular|must|ideal|perfect|great)\\b",
+        "\\bcreating\\s+a\\s+(?:unique|lasting|memorable|welcoming)\\b"
+      ]
+    },
+    {
+      "id": "puffery",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Flatten to neutral description. If it reads like a brochure, rewrite it.",
+      "patterns": [
+        "\\bboasts?\\b",
+        "\\bvibrant\\b",
+        "\\bnestled\\b",
+        "\\bin\\s+the\\s+heart\\s+of\\b",
+        "\\bbreathtaking\\b",
+        "\\brenowned\\b",
+        "\\bgroundbreaking\\b",
+        "\\bdiverse\\s+array\\b",
+        "\\bnatural\\s+beauty\\b",
+        "\\brich\\s+(?:history|culture|cultural|heritage|tapestry|tradition|traditions|diversity|array|blend)\\b",
+        "\\bshowcas(?:e|es|ing|ed)\\b",
+        "\\bexemplif(?:y|ies|ied|ying)\\b",
+        "\\bcommitment\\s+to\\s+(?:excellence|quality|innovation|sustainability|craftsmanship)\\b",
+        "\\bworld-class\\b",
+        "\\bstate-of-the-art\\b",
+        "\\bcutting-edge\\b",
+        "\\bunparalleled\\b",
+        "\\bmust-(?:visit|see|try|have)\\b",
+        "\\bhidden\\s+gem\\b",
+        "\\bcaptivat(?:e|es|ing|ed)\\b",
+        "\\bfascinating\\s+glimpse\\b",
+        "\\bawe-inspiring\\b",
+        "\\bstands?\\s+out\\s+(?:as|for|from)\\b",
+        "\\bone-of-a-kind\\b",
+        "\\bsprawling\\b",
+        { "re": "\\bseamless(?:ly)?\\b", "severity": "review" },
+        { "re": "\\bcharming\\b", "severity": "review" },
+        { "re": "\\bpicturesque\\b", "severity": "review" },
+        { "re": "\\biconic\\b", "severity": "review" },
+        { "re": "\\bprofound\\b", "severity": "review" },
+        { "re": "\\ballure\\b", "severity": "review" },
+        { "re": "\\bstunning\\b", "severity": "review" },
+        { "re": "\\bvast\\s+(?:array|range|selection)\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "vague-attribution",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Name the source and date, or cut the attribution.",
+      "patterns": [
+        "\\b(?:experts|researchers|scientists|analysts|observers|critics|scholars|historians|officials|commentators)\\s+(?:say|says|believe|believes|argue|argues|note|notes|noted|suggest|suggests|have\\s+noted|have\\s+argued|have\\s+suggested|have\\s+cited|widely\\s+agree)\\b",
+        "\\bindustry\\s+reports?\\s+(?:suggest|indicate|show)\\b",
+        "\\baccording\\s+to\\s+(?:experts|researchers|analysts|observers|critics|industry|some|many)\\b",
+        "\\bsome\\s+(?:critics|experts|observers|analysts|scholars|argue|say|believe)\\b",
+        "\\bit\\s+(?:is|has\\s+been)\\s+(?:widely\\s+)?(?:believed|considered|regarded|acknowledged|recognized|argued)\\b",
+        "\\b(?:several|numerous|various|multiple)\\s+(?:publications|sources|outlets|studies|reports)\\s+have\\b",
+        "\\bis\\s+(?:widely|generally|often)\\s+(?:regarded|considered|seen|viewed)\\s+as\\b",
+        "\\bmany\\s+(?:believe|argue|consider|feel)\\b",
+        { "re": "\\bstudies\\s+(?:have\\s+)?(?:shown|show|suggest|indicate)\\b", "severity": "review", "note": "Fine if the study is named nearby." },
+        { "re": "\\bresearch\\s+(?:has\\s+)?(?:shown|shows|suggests|indicates)\\b", "severity": "review", "note": "Fine if the research is named nearby." }
+      ]
+    },
+    {
+      "id": "challenges-formula",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Drop the concessive frame and the forward-looking optimism. State the real constraint plainly.",
+      "patterns": [
+        "\\bdespite\\s+(?:its|these|the|their|such)\\s+(?:challenges|success|successes|strengths|popularity|growth|prosperity|limitations|shortcomings|setbacks)\\b",
+        "\\bfaces?\\s+(?:challenges|obstacles|hurdles)\\s+(?:including|such\\s+as|typical\\s+of)\\b",
+        "\\bcontinues?\\s+to\\s+(?:thrive|grow|evolve|flourish|expand|shape|inspire)\\b",
+        "\\bthe\\s+future\\s+(?:looks|remains|appears|holds)\\s+(?:bright|promising|uncertain|exciting)\\b",
+        "\\bwith\\s+ongoing\\s+(?:initiatives|efforts|developments|investment|research)\\b",
+        "\\bpoised\\s+(?:to|for)\\b",
+        "\\bposition(?:s|ed|ing)?\\s+(?:it|them|him|her|itself|themselves)\\s+as\\b",
+        "\\blooking\\s+ahead\\b",
+        "\\bas\\s+(?:it|they)\\s+(?:continues?|moves?)\\s+forward\\b",
+        "\\bonly\\s+time\\s+will\\s+tell\\b",
+        "\\bremains?\\s+to\\s+be\\s+seen\\b"
+      ]
+    },
+    {
+      "id": "gap-filling",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Do not paper over missing information. Find the fact, cut the claim, or state the gap directly.",
+      "patterns": [
+        "\\bwhile\\s+specific\\s+(?:details|information|data)\\b",
+        "\\bbased\\s+on\\s+(?:the\\s+)?available\\s+(?:information|data|sources|evidence)\\b",
+        "\\bnot\\s+widely\\s+(?:documented|reported|known|available)\\b",
+        "\\bkeeps?\\s+much\\s+of\\s+(?:his|her|their)\\s+personal\\s+life\\s+private\\b",
+        "\\blimited\\s+(?:public\\s+)?information\\s+(?:is\\s+available|exists)\\b",
+        "\\bdetails?\\s+(?:are|remain)\\s+(?:scarce|limited|unclear|unavailable|sparse)\\b",
+        "\\bthe\\s+(?:provided\\s+)?search\\s+results\\b",
+        "\\bat\\s+the\\s+time\\s+of\\s+writing\\b",
+        "\\bas\\s+of\\s+(?:my|the)\\s+(?:last|knowledge)\\s+(?:update|cutoff)\\b",
+        "\\bpublicly\\s+available\\s+(?:sources|information)\\s+do\\s+not\\b",
+        { "re": "\\blikely\\s+(?:supports?|includes?|features?|contains?|reflects?|played)\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "didactic-disclaimer",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Condescending filler. Delete the frame and keep the information.",
+      "patterns": [
+        "\\bit(?:'s|\u2019s| is)\\s+(?:important|worth|crucial|essential|vital|necessary)\\s+to\\s+(?:note|remember|consider|mention|understand|recognize|highlight|emphasize)\\b",
+        "\\bit\\s+should\\s+be\\s+noted\\b",
+        "\\bkeep\\s+in\\s+mind\\s+that\\b",
+        "\\bbear\\s+in\\s+mind\\b",
+        "\\bmay\\s+vary\\s+depending\\s+on\\b",
+        "\\bplease\\s+note\\b",
+        "\\bit(?:'s|\u2019s| is)\\s+worth\\s+(?:noting|mentioning|remembering)\\b",
+        "\\bneedless\\s+to\\s+say\\b",
+        "\\bas\\s+(?:you|we)\\s+can\\s+(?:see|imagine)\\b",
+        { "re": "\\bthat\\s+(?:said|being\\s+said)\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "meta-commentary",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Delete the roadmap and write the content.",
+      "patterns": [
+        "\\bin\\s+this\\s+(?:section|article|piece|post|chapter|document|guide),?\\s+(?:we|I)\\s+(?:will|'ll|\u2019ll)\\b",
+        "\\bthis\\s+(?:article|section|post|guide|document|piece|chapter)\\s+(?:will\\s+)?(?:explores?|examines?|discusses?|covers?|delves?|aims?\\s+to|seeks?\\s+to|provides?)\\b",
+        "\\bthe\\s+purpose\\s+(?:of\\s+this|is)\\s+to\\s+provide\\b",
+        "\\bwe\\s+will\\s+(?:discuss|explore|examine|cover|look\\s+at|dive\\s+into)\\b",
+        "\\blet(?:'s|\u2019s| us)\\s+(?:explore|dive|delve|take\\s+a\\s+look|begin\\s+by|start\\s+by)\\b",
+        "\\bby\\s+the\\s+end\\s+of\\s+this\\b",
+        "\\bin\\s+the\\s+following\\s+(?:section|paragraphs|chapter)\\b",
+        "\\bbefore\\s+(?:we\\s+)?(?:dive|begin|start|proceed)\\b",
+        { "re": "\\bas\\s+(?:mentioned|discussed|noted)\\s+(?:above|earlier|previously)\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "ai-vocabulary",
+      "severity": "review",
+      "scan": "prose",
+      "cluster": { "threshold": 3, "severity": "error" },
+      "guidance": "Statistically overused by language models. One may be fine; a cluster is a tell.",
+      "patterns": [
+        { "re": "\\bdelv(?:e|es|ing|ed)\\b", "severity": "error" },
+        { "re": "\\btapestry\\b", "severity": "error" },
+        { "re": "\\bunderscor(?:e|es|ing|ed)\\b", "severity": "error" },
+        { "re": "\\btestament\\b", "severity": "error" },
+        { "re": "\\bmeticulous(?:ly)?\\b", "severity": "error" },
+        { "re": "\\bintricat(?:e|ely|ies)\\b", "severity": "error" },
+        { "re": "\\binterplay\\b", "severity": "error" },
+        { "re": "\\bpivotal\\b", "severity": "error" },
+        { "re": "\\bvaluable\\s+insights?\\b", "severity": "error" },
+        { "re": "\\bnavigat(?:e|es|ing)\\s+the\\s+(?:complex|complexities|challenges|landscape|world)\\b", "severity": "error" },
+        { "re": "\\b(?:the|a|an)\\s+(?:complex|evolving|competitive|digital|broader|shifting)\\s+landscape\\b", "severity": "error" },
+        { "re": "\\bharness(?:es|ing|ed)?\\s+the\\s+(?:power|potential)\\b", "severity": "error" },
+        { "re": "\\bunlock(?:s|ing)?\\s+(?:the\\s+)?(?:potential|value|insights)\\b", "severity": "error" },
+        { "re": "\\bgame[-\\s]chang(?:er|ing)\\b", "severity": "error" },
+        { "re": "\\bparadigm\\s+shift\\b", "severity": "error" },
+        { "re": "\\bever[-\\s]evolving\\b", "severity": "error" },
+        { "re": "\\bin\\s+today(?:'s|\u2019s)\\s+(?:fast-paced|digital|modern|ever-changing|competitive)\\b", "severity": "error" },
+        { "re": "\\bcomprehensive\\s+(?:overview|understanding|guide|approach|analysis)\\b", "severity": "error" },
+        { "re": "\\bdeep\\s+dive\\b", "severity": "error" },
+        "\\bbolster(?:s|ed|ing)?\\b",
+        "\\bgarner(?:s|ed|ing)?\\b",
+        "\\bcrucial\\b",
+        "\\bvital\\b",
+        "\\bseminal\\b",
+        "\\brealm\\s+of\\b",
+        "\\bmyriad\\b",
+        "\\bplethora\\b",
+        "\\bleverag(?:e|es|ing|ed)\\b",
+        "\\bfoster(?:s|ing|ed)?\\b",
+        "\\benhanc(?:e|es|ing|ed|ement)\\b",
+        "\\balign(?:s|ed|ing)?\\s+with\\b",
+        "\\bresonat(?:e|es|ing|ed)\\s+with\\b",
+        "\\bholistic\\b",
+        "\\brobust\\b",
+        "\\bsynerg(?:y|ies|istic)\\b",
+        "\\bempower(?:s|ed|ing|ment)?\\b",
+        "\\bstreamlin(?:e|es|ing|ed)\\b",
+        "\\bfacilitat(?:e|es|ing|ed)\\b",
+        "\\bcultivat(?:e|es|ing|ed)\\b",
+        "\\bencompass(?:es|ing|ed)?\\b",
+        "\\bmultifaceted\\b",
+        "\\bnuanced\\b",
+        "\\bpertinent\\b",
+        "\\bdelicate\\s+balance\\b",
+        { "re": "(?:^|(?<=[.!?]\\s))(?P<hit>Additionally|Moreover|Furthermore|Notably|Importantly|Crucially)\\b", "flags": "m", "note": "Sentence-initial connective." }
+      ]
+    },
+    {
+      "id": "copula-avoidance",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "Use is, are, has, or was when the simple verb is accurate.",
+      "patterns": [
+        { "re": "\\bserves?\\s+as\\b", "severity": "error" },
+        { "re": "\\bstands?\\s+as\\b", "severity": "error" },
+        { "re": "\\bholds?\\s+the\\s+distinction\\s+of\\b", "severity": "error" },
+        "\\bserved\\s+as\\b",
+        "\\bfeatur(?:es|ing)\\b",
+        "\\boffers?\\s+(?:a|an|the|\\d)\\b",
+        "\\bis\\s+home\\s+to\\b",
+        "\\bis\\s+known\\s+for\\s+(?:its|his|her|their)\\b",
+        "\\bcan\\s+be\\s+(?:seen|viewed|described)\\s+as\\b",
+        "\\bcomes?\\s+equipped\\s+with\\b"
+      ]
+    },
+    {
+      "id": "negative-parallelism",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "If both things are true, say both. Drop the contrast scaffolding.",
+      "patterns": [
+        "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;]{1,60},?\\s+but\\s+(?:also\\s+)?\\b",
+        "\\bit(?:'s|\u2019s| is)(?:\\s+not|n(?:'|\u2019)t)\\s+about\\s+[^,.;]{1,60},?\\s+(?:it(?:'s|\u2019s| is)|but)\\s+about\\b",
+        "\\bno\\s+[\\w\\s]{1,20},\\s+no\\s+[\\w\\s]{1,20},\\s+just\\b",
+        "\\bthis\\s+(?:isn(?:'|\u2019)t|is\\s+not)\\s+[\\w\\s]{1,30}(?:\u2014|--|;|,)\\s*(?:it(?:'|\u2019)s|its|this\\s+is)\\b",
+        "\\bmore\\s+than\\s+just\\s+(?:a|an)\\b",
+        { "re": "\\bless\\s+(?:about\\s+)?[\\w\\s]{1,30}\\s+and\\s+more\\s+(?:about\\s+)?\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "conclusion-formula",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Stop when the point is made. Cut the recap.",
+      "patterns": [
+        "\\bin\\s+(?:summary|conclusion)\\b",
+        "\\bto\\s+(?:summarize|sum\\s+up|conclude)\\b",
+        "\\bin\\s+closing\\b",
+        "\\ball\\s+in\\s+all\\b",
+        "(?:^|(?<=[.!?]\\s))(?P<hit>Overall|In\\s+short|Ultimately|Wrapping\\s+up|Final\\s+thoughts)\\b",
+        "\\bthe\\s+bottom\\s+line\\s+is\\b",
+        "\\bat\\s+the\\s+end\\s+of\\s+the\\s+day\\b",
+        "\\bwhether\\s+you(?:'re|\u2019re)\\s+(?:a|an)\\b"
+      ]
+    },
+    {
+      "id": "assistant-artifact",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Chatbot framing. Delete it and deliver the content.",
+      "patterns": [
+        { "re": "^\\s*(?P<hit>Certainly|Of\\s+course|Sure\\s+thing|Absolutely|Great\\s+question)\\b[!,.]", "flags": "m" },
+        "\\bI\\s+hope\\s+this\\s+helps\\b",
+        "\\blet\\s+me\\s+know\\s+if\\b",
+        "\\bwould\\s+you\\s+like\\s+me\\s+to\\b",
+        "\\bfeel\\s+free\\s+to\\s+(?:ask|reach\\s+out|let\\s+me\\s+know|modify|adjust)\\b",
+        "\\bhere(?:'s|\u2019s| is)\\s+(?:a|an|the)\\s+(?:comprehensive|detailed|brief|quick|complete|breakdown)\\b",
+        "\\bas\\s+an\\s+AI\\s+(?:language\\s+)?model\\b",
+        "\\bI(?:'m|\u2019m| am)\\s+(?:unable|not\\s+able)\\s+to\\b",
+        "\\bhappy\\s+to\\s+(?:help|assist)\\b",
+        "\\bdon(?:'|\u2019)t\\s+hesitate\\s+to\\b",
+        "\\bif\\s+you\\s+have\\s+any\\s+(?:questions|other\\s+questions|further\\s+questions)\\b",
+        "\\bI\\s+apologize\\s+(?:for|if)\\b",
+        "\\bgreat\\s+(?:question|point)!"
+      ]
+    },
+    {
+      "id": "placeholder-text",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Fill in the real value or remove the sentence.",
+      "patterns": [
+        "\\[(?:Insert|Describe|Your|Add|Enter|TODO|PLACEHOLDER|Name|Title|Date|URL|Company)[^\\]]{0,60}\\]",
+        "\\bINSERT_[A-Z_]+\\b",
+        "\\b20\\d\\d-XX-XX\\b",
+        "\\bXX-XX\\b",
+        "\\bLorem\\s+ipsum\\b",
+        "\\[[A-Z][a-z]+(?:'s)?\\s+(?:Name|Title|Address|Company)\\]"
+      ]
+    },
+    {
+      "id": "citation-artifact",
+      "severity": "error",
+      "scan": "raw",
+      "guidance": "Chatbot rendering leak. Purge it.",
+      "patterns": [
+        "turn\\d+search\\d+",
+        "turn\\d+view\\d+",
+        "citeturn",
+        "oaicite",
+        "contentReference",
+        "attributableIndex",
+        "attached_file:\\d",
+        "utm_source=chatgpt\\.com",
+        "utm_source=openai",
+        "\\bnavlist\\b",
+        "[\ue200-\ue2ff]"
+      ]
+    },
+    {
+      "id": "ecology-filler",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Species and conservation writing: keep documented range, status, and named authorities. Cut generic ecology padding.",
+      "patterns": [
+        "\\bplays?\\s+(?:a|an)\\s+(?:important\\s+|vital\\s+|crucial\\s+|key\\s+)?role\\s+in\\s+the\\s+ecosystem\\b",
+        "\\bpreserv(?:ing|ation\\s+of)\\s+this\\s+species\\b",
+        "\\bcontributes?\\s+to\\s+(?:ecological|biological)\\s+diversity\\b",
+        "\\bongoing\\s+conservation\\s+efforts\\b",
+        "\\bthe\\s+(?:general\\s+|overall\\s+)?health\\s+of\\s+the\\s+[\\w\\s]{0,30}ecosystem\\s+is\\s+(?:crucial|vital|important)\\b",
+        "\\bfurther\\s+research\\s+is\\s+needed\\b",
+        "\\brich\\s+biodiversity\\b",
+        "\\bdelicate\\s+ecosystem\\b"
+      ]
+    },
+    {
+      "id": "subject-line",
+      "severity": "error",
+      "scan": "raw",
+      "skip_formats": ["email"],
+      "guidance": "This is not an email. Remove the subject line and open with the actual point.",
+      "patterns": [
+        { "re": "^\\s*Subject:\\s+\\S", "flags": "m" },
+        { "re": "^\\s*Re:\\s+\\S", "flags": "m" }
+      ]
+    },
+    {
+      "id": "filler-phrase",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Wordy construction with a one-word equivalent. Replace it.",
+      "patterns": [
+        "\\bin\\s+order\\s+to\\b",
+        "\\bdue\\s+to\\s+the\\s+fact\\s+that\\b",
+        "\\bfor\\s+the\\s+purpose\\s+of\\b",
+        "\\bin\\s+the\\s+event\\s+that\\b",
+        "\\bat\\s+this\\s+point\\s+in\\s+time\\b",
+        "\\bin\\s+a\\s+timely\\s+manner\\b",
+        "\\bon\\s+a\\s+(?:daily|regular|weekly)\\s+basis\\b",
+        "\\bwith\\s+(?:regard|respect)\\s+to\\b",
+        "\\bin\\s+terms\\s+of\\b",
+        "\\ba\\s+(?:large|small|significant)\\s+number\\s+of\\b",
+        "\\bthe\\s+majority\\s+of\\b",
+        "\\bis\\s+able\\s+to\\b",
+        "\\bhas\\s+the\\s+ability\\s+to\\b",
+        "\\bserves?\\s+the\\s+purpose\\s+of\\b",
+        "\\bit\\s+goes\\s+without\\s+saying\\b",
+        { "re": "\\bthe\\s+fact\\s+that\\b", "severity": "review" },
+        { "re": "\\bin\\s+(?:my|our)\\s+opinion\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "plain-word",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "The fancier synonym is rarely clearer. Use the plain word.",
+      "patterns": [
+        "\\butiliz(?:e|es|ing|ed|ation)\\b",
+        "\\bcommenc(?:e|es|ing|ed)\\b",
+        "\\bendeavor(?:s|ing|ed)?\\b",
+        "\\bascertain(?:s|ing|ed)?\\b",
+        "\\bnumerous\\b",
+        "\\bindividuals\\b",
+        "\\bsubsequent\\s+to\\b",
+        "\\bprior\\s+to\\b",
+        "\\bmethodolog(?:y|ies)\\b",
+        "\\bassist(?:s|ing|ed)?\\s+(?:in|with)\\b",
+        "\\bin\\s+close\\s+proximity\\b",
+        "\\bat\\s+the\\s+present\\s+time\\b"
+      ]
+    },
+    {
+      "id": "abstract-metaphor",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Reads technical but has a plainer concrete word. Name the mechanism instead.",
+      "patterns": [
+        "\\bsubstrate\\b",
+        "\\bnexus\\b",
+        "\\blocus\\b",
+        "\\bnorth\\s+star\\b",
+        "\\bflywheel\\b",
+        "\\bgold-?plating\\b",
+        "\\bbedrock\\b",
+        "\\bvantage\\b",
+        "\\bwedge\\s+(?:in|into)\\b",
+        "\\bevacuat(?:e|es|ing|ed)\\s+(?:the\\s+)?(?:code|logic|module|function)\\b",
+        "\\bratchet(?:s|ing|ed)?\\b",
+        "\\bvector\\s+for\\b",
+        "\\bmodality\\b"
+      ]
+    },
+    {
+      "id": "engineering-jargon",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "Standard term in some codebases, filler in others. Keep it only if it names something the plain word cannot.",
+      "patterns": [
+        "\\bprimitives?\\b",
+        "\\bscaffolding\\b",
+        "\\bparadigm\\b",
+        "\\bsurface\\s+area\\b",
+        "\\bAPI\\s+surface\\b",
+        "\\bfirst-class\\s+citizen\\b",
+        "\\bharness\\s+(?:for|around)\\b",
+        "\\bbattle-tested\\b",
+        "\\bopinionated\\b",
+        "\\bergonomics?\\b",
+        "\\bendgame\\b"
+      ]
+    },
+    {
+      "id": "hedging",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "Stacked hedges cancel each other out. Pick one qualifier or drop them all.",
+      "patterns": [
+        { "re": "\\b(?:could|may|might|can)\\s+(?:potentially|possibly|perhaps|conceivably|arguably)\\b", "severity": "error" },
+        { "re": "\\b(?:it\\s+)?(?:could|might|may)\\s+be\\s+argued\\s+that\\b", "severity": "error" },
+        { "re": "\\bseems?\\s+to\\s+(?:suggest|indicate|imply)\\b", "severity": "error" },
+        { "re": "\\bsomewhat\\s+of\\s+a\\b", "severity": "error" },
+        { "re": "\\btend(?:s)?\\s+to\\s+(?:generally|usually|often)\\b", "severity": "error" },
+        "\\bin\\s+some\\s+sense\\b",
+        "\\bmore\\s+or\\s+less\\b",
+        "\\bfairly\\s+(?:certain|confident|clear)\\b",
+        "\\brelatively\\s+(?:speaking|straightforward)\\b",
+        "\\bto\\s+some\\s+(?:extent|degree)\\b"
+      ]
+    },
+    {
+      "id": "sycophancy",
+      "severity": "error",
+      "scan": "prose",
+      "guidance": "Flattery before content. Respond directly.",
+      "patterns": [
+        "\\b(?:great|excellent|good|fantastic|interesting)\\s+(?:question|point|catch|observation)\\b",
+        "\\byou(?:'re|\u2019re|\\s+are)\\s+(?:absolutely\\s+)?right\\b",
+        "\\bI\\s+(?:completely|totally|absolutely)\\s+agree\\b",
+        "\\bthat(?:'s|\u2019s)\\s+(?:a\\s+)?(?:great|excellent|really\\s+good)\\b",
+        "\\bhappy\\s+to\\s+report\\b",
+        "\\bfound\\s+the\\s+smoking\\s+gun\\b",
+        "\\byou\\s+(?:nailed|hit\\s+the\\s+nail)\\b",
+        "\\bwhat\\s+(?:a|an)\\s+(?:great|excellent|insightful)\\b"
+      ]
+    },
+    {
+      "id": "false-range",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "Range framing where the endpoints are not on a scale. List the items directly.",
+      "patterns": [
+        "\\branging\\s+from\\s+[\\w\\s-]{2,30}\\s+to\\s+[\\w\\s-]{2,30}",
+        "\\bfrom\\s+(?:simple|basic|small|humble)\\s+[\\w\\s-]{2,25}\\s+to\\s+(?:complex|advanced|large|sophisticated)\\b",
+        "\\beverything\\s+from\\s+[\\w\\s-]{2,30}\\s+to\\b",
+        "\\bwhether\\s+it(?:'s|\u2019s)\\s+[\\w\\s-]{2,30}\\s+or\\s+[\\w\\s-]{2,30}"
+      ]
+    },
+    {
+      "id": "hype-cliche",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "Engagement-bait phrasing. Cut or replace with the actual claim.",
+      "patterns": [
+        "\\blet\\s+that\\s+sink\\s+in\\b",
+        "\\bhere(?:'s|\u2019s)\\s+the\\s+(?:kicker|thing|deal|catch)\\b",
+        "\\bbuckle\\s+up\\b",
+        "\\bspoiler\\s+alert\\b",
+        "\\bplot\\s+twist\\b",
+        "\\bthe\\s+result\\?\\s",
+        "\\bwhat\\s+does\\s+this\\s+mean\\s+for\\s+you\\?",
+        "\\bmind[-\\s]blowing\\b",
+        "\\bsupercharg(?:e|es|ing|ed)\\b",
+        "\\bsecret\\s+sauce\\b"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "hellsan631",
+  "owner": {
+    "name": "Mathew Kleppin",
+    "url": "https://github.com/hellsan631"
+  },
+  "description": "Agent skills that verify their own output rather than trusting a checklist.",
+  "plugins": [
+    {
+      "name": "hellsan631-skills",
+      "source": "./",
+      "description": "Writing skills for agents, starting with humanize: a prose editor backed by a deterministic checker.",
+      "category": "productivity",
+      "keywords": [
+        "writing",
+        "humanize",
+        "prose",
+        "linting"
+      ]
+    }
+  ]
+}
