@@ -375,17 +375,35 @@ def collect_category_hits(
 
 
 def check_em_dashes(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
-    """First em dash in a paragraph is a style call; the rest are a habit."""
+    """First em dash in a paragraph is a style call; the rest are a habit.
+
+    A dash set off by spaces on both sides ("word \u2014 word") reads as the more
+    AI-typical shape; a dash with no surrounding spaces ("word\u2014word") is closer to
+    ordinary professional typography. Both still count toward paragraph density,
+    since the habit of reaching for a dash at all is the real signal, but the note
+    on a single occurrence says which shape it is so the human doesn't have to guess.
+    """
     findings = []
     for block_start, block in iter_paragraphs(masked):
-        offsets = [m.start() + block_start for m in re.finditer(r"\u2014|\s--\s", block)]
+        offsets = []
+        spaced = []
+        for match in re.finditer(r"\u2014|--", block):
+            before = block[match.start() - 1:match.start()]
+            after = block[match.end():match.end() + 1]
+            if match.group(0) == "--" and (before != " " or after != " "):
+                continue  # bare "--" with no surrounding spaces is a hyphen typo, not a dash
+            offsets.append(match.start() + block_start)
+            spaced.append(before == " " and after == " ")
         for index, offset in enumerate(offsets):
             line, col = position_of(starts, offset)
             if index == 0:
+                shape = ("surrounded by spaces, which is the more AI-typical shape"
+                         if spaced[0] else
+                         "not surrounded by spaces, which is closer to ordinary typography")
                 findings.append(
                     Finding(line, col, "note", "em-dash-present", "\u2014",
-                            "Em dashes are a strong AI tell. End the sentence or use a "
-                            "comma rather than swapping in parentheses.")
+                            f"Em dash {shape}. End the sentence or use a comma rather "
+                            "than swapping in parentheses.")
                 )
             else:
                 findings.append(
@@ -561,6 +579,32 @@ def check_rule_of_three(masked: str, starts: List[int], _fmt: str) -> List[Findi
         findings.append(
             Finding(line, col, "review", "rule-of-three", excerpt_of(masked, *match.span()),
                     f"{len(runs)} triple constructions in this text. Vary list length.")
+        )
+    return findings
+
+
+# A single "X, not Y." states a boundary. A run of them is the tic: reaching for
+# the same contrast scaffold on every paragraph rather than writing the plain claim,
+# whether or not any one instance would survive losing its tail. Density is the
+# signal here, not any individual sentence's content — the same test the checker
+# already applies to em dashes and triples.
+NEGATIVE_PARALLEL_BARE = re.compile(r"[^,.;\n]{3,60},\s+not\s+[^,.;\n]{2,50}[.!?]")
+NEGATIVE_PARALLEL_THRESHOLD = 4
+
+
+def check_negative_parallelism_density(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
+    matches = list(NEGATIVE_PARALLEL_BARE.finditer(masked))
+    if len(matches) < NEGATIVE_PARALLEL_THRESHOLD:
+        return []
+    findings = []
+    for match in matches:
+        line, col = position_of(starts, match.start())
+        findings.append(
+            Finding(line, col, "review", "negative-parallelism-density",
+                    excerpt_of(masked, *match.span()),
+                    f"{len(matches)} 'X, not Y' contrasts in this text. One states a "
+                    "boundary; this many is a scaffold standing in for plain claims. "
+                    "Cut most of them.")
         )
     return findings
 
@@ -839,6 +883,7 @@ def check_sentence_rhythm(masked: str, _starts: List[int], _fmt: str) -> List[Fi
 STRUCTURAL_CHECKS_MASKED = [
     check_em_dashes, check_bold_density, check_inline_header_list, check_heading_case,
     check_heading_levels, check_emoji, check_rule_of_three,
+    check_negative_parallelism_density,
     check_trailing_participle, check_small_tables, check_sentence_rhythm,
     check_list_density, check_inline_header_density, check_weak_adverbs,
     check_passive_voice, check_sentence_length,

@@ -73,6 +73,9 @@
         "\\b(?:covered|mentioned)\\s+by\\s+(?:several|numerous|various|multiple)\\s+(?:publications|outlets|media)\\b",
         "\\bmaintains?\\s+an?\\s+active\\s+(?:social\\s+media\\s+|online\\s+)?presence\\b",
         "\\band\\s+other\\s+(?:prominent|leading|major|notable|respected)\\s+(?:media\\s+)?(?:outlets|publications)\\b",
+        "\\b(?:local|regional|national)\\s+media\\s+outlets\\b",
+        "\\btrade\\s+publications?\\b",
+        "\\bwritten\\s+by\\s+a\\s+leading\\s+expert\\b",
         "\\bgarner(?:ed|ing|s)?\\s+(?:widespread|significant|considerable|international)\\s+(?:attention|acclaim|praise|recognition)\\b",
         "\\bwidely\\s+(?:recognized|regarded|acclaimed|praised)\\s+(?:as|for)\\b",
         "\\bneeds?\\s+no\\s+introduction\\b"
@@ -306,14 +309,29 @@
       "id": "negative-parallelism",
       "severity": "error",
       "scan": "prose",
-      "guidance": "If both things are true, say both. Drop the contrast scaffolding.",
+      "guidance": "If both things are true, say both. Drop the contrast scaffolding. This covers the em-dash-linked form of the tell as well as the 'but' form — see the note in checker.md about the bare 'X, not Y' shape that was deliberately left out.",
       "patterns": [
         "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;]{1,60},?\\s+but\\s+(?:also\\s+)?\\b",
+        "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;\u2014]{1,60}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is))\\b",
         "\\bit(?:'s|\u2019s| is)(?:\\s+not|n(?:'|\u2019)t)\\s+about\\s+[^,.;]{1,60},?\\s+(?:it(?:'s|\u2019s| is)|but)\\s+about\\b",
         "\\bno\\s+[\\w\\s]{1,20},\\s+no\\s+[\\w\\s]{1,20},\\s+just\\b",
         "\\bthis\\s+(?:isn(?:'|\u2019)t|is\\s+not)\\s+[\\w\\s]{1,30}(?:\u2014|--|;|,)\\s*(?:it(?:'|\u2019)s|its|this\\s+is)\\b",
+        "\\b(?:is|are|was|were)(?:\\s+not|n(?:'|\u2019)t)\\s+[^,.;\u2014]{1,50}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is)|these\\s+are)\\b",
         "\\bmore\\s+than\\s+just\\s+(?:a|an)\\b",
         { "re": "\\bless\\s+(?:about\\s+)?[\\w\\s]{1,30}\\s+and\\s+more\\s+(?:about\\s+)?\\b", "severity": "review" }
+      ]
+    },
+    {
+      "id": "vague-connection",
+      "severity": "review",
+      "scan": "prose",
+      "cluster": { "threshold": 3, "severity": "error" },
+      "guidance": "Name the actual relationship instead of gesturing at one. 'Used in', 'caused by', 'part of', and 'owned by' each say something a vague connector does not.",
+      "patterns": [
+        "\\bin\\s+connection\\s+(?:with|to)\\b",
+        "\\bconnected\\s+(?:with|to)\\b",
+        "\\bin\\s+association\\s+with\\b",
+        "\\bassociated\\s+with\\b"
       ]
     },
     {
@@ -360,7 +378,9 @@
       "guidance": "Fill in the real value or remove the sentence.",
       "patterns": [
         "\\[(?:Insert|Describe|Your|Add|Enter|TODO|PLACEHOLDER|Name|Title|Date|URL|Company)[^\\]]{0,60}\\]",
-        "\\bINSERT_[A-Z_]+\\b",
+        "\\bINSERT_[A-Z0-9_]+\\b",
+        "\\bPASTE_[A-Z0-9_]+\\b",
+        "\\b[A-Z][A-Z0-9_]*_HERE\\b",
         "\\b20\\d\\d-XX-XX\\b",
         "\\bXX-XX\\b",
         "\\bLorem\\s+ipsum\\b",
@@ -371,17 +391,30 @@
       "id": "citation-artifact",
       "severity": "error",
       "scan": "raw",
-      "guidance": "Chatbot rendering leak. Purge it.",
+      "guidance": "Chatbot rendering leak. Purge it. These are per-tool and dated; expect this list to need new entries as chatbots change their citation UI.",
       "patterns": [
         "turn\\d+search\\d+",
         "turn\\d+view\\d+",
+        "turn\\d+news\\d+",
+        "turn\\d+file\\d+",
         "citeturn",
         "oaicite",
+        "oai_citation",
         "contentReference",
         "attributableIndex",
         "attached_file:\\d",
+        "ppl-ai-file-upload",
+        "\\[cite:\\s*\\d+(?:,\\s*\\d+)*\\]",
+        "\\[span_\\d+\\]\\((?:start|end)_span\\)",
+        "grok_render_citation_card_json",
+        "<grok-card\\b",
+        "\\bgrok_card\\b",
+        "\u3010\\d+\u2020[^\u3011]*\u3011",
+        ":::writing\\{variant=",
         "utm_source=chatgpt\\.com",
         "utm_source=openai",
+        "utm_source=copilot\\.com",
+        "referrer=grok\\.com",
         "\\bnavlist\\b",
         "[\ue200-\ue2ff]"
       ]

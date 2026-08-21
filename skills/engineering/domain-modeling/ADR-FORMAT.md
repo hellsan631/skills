@@ -47,3 +47,29 @@ If a decision is easy to reverse, skip it: you'll just reverse it. If it's not s
 - **Deliberate deviations from the obvious path.** "We're using manual SQL instead of an ORM because X." Anything where a reasonable reader would assume the opposite. These stop the next engineer from "fixing" something that was deliberate.
 - **Constraints not visible in the code.** "We can't use AWS because of compliance requirements." "Response times must be under 200ms because of the partner API contract."
 - **Rejected alternatives when the rejection is non-obvious.** If you considered GraphQL and picked REST for subtle reasons, record it; otherwise someone will suggest GraphQL again in six months.
+
+### What doesn't qualify
+
+Routine, reversible design and implementation choices: spacing tweaks, icon sizing, which
+component library handles positioning, copy wording, which of two similar layouts reads
+better. Each fails at least one of the three tests above — cheap to reverse, unsurprising,
+or no real alternative was ever on the table. These are just the document, updated in
+place when they change; they don't need a permanent ID or a citation trail. A project that
+mints one for every design tweak ends up with a decision log numbering past 100 entries
+that read like citations rather than explanation, which is the failure this section exists
+to prevent.
+
+## Don't let the log become the document
+
+A decision log or ADR index is a citation anchor into an explanation that exists somewhere
+else, readable start to end. It is not that explanation. If a design or architecture document's entire body is its numbered log, with no prose
+grouped by topic for a reader to land on, the log has quietly become the document. Readers
+are stuck reconstructing "what is actually true now" by chasing citation chains (`D82`
+amends `D80` amends `D76`...) instead of reading a current, correct account in one place.
+
+When a later decision amends or supersedes an earlier one, restate the current, authoritative
+behavior in the prose the reader encounters, in the section about that topic. The citation
+records provenance and history for whoever wants it; it is never a substitute for saying,
+once, in the present tense, what is true now. If tracing a single feature requires jumping
+between five non-adjacent numbered entries, that feature needs its own section, and the log
+entries collapse into that section's history, not its explanation.

@@ -29,9 +29,10 @@ EXPECTED_IN_DIRTY = [
     "didactic-disclaimer", "ecology-filler", "em-dash-density", "emoji",
     "gap-filling", "heading-case", "heading-level-skip", "hype-cliche",
     "inline-header-list", "meta-commentary", "negative-parallelism",
-    "notability-performance", "placeholder-text", "puffery", "quote-consistency",
-    "rule-of-three", "significance-bloat", "small-table", "subject-line",
-    "superficial-analysis", "trailing-participle", "vague-attribution",
+    "negative-parallelism-density", "notability-performance", "placeholder-text",
+    "puffery", "quote-consistency", "rule-of-three", "significance-bloat",
+    "small-table", "subject-line", "superficial-analysis", "trailing-participle",
+    "vague-attribution", "vague-connection",
 ]
 
 failures: List[str] = []

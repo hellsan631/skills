@@ -38,6 +38,12 @@ conservation efforts continue. Further research is needed.
 
 Despite these challenges, the institute continues to thrive and is poised for growth.
 
+Funding is associated with regional priorities, in connection with the national budget
+cycle. The system is not a subsidy program — it's a cost-sharing arrangement.
+
+The archive is a resource, not a monument. Access is a right, not a privilege. The
+catalog is a tool, not a trophy. Funding is a means, not an end.
+
 | Field | Value |
 |---|---|
 | Founded | 1989 |

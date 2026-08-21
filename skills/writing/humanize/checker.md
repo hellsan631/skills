@@ -69,3 +69,33 @@ A rule with an irreducible false positive rate belongs at `note`, where it stays
 without blocking. Passive voice, weak adverbs, and em dashes sit there because each has
 legitimate uses that no regex can separate from the bad ones. Reserve `error` for
 patterns that are wrong every time they appear.
+
+Vocabulary corpora go stale. The words a model overuses shift with each generation of
+models, so a phrase corpus that was exhaustive two years ago will both under- and
+over-fire today: some entries stop being tells as models get tuned away from them,
+new ones appear as new models ship. Re-check the corpus periodically against fresh
+examples of AI-generated prose rather than assuming it is still current. `ai-vocabulary`
+already treats this as a clustering problem, not a blacklist: one instance is noise, a
+run of several in one document is the tell, because that is the only framing that
+survives the underlying words changing under it.
+
+Some constructions are too common in ordinary writing to regex at `error` even though
+they show up disproportionately in AI prose. "X rather than Y" is the clearest case: it
+is completely ordinary technical phrasing most of the time, and only reads as a tell in
+a document already showing other signs. Patterns like this belong in `judgment-pass.md`
+as something to notice when several other findings are already firing, not in
+`patterns.json` as a standalone rule — a rule that fires on correct writing teaches the
+agent to skim the output, which is worse than missing the pattern entirely.
+
+The bare "X, not Y." shape (no "but," no em dash, just a comma and a short trailing
+clause) is not in `patterns.json` as a flat rule, because a single instance almost
+always survives the deletion test — "the map is an index, not a store" genuinely loses
+meaning if you cut the tail. Judged sentence by sentence it looks fine every time.
+But a document that reaches for that exact scaffold five or ten times is doing the same
+thing `rule-of-three` and `em-dash-density` already catch: a habit standing in for
+plain statement, whatever any one instance says on its own. That's `negative-parallelism-density`
+in `humanize_lint.py` — a structural check that counts occurrences across the whole
+document and only fires past a threshold, the same shape as `check_rule_of_three`. Don't
+try to turn this back into a `patterns.json` regex with a `review` severity per line;
+that was tried, and it drowns the report in defensible-looking hits with no way to tell
+the habit from the one legitimate use.
