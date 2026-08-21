@@ -583,29 +583,56 @@ def check_rule_of_three(masked: str, starts: List[int], _fmt: str) -> List[Findi
     return findings
 
 
-# A single "X, not Y." states a boundary. A run of them is the tic: reaching for
-# the same contrast scaffold on every paragraph rather than writing the plain claim,
-# whether or not any one instance would survive losing its tail. Density is the
-# signal here, not any individual sentence's content — the same test the checker
-# already applies to em dashes and triples.
-NEGATIVE_PARALLEL_BARE = re.compile(r"[^,.;\n]{3,60},\s+not\s+[^,.;\n]{2,50}[.!?]")
-NEGATIVE_PARALLEL_THRESHOLD = 4
+# A single "X, not Y" states a boundary. A run of them is the tic: reaching for the
+# same contrast scaffold over and over rather than writing the plain claim, whether or
+# not any one instance would survive losing its tail. Density is the signal, not any
+# individual sentence's content — the same test the checker already applies to em
+# dashes and triples. Two triggers, because the tic fails two different ways: spread
+# thin across a whole document (the habit of a long-running document) and packed into
+# one short passage (two or three sentences in a row all defining something by what it
+# isn't, which reads as broken even though each half-sentence might pass alone). This
+# marker set is a deliberately loose superset of the `negative-parallelism` category's
+# own error patterns in patterns.json — it exists to count occurrences for clustering,
+# not to be the authoritative match, so some duplication with those patterns is fine.
+NEGATIVE_PARALLEL_MARKER = re.compile(
+    r"\bnot\s+(?:just|only|merely|simply)\s+[^,.;\n]{1,60},?\s+but\b"
+    r"|\bnot\s+(?:just|only|merely|simply)\s+[^.;\n]{1,80}[—;]\s*(?:it|they|this)\b"
+    r"|\b(?:is|are|was|were)(?:\s+not|n(?:'|’)t)\s+[^.;—\n]{1,90}[—;]\s*(?:it|they|this|these)\b"
+    r"|\bno\s+[\w\s]{1,20},\s+no\s+[\w\s]{1,20},\s+just\b"
+    r"|[^,.;\n]{3,60},\s+not\s+[^,.;\n]{2,50}[.!?]"
+)
+NEGATIVE_PARALLEL_DOC_THRESHOLD = 4
+NEGATIVE_PARALLEL_PARAGRAPH_THRESHOLD = 2
 
 
 def check_negative_parallelism_density(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
-    matches = list(NEGATIVE_PARALLEL_BARE.finditer(masked))
-    if len(matches) < NEGATIVE_PARALLEL_THRESHOLD:
-        return []
+    by_paragraph = [
+        (block_start, list(NEGATIVE_PARALLEL_MARKER.finditer(block)))
+        for block_start, block in iter_paragraphs(masked)
+    ]
+    doc_total = sum(len(matches) for _, matches in by_paragraph)
+    doc_triggered = doc_total >= NEGATIVE_PARALLEL_DOC_THRESHOLD
+
     findings = []
-    for match in matches:
-        line, col = position_of(starts, match.start())
-        findings.append(
-            Finding(line, col, "review", "negative-parallelism-density",
-                    excerpt_of(masked, *match.span()),
-                    f"{len(matches)} 'X, not Y' contrasts in this text. One states a "
-                    "boundary; this many is a scaffold standing in for plain claims. "
-                    "Cut most of them.")
-        )
+    for block_start, matches in by_paragraph:
+        local_triggered = len(matches) >= NEGATIVE_PARALLEL_PARAGRAPH_THRESHOLD
+        if not (doc_triggered or local_triggered):
+            continue
+        if local_triggered:
+            message = (f"{len(matches)} 'X, not Y'-shaped contrasts in this one passage. "
+                        "That is a scaffold standing in for a plain claim, whatever each "
+                        "half says alone. Cut most of them.")
+        else:
+            message = (f"{doc_total} 'X, not Y'-shaped contrasts across this document. One "
+                        "states a boundary; this many is a scaffold standing in for plain "
+                        "claims. Cut most of them.")
+        for match in matches:
+            line, col = position_of(starts, match.start() + block_start)
+            findings.append(
+                Finding(line, col, "review", "negative-parallelism-density",
+                        excerpt_of(masked, match.start() + block_start, match.end() + block_start),
+                        message)
+            )
     return findings
 
 

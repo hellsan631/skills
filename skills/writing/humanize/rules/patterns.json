@@ -309,7 +309,7 @@
       "id": "negative-parallelism",
       "severity": "error",
       "scan": "prose",
-      "guidance": "If both things are true, say both. Drop the contrast scaffolding. This covers the em-dash-linked form of the tell as well as the 'but' form — see the note in checker.md about the bare 'X, not Y' shape that was deliberately left out.",
+      "guidance": "If both things are true, say both. Drop the contrast scaffolding. This covers the em-dash-linked form of the tell as well as the 'but' form. The semicolon-linked form ('X; it's Y') and the bare 'X, not Y' shape are deliberately not here — see the note in checker.md — because both read as legitimate technical writing often enough to fail at flat `error`; they only earn a finding through negative-parallelism-density, when several of them stack up.",
       "patterns": [
         "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;]{1,60},?\\s+but\\s+(?:also\\s+)?\\b",
         "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;\u2014]{1,60}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is))\\b",

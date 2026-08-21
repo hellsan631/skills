@@ -88,14 +88,25 @@ as something to notice when several other findings are already firing, not in
 agent to skim the output, which is worse than missing the pattern entirely.
 
 The bare "X, not Y." shape (no "but," no em dash, just a comma and a short trailing
-clause) is not in `patterns.json` as a flat rule, because a single instance almost
-always survives the deletion test — "the map is an index, not a store" genuinely loses
-meaning if you cut the tail. Judged sentence by sentence it looks fine every time.
-But a document that reaches for that exact scaffold five or ten times is doing the same
-thing `rule-of-three` and `em-dash-density` already catch: a habit standing in for
-plain statement, whatever any one instance says on its own. That's `negative-parallelism-density`
-in `humanize_lint.py` — a structural check that counts occurrences across the whole
-document and only fires past a threshold, the same shape as `check_rule_of_three`. Don't
-try to turn this back into a `patterns.json` regex with a `review` severity per line;
-that was tried, and it drowns the report in defensible-looking hits with no way to tell
-the habit from the one legitimate use.
+clause) and the semicolon-linked shape ("X; it's Y") are not in `patterns.json` as flat
+rules, because a single instance almost always survives the deletion test — "the map is
+an index, not a store" and "the answer isn't part of the body; it's recorded on
+resolution" both genuinely lose meaning if you cut the tail. Judged sentence by sentence
+either one looks fine every time. But the tic fails two different ways once you stop
+judging sentence by sentence, and `negative-parallelism-density` in `humanize_lint.py`
+catches both:
+
+- **Spread thin across a long document.** The same scaffold five or ten times over
+  many paragraphs, the `rule-of-three` / `em-dash-density` shape: a habit standing in
+  for plain statement, whatever any one instance says alone. Fires past 4 total.
+- **Packed into one short passage.** Two sentences in a row, both defining the same
+  thing by what it isn't — "a role, not an identity. ... It is not a new persona
+  ...; it's a hat ..." — reads as broken even though each half might individually pass
+  the deletion test. A whole-document count would dilute this to nothing in a longer
+  file, so this check also counts per paragraph and fires past 2 in the same one,
+  independent of the document-wide total.
+
+Don't try to turn either shape back into a flat `patterns.json` rule with a `review`
+severity per line; that was tried for the bare-comma form, and it drowns the report in
+defensible-looking hits with no way to tell the habit from the one legitimate use. Count
+occurrences and let density carry the signal instead.
