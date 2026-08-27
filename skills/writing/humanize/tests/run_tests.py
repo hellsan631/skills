@@ -31,7 +31,8 @@ EXPECTED_IN_DIRTY = [
     "inline-header-list", "meta-commentary", "negative-parallelism",
     "negative-parallelism-density", "notability-performance", "placeholder-text",
     "puffery", "quote-consistency", "rule-of-three", "significance-bloat",
-    "small-table", "subject-line", "superficial-analysis", "trailing-participle",
+    "small-table", "subject-line", "superficial-analysis", "thematic-break",
+    "heading-only-section", "trailing-participle", "status-verdict",
     "vague-attribution", "vague-connection",
 ]
 

@@ -12,7 +12,7 @@ pivotal = "showcases the enduring legacy"
 
 Inline code such as `serves as a testament` is also exempt.
 
-Quoted material is cited, not authored:
+Quoted material is cited, not written:
 
 > Nestled in the heart of a vibrant valley, the town boasts a rich heritage and
 > serves as a testament to its enduring legacy.

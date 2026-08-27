@@ -13,7 +13,10 @@
         "small-table": "note",
         "sentence-rhythm": "note",
         "engineering-jargon": "note",
-        "plain-word": "note"
+        "plain-word": "note",
+        "thematic-break": "note",
+        "heading-only-section": "off",
+        "first-heading-depth": "off"
       }
     },
     "reference": {
@@ -58,7 +61,12 @@
         "\\bcornerstone\\s+of\\b",
         "\\bmilestone\\s+in\\s+the\\s+(?:history|development|evolution)\\b",
         "\\bwatershed\\s+moment\\b",
-        "\\bhas\\s+come\\s+to\\s+(?:symbolize|represent|define)\\b"
+        "\\bhas\\s+come\\s+to\\s+(?:symbolize|represent|define)\\b",
+        "\\b(?:generated|sparked|prompted|fueled|ignited)\\s+(?:broader\\s+|public\\s+|considerable\\s+|widespread\\s+)?(?:debate|discussions?|reflection)\\b",
+        "\\brais(?:e|es|ed|ing)\\s+(?:philosophical|broader|fundamental|important)\\s+questions\\b",
+        "\\bwas\\s+part\\s+of\\s+a\\s+broader\\b",
+        "\\breflects?\\s+the\\s+influence\\s+of\\b",
+        "\\bcontributes?\\s+to\\s+the\\s+broader\\b"
       ]
     },
     {
@@ -67,18 +75,22 @@
       "scan": "prose",
       "guidance": "Say what the source actually said instead of name-dropping where coverage appeared.",
       "patterns": [
-        "\\b(?:has|have)\\s+been\\s+(?:featured|profiled|highlighted)\\s+in\\b",
+        "\\b(?:has|have|had)\\s+(?:also\\s+)?been\\s+(?:featured|profiled|highlighted)\\s+in\\b",
+        "\\b(?:was|were)\\s+(?:also\\s+)?(?:featured|profiled|highlighted)\\s+in\\b",
         "\\b(?:featured|profiled)\\s+in\\s+(?:such\\s+)?(?:prominent|major|leading|national|numerous|various|top)\\b",
         "\\bcited\\s+by\\s+(?:national|major|numerous|various|several|leading)\\s+(?:media|outlets|publications)\\b",
         "\\b(?:covered|mentioned)\\s+by\\s+(?:several|numerous|various|multiple)\\s+(?:publications|outlets|media)\\b",
-        "\\bmaintains?\\s+an?\\s+active\\s+(?:social\\s+media\\s+|online\\s+)?presence\\b",
+        "\\bmaintains?\\s+an?\\s+(?:active|strong|robust|prominent)\\s+(?:social\\s+media\\s+|online\\s+|digital\\s+)?presence\\b",
         "\\band\\s+other\\s+(?:prominent|leading|major|notable|respected)\\s+(?:media\\s+)?(?:outlets|publications)\\b",
         "\\b(?:local|regional|national)\\s+media\\s+outlets\\b",
         "\\btrade\\s+publications?\\b",
         "\\bwritten\\s+by\\s+a\\s+leading\\s+expert\\b",
         "\\bgarner(?:ed|ing|s)?\\s+(?:widespread|significant|considerable|international)\\s+(?:attention|acclaim|praise|recognition)\\b",
         "\\bwidely\\s+(?:recognized|regarded|acclaimed|praised)\\s+(?:as|for)\\b",
-        "\\bneeds?\\s+no\\s+introduction\\b"
+        "\\bneeds?\\s+no\\s+introduction\\b",
+        { "re": "\\bindependent\\s+(?:media\\s+)?coverage\\b", "severity": "review" },
+        { "re": "\\b(?:received|garnered|attracted|repeated|significant|substantial|extensive)\\s+(?:media|press)\\s+coverage\\b", "severity": "review" },
+        { "re": "\\breceived\\s+recognition\\s+from\\b", "severity": "review" }
       ]
     },
     {
@@ -98,7 +110,11 @@
         "\\bfurther\\s+(?:cementing|solidifying|enhancing|underscoring|reinforcing)\\b",
         "\\ballowing\\s+(?:it|them|him|her|users|visitors)\\s+to\\s+(?:fully|truly|better)\\b",
         "\\bmaking\\s+it\\s+(?:a|an)\\s+(?:popular|must|ideal|perfect|great)\\b",
-        "\\bcreating\\s+a\\s+(?:unique|lasting|memorable|welcoming)\\b"
+        "\\bcreating\\s+a\\s+(?:unique|lasting|memorable|welcoming)\\b",
+        "\\bwhile\\s+(?:preserving|retaining|keeping)\\s+(?:the\\s+)?(?:original|existing)\\b",
+        "\\bstaying\\s+true\\s+to\\b",
+        "\\bimparts?\\s+a\\s+sense\\s+of\\b",
+        "\\bcommunicates?\\s+a\\s+(?:powerful|strong|refined)\\b"
       ]
     },
     {
@@ -167,7 +183,9 @@
       "guidance": "Drop the concessive frame and the forward-looking optimism. State the real constraint plainly.",
       "patterns": [
         "\\bdespite\\s+(?:its|these|the|their|such)\\s+(?:challenges|success|successes|strengths|popularity|growth|prosperity|limitations|shortcomings|setbacks)\\b",
-        "\\bfaces?\\s+(?:challenges|obstacles|hurdles)\\s+(?:including|such\\s+as|typical\\s+of)\\b",
+        "\\bfaces?\\s+(?:\\w+\\s+){0,2}(?:challenges|obstacles|hurdles),?\\s+(?:including|such\\s+as|typical\\s+of|that\\s+must\\s+be|and\\s+opportunities)\\b",
+        "\\bpresents?\\s+(?:\\w+\\s+){0,2}challenges,?\\s+(?:including|such\\s+as)\\b",
+        { "re": "^#{1,6}\\s+(?:Challenges(?:\\s+and\\s+[A-Za-z ]+)?|Future\\s+(?:Outlook|Prospects|Directions))\\s*$", "flags": "m", "severity": "review" },
         "\\bcontinues?\\s+to\\s+(?:thrive|grow|evolve|flourish|expand|shape|inspire)\\b",
         "\\bthe\\s+future\\s+(?:looks|remains|appears|holds)\\s+(?:bright|promising|uncertain|exciting)\\b",
         "\\bwith\\s+ongoing\\s+(?:initiatives|efforts|developments|investment|research)\\b",
@@ -186,14 +204,14 @@
       "guidance": "Do not paper over missing information. Find the fact, cut the claim, or state the gap directly.",
       "patterns": [
         "\\bwhile\\s+specific\\s+(?:details|information|data)\\b",
-        "\\bbased\\s+on\\s+(?:the\\s+)?available\\s+(?:information|data|sources|evidence)\\b",
-        "\\bnot\\s+widely\\s+(?:documented|reported|known|available)\\b",
+        "\\bbased\\s+on\\s+(?:the\\s+)?available\\s+(?:information|data|sources|evidence|records|documentation|reports|material|titles)\\b",
         "\\bkeeps?\\s+much\\s+of\\s+(?:his|her|their)\\s+personal\\s+life\\s+private\\b",
         "\\blimited\\s+(?:public\\s+)?information\\s+(?:is\\s+available|exists)\\b",
         "\\bdetails?\\s+(?:are|remain)\\s+(?:scarce|limited|unclear|unavailable|sparse)\\b",
         "\\bthe\\s+(?:provided\\s+)?search\\s+results\\b",
         "\\bat\\s+the\\s+time\\s+of\\s+writing\\b",
-        "\\bas\\s+of\\s+(?:my|the)\\s+(?:last|knowledge)\\s+(?:update|cutoff)\\b",
+        "\\bas\\s+of\\s+my\\s+(?:last\\s+)?(?:knowledge\\s+|training\\s+)?(?:update|cutoff)\\b",
+        "\\bup\\s+to\\s+my\\s+last\\s+(?:knowledge\\s+|training\\s+)?update\\b",
         "\\bpublicly\\s+available\\s+(?:sources|information)\\s+do\\s+not\\b",
         { "re": "\\blikely\\s+(?:supports?|includes?|features?|contains?|reflects?|played)\\b", "severity": "review" }
       ]
@@ -284,7 +302,12 @@
         "\\bnuanced\\b",
         "\\bpertinent\\b",
         "\\bdelicate\\s+balance\\b",
-        { "re": "(?:^|(?<=[.!?]\\s))(?P<hit>Additionally|Moreover|Furthermore|Notably|Importantly|Crucially)\\b", "flags": "m", "note": "Sentence-initial connective." }
+        "\\bhighlight(?:s|ed|ing)?\\b",
+        "\\bemphasiz(?:e|es|ed|ing)\\b",
+        "\\b(?:competitive|digital|cultural|political|economic|media|business|technology|marketing|culinary|social)\\s+landscape\\b",
+        "\\badher(?:es?|ed|ence)\\s+to\\b",
+        "\\bin\\s+compliance\\s+with\\b",
+        { "re": "(?:^|(?<=[.!?]\\s))(?P<hit>Additionally|Moreover|Furthermore|Notably|Importantly|Crucially|Consequently|Subsequently)\\b", "flags": "m", "note": "Sentence-initial connective." }
       ]
     },
     {
@@ -302,22 +325,28 @@
         "\\bis\\s+home\\s+to\\b",
         "\\bis\\s+known\\s+for\\s+(?:its|his|her|their)\\b",
         "\\bcan\\s+be\\s+(?:seen|viewed|described)\\s+as\\b",
-        "\\bcomes?\\s+equipped\\s+with\\b"
+        "\\bcomes?\\s+equipped\\s+with\\b",
+        "\\bfunctions?\\s+as\\s+(?:a|an|the)\\b",
+        "\\boperates?\\s+as\\s+(?:a|an|the)\\b",
+        { "re": "^(?:\\*\\*[^*\\n]+\\*\\*|[A-Z][\\w()'\\u2019 -]{2,40})\\s+refers\\s+to\\b", "flags": "m" }
       ]
     },
     {
       "id": "negative-parallelism",
       "severity": "error",
       "scan": "prose",
-      "guidance": "If both things are true, say both. Drop the contrast scaffolding. This covers the em-dash-linked form of the tell as well as the 'but' form. The semicolon-linked form ('X; it's Y') and the bare 'X, not Y' shape are deliberately not here — see the note in checker.md — because both read as legitimate technical writing often enough to fail at flat `error`; they only earn a finding through negative-parallelism-density, when several of them stack up.",
+      "guidance": "If both things are true, say both. Drop the contrast scaffolding. This covers the 'but' form, the em-dash form, the contraction forms ('doesn't just X; it Y'), the repeated-negation list ('not a X, not a Y, just Z'), and the it's-not-about pivot. The lone bare 'X, not Y' shape and the is-not comma pivots are deliberately not here — see the note in checker.md — because each reads as legitimate technical writing often enough to fail at flat `error`; they earn a finding through negative-parallelism-density, when several of them stack up.",
       "patterns": [
-        "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;]{1,60},?\\s+but\\s+(?:also\\s+)?\\b",
-        "\\bnot\\s+(?:just|only|merely|simply)\\s+[^,.;\u2014]{1,60}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is))\\b",
+        "\\b(?:not|(?:do|does|did)n(?:'|\u2019)t)\\s+(?:just|only|merely|simply)\\s+[^,.;]{1,60},?\\s+but\\s+(?:also\\s+)?\\b",
+        "\\b(?:not|(?:do|does|did)n(?:'|\u2019)t)\\s+(?:just|only|merely|simply)\\s+[^,.;\u2014]{1,60}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is))\\b",
+        "\\b(?:do|does|did)n(?:'|\u2019)t\\s+(?:just|only|merely|simply)\\s+[^,.;]{1,60}[,;]\\s*(?:it|they|this|these)\\b",
         "\\bit(?:'s|\u2019s| is)(?:\\s+not|n(?:'|\u2019)t)\\s+about\\s+[^,.;]{1,60},?\\s+(?:it(?:'s|\u2019s| is)|but)\\s+about\\b",
-        "\\bno\\s+[\\w\\s]{1,20},\\s+no\\s+[\\w\\s]{1,20},\\s+just\\b",
+        "\\bit(?:'s|\u2019s| is)(?:\\s+not|n(?:'|\u2019)t)\\s+about\\s+[^,.;]{1,60}[;,]\\s*it(?:'s|\u2019s| is)\\b",
+        "\\b(?:no|not)\\s+(?:a\\s+|an\\s+)?[\\w\\s]{1,22},\\s+(?:no|not)\\s+(?:a\\s+|an\\s+)?[\\w\\s]{1,22}(?:,\\s+(?:no|not)\\s+(?:a\\s+|an\\s+)?[\\w\\s]{1,22})*[,\\s]*(?:\u2014|\u2013|-{1,2})?\\s*just\\b",
         "\\bthis\\s+(?:isn(?:'|\u2019)t|is\\s+not)\\s+[\\w\\s]{1,30}(?:\u2014|--|;|,)\\s*(?:it(?:'|\u2019)s|its|this\\s+is)\\b",
-        "\\b(?:is|are|was|were)(?:\\s+not|n(?:'|\u2019)t)\\s+[^,.;\u2014]{1,50}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is)|these\\s+are)\\b",
+        "\\b(?:is|are|was|were|ai)(?:\\s+not|n(?:'|\u2019)t)\\s+[^,.;\u2014]{1,50}\u2014\\s*(?:it(?:'s|\u2019s| is)|they(?:'re|\u2019re| are)|this(?:'s|\u2019s| is)|these\\s+are)\\b",
         "\\bmore\\s+than\\s+just\\s+(?:a|an)\\b",
+        { "re": "\\bnot\\s+(?:a|an)\\s+\\w+(?:\\s+\\w+){0,2},?\\s+but\\s+(?:a|an)\\s+\\w+", "severity": "review" },
         { "re": "\\bless\\s+(?:about\\s+)?[\\w\\s]{1,30}\\s+and\\s+more\\s+(?:about\\s+)?\\b", "severity": "review" }
       ]
     },
@@ -344,7 +373,7 @@
         "\\bto\\s+(?:summarize|sum\\s+up|conclude)\\b",
         "\\bin\\s+closing\\b",
         "\\ball\\s+in\\s+all\\b",
-        "(?:^|(?<=[.!?]\\s))(?P<hit>Overall|In\\s+short|Ultimately|Wrapping\\s+up|Final\\s+thoughts)\\b",
+        { "re": "(?:^|(?<=[.!?]\\s))(?P<hit>Overall|In\\s+short|Ultimately|Wrapping\\s+up|Final\\s+thoughts)\\b", "flags": "m", "note": "Sentence-initial, including at a paragraph start." },
         "\\bthe\\s+bottom\\s+line\\s+is\\b",
         "\\bat\\s+the\\s+end\\s+of\\s+the\\s+day\\b",
         "\\bwhether\\s+you(?:'re|\u2019re)\\s+(?:a|an)\\b"
@@ -353,7 +382,7 @@
     {
       "id": "assistant-artifact",
       "severity": "error",
-      "scan": "prose",
+      "scan": "prose+comments",
       "guidance": "Chatbot framing. Delete it and deliver the content.",
       "patterns": [
         { "re": "^\\s*(?P<hit>Certainly|Of\\s+course|Sure\\s+thing|Absolutely|Great\\s+question)\\b[!,.]", "flags": "m" },
@@ -361,20 +390,31 @@
         "\\blet\\s+me\\s+know\\s+if\\b",
         "\\bwould\\s+you\\s+like\\s+me\\s+to\\b",
         "\\bfeel\\s+free\\s+to\\s+(?:ask|reach\\s+out|let\\s+me\\s+know|modify|adjust)\\b",
-        "\\bhere(?:'s|\u2019s| is)\\s+(?:a|an|the)\\s+(?:comprehensive|detailed|brief|quick|complete|breakdown)\\b",
-        "\\bas\\s+an\\s+AI\\s+(?:language\\s+)?model\\b",
+        "\\bhere(?:'s|\u2019s| is)\\s+(?:a|an|the)\\s+(?:\\w+\\s+){0,2}(?:comprehensive|detailed|brief|quick|complete|breakdown|template|overview)\\b",
+        "\\bas\\s+an?\\s+(?:AI|artificial\\s+intelligence|large\\s+language|language)\\s+model\\b",
         "\\bI(?:'m|\u2019m| am)\\s+(?:unable|not\\s+able)\\s+to\\b",
         "\\bhappy\\s+to\\s+(?:help|assist)\\b",
         "\\bdon(?:'|\u2019)t\\s+hesitate\\s+to\\b",
         "\\bif\\s+you\\s+have\\s+any\\s+(?:questions|other\\s+questions|further\\s+questions)\\b",
         "\\bI\\s+apologize\\s+(?:for|if)\\b",
-        "\\bgreat\\s+(?:question|point)!"
+        "\\bgreat\\s+(?:question|point)!",
+        "\\bI\\s+can(?:not|(?:'|\u2019)t)\\s+[^,.;\\n]{1,60},?\\s+but\\s+I\\s+can\\b",
+        "\\bI\\s+hope\\s+this\\s+(?:(?:message|email|note)\\s+)?finds\\s+you\\s+well\\b",
+        "\\byou\\s+can\\s+copy\\s+and\\s+paste\\s+this\\b",
+        "\\bdelete\\s+this\\s+(?:section|paragraph|line|note|comment)\\s+before\\b",
+        "\\bis\\s+there\\s+anything\\s+else\\s+you\\b",
+        "\\b(?:ChatGPT|Claude|Gemini|Copilot|Grok|DeepSeek)\\s+(?:responded|said|replied|wrote)\\s*:",
+        "\\b(?:ChatGPT|Claude|Gemini|Copilot|Grok|DeepSeek)\\s+I\\s+(?:revised|rewrote|updated|edited|created|drafted|improved)\\b",
+        { "re": "\\bI(?:'|\u2019)m\\s+sorry\\b|\\bI\\s+am\\s+sorry\\b", "severity": "review" },
+        { "re": "\\breviewer\\s+note\\b", "severity": "review" },
+        { "re": "\\bthank\\s+you\\s+for\\s+(?:your\\s+)?(?:review|reviewing|consideration)\\b", "severity": "review" },
+        { "re": "\\bthis\\s+(?:draft|article|document|page)\\s+(?:is\\s+a\\s+(?:neutral|well-sourced)|meets\\s+[\\w:]+\\s+standards|demonstrates\\s+clear)\\b", "severity": "review" }
       ]
     },
     {
       "id": "placeholder-text",
       "severity": "error",
-      "scan": "prose",
+      "scan": "prose+comments",
       "guidance": "Fill in the real value or remove the sentence.",
       "patterns": [
         "\\[(?:Insert|Describe|Your|Add|Enter|TODO|PLACEHOLDER|Name|Title|Date|URL|Company)[^\\]]{0,60}\\]",
@@ -402,6 +442,7 @@
         "oai_citation",
         "contentReference",
         "attributableIndex",
+        "\\[(?:web|attached_file|file|source):\\d+\\]",
         "attached_file:\\d",
         "ppl-ai-file-upload",
         "\\[cite:\\s*\\d+(?:,\\s*\\d+)*\\]",
@@ -411,6 +452,11 @@
         "\\bgrok_card\\b",
         "\u3010\\d+\u2020[^\u3011]*\u3011",
         ":::writing\\{variant=",
+        ":::\\S{2,24}\\{[^}\\n]{0,80}id=",
+        "turn\\d+image\\d+",
+        "name=\"\\d+(?:search|image|news|view|file)\\d+\"",
+        "\\u21a9\\ufe0e?",
+        "\\b[A-Z][A-Za-z.&-]{2,}\\+\\d+\\b(?!\\.\\d)",
         "utm_source=chatgpt\\.com",
         "utm_source=openai",
         "utm_source=copilot\\.com",
@@ -452,7 +498,7 @@
       "scan": "prose",
       "guidance": "Wordy construction with a one-word equivalent. Replace it.",
       "patterns": [
-        "\\bin\\s+order\\s+to\\b",
+        { "re": "\\bin\\s+order\\s+to\\b", "severity": "review", "note": "More common in human writing than AI text; a style call, not a tell." },
         "\\bdue\\s+to\\s+the\\s+fact\\s+that\\b",
         "\\bfor\\s+the\\s+purpose\\s+of\\b",
         "\\bin\\s+the\\s+event\\s+that\\b",
@@ -488,7 +534,11 @@
         "\\bmethodolog(?:y|ies)\\b",
         "\\bassist(?:s|ing|ed)?\\s+(?:in|with)\\b",
         "\\bin\\s+close\\s+proximity\\b",
-        "\\bat\\s+the\\s+present\\s+time\\b"
+        "\\bat\\s+the\\s+present\\s+time\\b",
+        "\\bauthored\\b",
+        "\\brelocat(?:ed|es|ing)\\b",
+        "\\battempted\\s+to\\b",
+        "\\bpassed\\s+away\\b"
       ]
     },
     {
@@ -593,6 +643,24 @@
         "\\bmind[-\\s]blowing\\b",
         "\\bsupercharg(?:e|es|ing|ed)\\b",
         "\\bsecret\\s+sauce\\b"
+      ]
+    },
+    {
+      "id": "status-verdict",
+      "severity": "review",
+      "scan": "prose",
+      "guidance": "A feeling standing in for a result. Name what ran and what it proved.",
+      "patterns": [
+        "\\b(?:tests?|suites?|gates?|builds?|pipelines?|runs?|checks|ci(?:/cd)?|lint(?:er)?|everything)\\s+(?:is|are|was|were|stays?|stayed|remains?|remained|goes|went|turn(?:s|ed)?|comes?\\s+back|came\\s+back)\\s+(?:all\\s+|back\\s+to\\s+|still\\s+|now\\s+)?(?:green|red)\\b",
+        "\\bgreen\\s+(?:build|run|suite|pipeline|gate|ci)s?\\b",
+        "\\bback\\s+to\\s+green\\b",
+        "\\bgreen\\s+across\\s+the\\s+board\\b",
+        "\\bkeep(?:s|ing)?\\s+(?:the\\s+)?(?:tests?|suite|gate|build|pipeline|ci|checks)\\s+green\\b",
+        "\\bwe(?:'re|\u2019re|\\s+are)\\s+green\\b",
+        "\\b(?:status|state|everything|results?|tests?|suites?|builds?|pipelines?|ci|checks|compiler|checker|lint(?:er)?|code|codebase|logic|fix|patch|solution|setup|implementation|approach|foundation|architecture)\\s+(?:is|are|was|were|looks?|looked|feels?|felt|seems?|seemed|remains?|stays?)\\s+(?:now\\s+|still\\s+|all\\s+|pretty\\s+|very\\s+)?(?:rock[-\\s]solid|solid|healthy|happy|robust|bulletproof|airtight|in\\s+(?:good|great)\\s+shape)\\b",
+        "\\b(?:solutions?|behaviou?rs?|functionality|logic|contracts?|apis?|compatibility|semantics|invariants?)\\s+(?:is|are|was|were|remains?|stays?|stayed)\\s+(?:fully\\s+|completely\\s+)?(?:kept|preserved|intact|maintained|untouched)\\b",
+        "\\b(?:everything|all\\s+checks|the\\s+rest)\\s+looks?\\s+good\\b",
+        "\\bgood\\s+to\\s+go\\b"
       ]
     }
   ]

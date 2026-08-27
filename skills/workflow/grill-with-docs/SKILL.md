@@ -4,5 +4,4 @@ description: Use when a plan needs stress-testing and the answers should be writ
 disable-model-invocation: true
 ---
 
-Work from two skills at once: `grilling` for the interview, `domain-modeling` for the
-glossary and ADRs it produces.
+Work from two skills at once: `grilling` for the interview, `domain-modeling` for the glossary and ADRs it produces.

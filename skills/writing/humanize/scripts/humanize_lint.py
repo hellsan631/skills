@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Deterministic checker for AI-writing tells.
+"""Check one or more text files for AI-writing tells with deterministic rules.
 
-Reads the pattern corpus from rules/patterns.json and runs it, plus a set of
-structural checks that regex alone cannot express, against one or more text
-files. Reports file:line:col findings with a severity and a fix instruction.
+The checker loads phrase patterns from rules/patterns.json and also runs structural
+checks that regular expressions cannot handle alone. Each finding includes its location,
+severity, and a suggested fix.
 
-Exit codes: 0 clean, 1 findings at failing severity, 2 usage or IO error.
+Exit codes are 0 for a clean run, 1 for failing findings, and 2 for usage or I/O errors.
 """
 
 import argparse
@@ -22,7 +22,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def resolve_default_rules() -> str:
-    """Find patterns.json in either the skill layout or a flat vendored copy."""
+    """Return the first existing rules path, or the standard skill path if none exists."""
     candidates = [
         os.path.join(os.path.dirname(SCRIPT_DIR), "rules", "patterns.json"),
         os.path.join(SCRIPT_DIR, "patterns.json"),
@@ -39,10 +39,9 @@ DEFAULT_RULES = resolve_default_rules()
 PROSE_FORMATS = {"markdown", "md", "plain", "text", "wikitext", "email", "html"}
 NON_MARKDOWN_FORMATS = {"plain", "text", "wikitext", "email"}
 
-# The Arrows block (U+2190-U+21FF) is deliberately absent. Those are typographic
-# notation, not decoration: technical writing uses them for mappings and rewrites, as in
-# "question -> file". Arrows drawn as emoji live in other blocks, and any character given
-# emoji presentation still matches through its U+FE0F variation selector.
+# Leave out the Arrows block (U+2190-U+21FF). Technical writing uses symbols such as
+# "question → file", so treating the whole block as emoji would create false positives.
+# U+FE0F still catches an arrow explicitly displayed as emoji.
 EMOJI_RANGES = re.compile(
     "[\U0001f000-\U0001faff\u2300-\u23ff\u2600-\u27bf\ufe0f\u2b00-\u2bff]"
 )
@@ -54,7 +53,8 @@ FILLER_PARTICIPLES = {
     "highlighting", "making", "marking", "offering", "positioning",
     "promoting", "providing", "reflecting", "reinforcing", "representing",
     "serving", "shaping", "showcasing", "solidifying", "symbolizing",
-    "underscoring",
+    "underscoring", "confirming", "illustrating", "affirming", "evidencing",
+    "embodying", "accentuating", "imparting",
 }
 
 HEADING_CASE_EXEMPT = {
@@ -62,7 +62,7 @@ HEADING_CASE_EXEMPT = {
     "nor", "of", "on", "or", "the", "to", "up", "via", "with",
 }
 
-# note never fails a run. It exists so a rule can stay visible without becoming nagging.
+# The note severity keeps low-priority rules visible without failing the run.
 SEVERITY_ORDER = {"error": 0, "review": 1, "note": 2}
 FAILING_SEVERITIES = ("error",)
 STRICT_SEVERITIES = ("error", "review")
@@ -98,7 +98,7 @@ class Category:
     skip_formats: Tuple[str, ...] = ()
 
 
-# ---------------------------------------------------------------- rule loading
+# Rule loading
 
 
 def compile_flags(spec: str) -> int:
@@ -128,7 +128,7 @@ class Profile:
     overrides: Dict[str, str] = field(default_factory=dict)
 
     def resolve(self, category: str, severity: str) -> Optional[str]:
-        """Return the severity to use, or None when the profile disables the category."""
+        """Return the effective severity, or None when this profile disables the category."""
         override = self.overrides.get(category)
         if override is None:
             return severity
@@ -182,7 +182,7 @@ def load_categories(rules_path: str) -> List[Category]:
     return categories
 
 
-# ------------------------------------------------------------------- utilities
+# Utilities
 
 
 def line_starts(text: str) -> List[int]:
@@ -204,16 +204,22 @@ def blank_out(text: str, start: int, end: int) -> str:
     return text[:start] + replacement + text[end:]
 
 
-CODE_MASKS = [
+# Keep a separate mask for HTML comments. The prose+comments mode needs to inspect them
+# because chatbots often leave placeholders and messages to the requester inside
+# <!-- --> blocks.
+COMMENT_MASK = re.compile(r"<!--.*?-->", re.DOTALL)
+
+CODE_MASKS_KEEP_COMMENTS = [
     re.compile(r"^[ \t]*(```|~~~).*?^[ \t]*\1[ \t]*$", re.MULTILINE | re.DOTALL),
-    re.compile(r"<!--.*?-->", re.DOTALL),
     re.compile(r"`[^`\n]+`"),
     re.compile(r"https?://\S+"),
     re.compile(r"\]\([^)\n]+\)"),
 ]
 
-# Quoted material and worked examples are cited, not authored. Rewriting them is wrong,
-# and scanning them makes any document that names a banned phrase fail its own rules.
+CODE_MASKS = CODE_MASKS_KEEP_COMMENTS[:1] + [COMMENT_MASK] + CODE_MASKS_KEEP_COMMENTS[1:]
+
+# Treat quoted text and worked examples as source material and skip them during scans.
+# Otherwise, a document that names a banned phrase could fail its own rules.
 QUOTE_MASKS = [
     re.compile(r"^[ \t]*>.*$", re.MULTILINE),
     re.compile(r"\"[^\"\n]{1,60}\""),
@@ -230,17 +236,20 @@ def apply_masks(text: str, patterns: Iterable[Pattern]) -> str:
 
 
 def mask_code(text: str) -> str:
-    """Blank out code, comments, and URLs while preserving every offset."""
+    """Replace fenced or inline code, HTML comments, URLs, and link destinations.
+
+    Use spaces so source offsets stay unchanged.
+    """
     return apply_masks(text, CODE_MASKS)
 
 
 def mask_non_prose(text: str) -> str:
-    """Blank out code plus quoted and block-quoted material."""
+    """Replace code and quoted text with spaces without changing offsets."""
     return apply_masks(mask_code(text), QUOTE_MASKS)
 
 
-# ignore-file precedes ignore in the alternation, or "ignore" would match first and
-# leave "-file" stranded, silently turning a file-wide directive into a line-wide one.
+# Put ignore-file before ignore in the alternation. If ignore comes first, it matches
+# early and leaves "-file" behind, turning a file-wide directive into a line-wide one.
 DIRECTIVE = re.compile(
     r"humanize-lint:\s*(off|on|ignore-file|ignore)(?:\s+([a-z][a-z0-9-]*))?",
     re.IGNORECASE,
@@ -248,7 +257,7 @@ DIRECTIVE = re.compile(
 
 
 def suppression_map(text: str) -> Tuple[set, Dict[int, set], set]:
-    """Read humanize-lint directives into disabled lines, per-line skips, and file-wide skips."""
+    """Read directives into disabled lines plus per-line and file-wide category skips."""
     disabled, per_line, whole_file = set(), {}, set()
     active = False
     for index, line in enumerate(text.split("\n"), start=1):
@@ -262,8 +271,8 @@ def suppression_map(text: str) -> Tuple[set, Dict[int, set], set]:
             elif action == "ignore":
                 per_line.setdefault(index + 1, set()).add(category or "*")
             elif action == "ignore-file" and category:
-                # A bare ignore-file would mute the whole checker, which is what deleting
-                # the file from the run is for. Only a named category is honoured.
+                # A bare ignore-file would silence every rule. Leave the file out of the
+                # run instead. This directive must name a category.
                 whole_file.add(category)
         if active or match:
             disabled.add(index)
@@ -287,9 +296,10 @@ BLOCK_BREAK = re.compile(r"^(?:[ \t]*$|[ \t]*(?:[-*+]|\d+\.)[ \t]|#{1,6}[ \t]|\|
 
 
 def iter_paragraphs(text: str) -> List[Tuple[int, str]]:
-    """Split on blank lines, list items, headings, and table rows.
+    """Split text at blank lines, list items, headings, and table rows.
 
-    A bullet list is not one paragraph; one em dash per bullet is normal.
+    Treat each list item as a separate block so one em dash per item does not count as a
+    paragraph-wide habit.
     """
     edges = sorted({0, len(text)} | {m.start() for m in BLOCK_BREAK.finditer(text)})
     blocks = []
@@ -302,7 +312,7 @@ def iter_paragraphs(text: str) -> List[Tuple[int, str]]:
 
 
 def iter_sections(text: str) -> List[Tuple[int, str]]:
-    """Split at markdown headings so bold density is measured per section."""
+    """Split at ATX Markdown headings for per-section bold counts."""
     boundaries = [m.start() for m in re.finditer(r"^#{1,6}[ \t]+\S", text, re.MULTILINE)]
     edges = [0] + boundaries + [len(text)]
     sections = []
@@ -321,18 +331,24 @@ def excerpt_of(text: str, start: int, end: int, limit: int = 48) -> str:
     return raw
 
 
-# --------------------------------------------------------------- pattern scan
+# Pattern scanning
 
 
 def scan_categories(
-    raw_text: str, masked: str, categories: Iterable[Category], target_format: str
+    raw_text: str, masked: str, masked_keep_comments: str,
+    categories: Iterable[Category], target_format: str
 ) -> List[Finding]:
     starts = line_starts(raw_text)
     findings: List[Finding] = []
     for category in categories:
         if target_format in category.skip_formats:
             continue
-        subject = raw_text if category.scan == "raw" else masked
+        if category.scan == "raw":
+            subject = raw_text
+        elif category.scan == "prose+comments":
+            subject = masked_keep_comments
+        else:
+            subject = masked
         hits = collect_category_hits(subject, starts, category)
         if category.cluster_threshold and len(hits) >= category.cluster_threshold:
             for hit in hits:
@@ -371,17 +387,16 @@ def collect_category_hits(
     return list(seen.values())
 
 
-# ----------------------------------------------------------- structural checks
+# Structural checks
 
 
 def check_em_dashes(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
-    """First em dash in a paragraph is a style call; the rest are a habit.
+    """Treat em dashes and spaced double hyphens as dashes.
 
-    A dash set off by spaces on both sides ("word \u2014 word") reads as the more
-    AI-typical shape; a dash with no surrounding spaces ("word\u2014word") is closer to
-    ordinary professional typography. Both still count toward paragraph density,
-    since the habit of reaching for a dash at all is the real signal, but the note
-    on a single occurrence says which shape it is so the human doesn't have to guess.
+    In each paragraph, report the first as a note and the rest as reviews. The first
+    finding records whether spaces surround the dash. Spaced dashes match the common AI
+    pattern, while closed dashes are closer to conventional professional typography.
+    Both count toward paragraph density.
     """
     findings = []
     for block_start, block in iter_paragraphs(masked):
@@ -391,7 +406,7 @@ def check_em_dashes(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
             before = block[match.start() - 1:match.start()]
             after = block[match.end():match.end() + 1]
             if match.group(0) == "--" and (before != " " or after != " "):
-                continue  # bare "--" with no surrounding spaces is a hyphen typo, not a dash
+                continue  # Ignore unspaced "--"; only the spaced form counts here.
             offsets.append(match.start() + block_start)
             spaced.append(before == " " and after == " ")
         for index, offset in enumerate(offsets):
@@ -413,11 +428,11 @@ def check_em_dashes(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
     return findings
 
 
-INLINE_HEADER_LINE = re.compile(r"^[ \t]*(?:[-*+]|\d+\.)[ \t]+\*\*")
+INLINE_HEADER_LINE = re.compile(r"^[ \t]*(?:[-*+\u2022\u2023\u25aa]|\d+\.)[ \t]+\*\*")
 
 
 def check_bold_density(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
-    """Count bold spans per section, ignoring ones inline-header-list already owns."""
+    """Count bold spans per section, excluding list items that begin with bold text."""
     findings = []
     lines = masked.split("\n")
     for section_start, section in iter_sections(masked):
@@ -437,10 +452,11 @@ def check_bold_density(masked: str, starts: List[int], _fmt: str) -> List[Findin
     return findings
 
 
-# The tell is a bold label joined to its line by a colon. A bold lead-in that ends in a
-# period and is followed by genuinely new detail reads fine, so it is not flagged.
+# Match bold labels used as list-item headers, with a colon, dash, or no punctuation.
+# Leave a bold lead-in alone when it ends with a period.
 COLON_HEADER_ITEM = re.compile(
-    r"^[ \t]*(?:[-*+]|\d+\.)[ \t]+\*\*(?P<label>[^*\n]+?)(?::\*\*|\*\*[ \t]*[:\u2014-])"
+    r"^[ \t]*(?:[-*+\u2022\u2023\u25aa]|\d+\.)[ \t]+\*\*(?P<label>[^*\n]+?)"
+    r"(?::\*\*|\*\*[ \t]*[:\u2014-]|(?<=[^.!?])\*\*[ \t]+(?=[A-Za-z]))"
     r"(?P<body>[^\n]*)",
     re.MULTILINE,
 )
@@ -453,10 +469,10 @@ def significant_words(text: str) -> List[str]:
 
 
 def restates_its_label(label: str, body: str) -> bool:
-    """True for '**Performance:** Performance improved...'.
+    """Return True when a short bold label repeats at the start of its body.
 
-    Requires a short label and a body that opens by repeating it. Sharing a word
-    somewhere later in the line is normal topic continuity, not redundancy.
+    A "Performance" label followed by "Performance improved..." matches. Reusing the
+    label word later in the line does not.
     """
     label_words = significant_words(label)
     if not label_words or len(label_words) > 3:
@@ -510,6 +526,13 @@ def check_heading_levels(masked: str, starts: List[int], _fmt: str) -> List[Find
     previous = 0
     for match in re.finditer(r"^(#{1,6})[ \t]+\S", masked, re.MULTILINE):
         level = len(match.group(1))
+        if previous == 0 and level >= 3:
+            line, col = position_of(starts, match.start())
+            findings.append(
+                Finding(line, col, "review", "first-heading-depth", "#" * level,
+                        f"The document starts at H{level} with no higher-level heading. "
+                        "Chatbot output often begins mid-outline; start at H1 or H2.")
+            )
         if previous and level > previous + 1:
             line, col = position_of(starts, match.start())
             findings.append(
@@ -517,6 +540,50 @@ def check_heading_levels(masked: str, starts: List[int], _fmt: str) -> List[Find
                         f"Heading jumps from H{previous} to H{level}. Do not skip levels.")
             )
         previous = level
+    return findings
+
+
+THEMATIC_BREAK = re.compile(r"^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$", re.MULTILINE)
+
+
+def check_thematic_breaks(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
+    """Flag repeated horizontal rules used as section separators."""
+    lines = masked.split("\n")
+    hits = []
+    for match in THEMATIC_BREAK.finditer(masked):
+        line, col = position_of(starts, match.start())
+        if line == 1:
+            continue
+        if lines[line - 2].strip():
+            continue  # This may be a Setext underline or frontmatter delimiter.
+        hits.append((line, col))
+    if len(hits) < 2:
+        return []
+    return [
+        Finding(line, col, "review", "thematic-break", "---",
+                f"{len(hits)} horizontal rules between sections. Headings and blank lines "
+                "already separate sections; repeated rules are a chatbot formatting habit.")
+        for line, col in hits
+    ]
+
+
+def check_heading_only_sections(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
+    """Flag headings followed only by a deeper heading."""
+    findings = []
+    matches = list(re.finditer(r"^(#{1,6})[ \t]+.+$", masked, re.MULTILINE))
+    for index, match in enumerate(matches[:-1]):
+        nxt = matches[index + 1]
+        if len(nxt.group(1)) <= len(match.group(1)):
+            continue
+        if masked[match.end():nxt.start()].strip():
+            continue
+        line, col = position_of(starts, match.start())
+        findings.append(
+            Finding(line, col, "review", "heading-only-section",
+                    excerpt_of(masked, *match.span()),
+                    "Heading whose entire section is another heading. Add the missing body "
+                    "text or drop the parent heading.")
+        )
     return findings
 
 
@@ -554,23 +621,28 @@ def check_emoji(masked: str, starts: List[int], fmt: str) -> List[Finding]:
     return findings
 
 
-# Matches a whole comma-separated run so the item count is known. Sliding a fixed
-# three-item pattern would report the tail of every four-item list as a triple.
+# Match the whole comma-separated run so the checker can count its items. A sliding
+# three-item pattern would also match the tail of every four-item list.
 WORD = r"[\w'\u2019-]+"
-# One optional newline, so a list that wraps mid-item still reads as one run.
+# Allow one newline so a wrapped item stays in the same run.
 GAP = r"(?:[ \t]+|[ \t]*\n[ \t]*)"
-# Five words per item: shorter caps split a long list into phantom three-item runs.
+# Cap each item at five words. A lower cap splits long items into false triples.
 ITEM = rf"(?!(?:and|or)\b){WORD}(?:{GAP}{WORD}){{0,4}}"
-# The tail is lazy so it does not eat the first item of the next list in the sentence.
+# Keep the tail lazy so it does not consume the next list's first item.
 LIST_RUN = re.compile(
     rf"(?P<head>(?:{ITEM},{GAP}?)+)(?:and|or){GAP}{WORD}(?:{GAP}{WORD}){{0,4}}?\b"
+)
+ASYNDETIC_ITEM = r"(?!(?:and|or)\b)[\w-]+(?:[ \t][\w-]+)?"
+ASYNDETIC_TRIPLE = re.compile(
+    rf"\b{ASYNDETIC_ITEM},[ \t]{ASYNDETIC_ITEM},[ \t]{ASYNDETIC_ITEM}[.!?;:]"
 )
 TRIPLE_THRESHOLD = 4
 
 
 def check_rule_of_three(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
-    """Flag triple constructions only once they are a habit rather than a sentence."""
+    """Flag triples only after they repeat often enough to form a pattern."""
     runs = [m for m in LIST_RUN.finditer(masked) if m.group("head").count(",") == 2]
+    runs += list(ASYNDETIC_TRIPLE.finditer(masked))
     if len(runs) < TRIPLE_THRESHOLD:
         return []
     findings = []
@@ -583,23 +655,30 @@ def check_rule_of_three(masked: str, starts: List[int], _fmt: str) -> List[Findi
     return findings
 
 
-# A single "X, not Y" states a boundary. A run of them is the tic: reaching for the
-# same contrast scaffold over and over rather than writing the plain claim, whether or
-# not any one instance would survive losing its tail. Density is the signal, not any
-# individual sentence's content — the same test the checker already applies to em
-# dashes and triples. Two triggers, because the tic fails two different ways: spread
-# thin across a whole document (the habit of a long-running document) and packed into
-# one short passage (two or three sentences in a row all defining something by what it
-# isn't, which reads as broken even though each half-sentence might pass alone). This
-# marker set is a deliberately loose superset of the `negative-parallelism` category's
-# own error patterns in patterns.json — it exists to count occurrences for clustering,
-# not to be the authoritative match, so some duplication with those patterns is fine.
+# One "X, not Y" contrast can mark a useful boundary. This check looks for four matches
+# across a document or two in one prose block. Its regex covers more forms than the
+# negative-parallelism error rules because it counts clusters.
+#
+# The branches cover "not just X, but Y"; punctuation-linked variants; negated copulas
+# joined by an em dash, semicolon, comma, or comma-plus-but; cross-sentence pivots such as
+# "isn't X. It's Y"; repeated-negation lists; "More than a..."; clipped ", no X needed"
+# tails; and a bare clause-ending "X, not Y".
+#
+# Leave out "X rather than Y". It appears often in the repository's clean prose and
+# would create false positives at these thresholds. The judgment pass handles it.
 NEGATIVE_PARALLEL_MARKER = re.compile(
-    r"\bnot\s+(?:just|only|merely|simply)\s+[^,.;\n]{1,60},?\s+but\b"
-    r"|\bnot\s+(?:just|only|merely|simply)\s+[^.;\n]{1,80}[—;]\s*(?:it|they|this)\b"
-    r"|\b(?:is|are|was|were)(?:\s+not|n(?:'|’)t)\s+[^.;—\n]{1,90}[—;]\s*(?:it|they|this|these)\b"
-    r"|\bno\s+[\w\s]{1,20},\s+no\s+[\w\s]{1,20},\s+just\b"
-    r"|[^,.;\n]{3,60},\s+not\s+[^,.;\n]{2,50}[.!?]"
+    r"\b(?:not|(?:do|does|did)n(?:'|’)t)\s+(?:just|only|merely|simply)\s+[^,.;\n]{1,60},?\s+but\b"
+    r"|\b(?:not|(?:do|does|did)n(?:'|’)t)\s+(?:just|only|merely|simply)\s+[^.;,\n]{1,80}[—;,]\s*(?:it|they|this)\b"
+    r"|\b(?:is|are|was|were|ai)(?:\s+not|n(?:'|’)t)\s+[^.;,—\n]{1,90}[—;,]\s*(?:it|they|this|these)\b"
+    r"|\b(?:is|are|was|were|ai)(?:\s+not|n(?:'|’)t)\s+[^,.;\n]{1,50},\s+but\s+(?:in|by|of|for|with|a|an|the|what|because|to)\b"
+    r"|\b(?:is|are|was|were|ai)(?:\s+not|n(?:'|’)t)\s+[^.!?\n]{1,60}[.!?]\s+(?:Rather\b|Instead\b|It(?:'|’)s\s)"
+    r"|\b(?:no|not)\s+[\w\s]{1,22},\s+(?:no|not)\s+[\w\s]{1,22}[,\s]*(?:[—–-]{1,2}\s*)?just\b"
+    r"|\bmore\s+than\s+(?:a|an|just)\s+[^,.;\n]{1,40},\s+(?:this|it|the|he|she|they)\b"
+    r"|,\s+no\s+\w+(?:\s+\w+){0,2}\s+(?:needed|required|necessary)\b"
+    r"|[^,.;\n]{3,60},\s+not\s+[^,.;\n]{2,50}(?:[.!?]|,\s+(?:and|but|or|so|which|because)\b)"
+    r"|\b(?:is|are|was|were)(?:\s+not|n(?:'|’)t)\s+the\s+(?:point|target|goal|aim|objective|job|answer|idea|fix|task|constraint)\b"
+    r"|(?:'|’)s\s+not\s+the\s+(?:point|target|goal|aim|objective|job|answer|idea|fix|task|constraint)\b",
+    re.IGNORECASE,
 )
 NEGATIVE_PARALLEL_DOC_THRESHOLD = 4
 NEGATIVE_PARALLEL_PARAGRAPH_THRESHOLD = 2
@@ -637,22 +716,30 @@ def check_negative_parallelism_density(masked: str, starts: List[int], _fmt: str
 
 
 def check_trailing_participle(masked: str, starts: List[int], _fmt: str) -> List[Finding]:
-    pattern = re.compile(r",\s+(\w+ing)\b[^.!?\n]{0,140}[.!?]")
+    # Check each comma-participle separately. One consuming scan could let an ordinary
+    # phrase such as "..., including X, ..." swallow the rest of the sentence and hide a
+    # later filler phrase.
     findings = []
-    for match in pattern.finditer(masked):
+    for match in re.finditer(r",\s+(\w+ing)\b", masked):
         if match.group(1).lower() not in FILLER_PARTICIPLES:
+            continue
+        tail = re.match(r"[^.!?\n]{0,140}[.!?]", masked[match.end():])
+        if not tail:
             continue
         line, col = position_of(starts, match.start(1))
         findings.append(
             Finding(line, col, "error", "trailing-participle",
-                    excerpt_of(masked, *match.span()),
+                    excerpt_of(masked, match.start(), match.end() + tail.end()),
                     "Sentence-final participial clause with no factual content. Delete it.")
         )
     return findings
 
 
 def check_abrupt_ending(raw_text: str, starts: List[int], _fmt: str) -> List[Finding]:
-    lines = raw_text.rstrip().split("\n")
+    # Ignore trailing HTML comments, including any lint directives they contain. Check
+    # the last line with actual content.
+    trimmed = re.sub(r"(?:\s*<!--.*?-->)+\s*\Z", "", raw_text, flags=re.DOTALL)
+    lines = trimmed.rstrip().split("\n")
     while lines and not lines[-1].strip():
         lines.pop()
     if not lines:
@@ -661,7 +748,7 @@ def check_abrupt_ending(raw_text: str, starts: List[int], _fmt: str) -> List[Fin
     structural = re.match(r"^(#{1,6}\s|\||[-*+]\s|\d+\.\s|```|~~~|>|\[)", last)
     if structural or re.search(r"[.!?:;\"'\u201d\u2019)\]}|]$", last):
         return []
-    line, col = position_of(starts, max(len(raw_text.rstrip()) - 1, 0))
+    line, col = position_of(starts, max(len(trimmed.rstrip()) - 1, 0))
     return [
         Finding(line, col, "error", "abrupt-ending", excerpt_of(last, 0, len(last)),
                 "Text ends without completing its final thought.")
@@ -675,7 +762,7 @@ def check_small_tables(masked: str, starts: List[int], _fmt: str) -> List[Findin
         rows = [r for r in match.group(0).strip().split("\n") if r.strip()]
         body = [r for r in rows[2:] if not re.match(r"^\|[\s:|-]+\|$", r)]
         columns = rows[0].count("|") - 1
-        if len(body) <= 3 and columns <= 2:
+        if len(body) <= 4 and columns <= 3:
             line, col = position_of(starts, match.start())
             findings.append(
                 Finding(line, col, "review", "small-table",
@@ -724,7 +811,7 @@ def check_access_dates(raw_text: str, starts: List[int], _fmt: str) -> List[Find
     return findings
 
 
-LIST_LINE = re.compile(r"^[ \t]*(?:[-*+]|\d+[.)])[ \t]+\S")
+LIST_LINE = re.compile(r"^[ \t]*(?:[-*+\u2022\u2023\u25aa]|\d+[.)])[ \t]+\S")
 HEADING_LINE = re.compile(r"^[ \t]*#{1,6}[ \t]")
 TABLE_LINE = re.compile(r"^[ \t]*\|")
 
@@ -734,7 +821,7 @@ MIN_LINES_FOR_DENSITY = 12
 
 
 def survey_lines(masked: str) -> Dict[str, int]:
-    """Count the line shapes that decide whether a document is prose or an outline."""
+    """Count line shapes used to distinguish prose from an outline."""
     content = lists = inline_headers = longest = current = 0
     for line in masked.split("\n"):
         if not line.strip() or HEADING_LINE.match(line) or TABLE_LINE.match(line):
@@ -745,7 +832,7 @@ def survey_lines(masked: str) -> Dict[str, int]:
             lists += 1
             current += 1
             longest = max(longest, current)
-            # Only the colon form counts. A bold lead-in ending in a period is allowed.
+            # Count list items that use a bold label as a header.
             if COLON_HEADER_ITEM.match(line):
                 inline_headers += 1
         else:
@@ -755,7 +842,7 @@ def survey_lines(masked: str) -> Dict[str, int]:
 
 
 def check_list_density(masked: str, _starts: List[int], _fmt: str) -> List[Finding]:
-    """Flag a document that replaced its prose with bullets, once, not per bullet."""
+    """Report list-heavy documents once instead of once per list item."""
     counts = survey_lines(masked)
     if counts["content"] < MIN_LINES_FOR_DENSITY:
         return []
@@ -771,7 +858,10 @@ def check_list_density(masked: str, _starts: List[int], _fmt: str) -> List[Findi
 
 
 def check_inline_header_density(masked: str, _starts: List[int], _fmt: str) -> List[Finding]:
-    """Bold-header lists are fine in moderation. Wall-to-wall they are the tell."""
+    """Report documents where at least six list items use bold headers.
+
+    The check fires when those headers make up at least half of all list items.
+    """
     counts = survey_lines(masked)
     if counts["inline_headers"] < 6 or not counts["lists"]:
         return []
@@ -788,7 +878,10 @@ def check_inline_header_density(masked: str, _starts: List[int], _fmt: str) -> L
 
 WEAK_ADVERBS = re.compile(
     r"\b(?:significantly|substantially|dramatically|greatly|highly|extremely|incredibly|"
-    r"particularly|essentially|basically|actually|really|very|quite|simply|easily|"
+    r"particularly|essentially|basically|actually|really|quite|simply|easily|"
+    # Leave out "very". In the PNAS study cited by Wikipedia's "Signs of AI writing",
+    # people used it more often than the tested models. Flagging it would make prose more
+    # model-like.
     r"quickly|effectively|efficiently|seamlessly|notably|remarkably|considerably|"
     r"fundamentally|undoubtedly|obviously|clearly|definitely|truly|literally)\b",
     re.IGNORECASE,
@@ -812,10 +905,11 @@ def blank_keeping_lines(text: str) -> str:
 
 
 def prose_only(masked: str) -> str:
-    """Blank frontmatter, headings, and list lines, preserving offsets and line count.
+    """Blank frontmatter and unindented lines starting with a Markdown marker or digit.
 
-    Frontmatter is exempt from the rhythm rules because a description is a list of
-    triggers, and length is not a fault in one.
+    The recognized markers are #, >, |, -, *, and +. Keep offsets unchanged so findings
+    still point to the source. Frontmatter descriptions list triggers, so the rhythm
+    rules ignore their length.
     """
     text = FRONTMATTER.sub(lambda m: blank_keeping_lines(m.group(0)), masked)
     return re.sub(r"^[#>|\-*+\d].*$", lambda m: " " * len(m.group(0)),
@@ -847,11 +941,11 @@ def check_passive_voice(masked: str, starts: List[int], _fmt: str) -> List[Findi
 
 
 def iter_sentences(prose: str) -> List[Tuple[str, int]]:
-    """Sentences paired with their offset, never spanning a paragraph break.
+    """Return each sentence with its offset, stopping at paragraph breaks.
 
-    A paragraph that ends in a colon to introduce a list has no terminal
-    punctuation, so splitting on punctuation alone welds it to the paragraph
-    after the list and reports one enormous sentence that nobody wrote.
+    A paragraph that introduces a list with a colon has no terminal punctuation.
+    Paragraph splitting keeps it from joining the prose after the list into one
+    artificially long sentence.
     """
     found: List[Tuple[str, int]] = []
     block_cursor = 0
@@ -908,6 +1002,8 @@ def check_sentence_rhythm(masked: str, _starts: List[int], _fmt: str) -> List[Fi
 
 
 STRUCTURAL_CHECKS_MASKED = [
+    check_thematic_breaks,
+    check_heading_only_sections,
     check_em_dashes, check_bold_density, check_inline_header_list, check_heading_case,
     check_heading_levels, check_emoji, check_rule_of_three,
     check_negative_parallelism_density,
@@ -916,7 +1012,7 @@ STRUCTURAL_CHECKS_MASKED = [
     check_passive_voice, check_sentence_length,
 ]
 STRUCTURAL_CHECKS_RAW = [check_abrupt_ending, check_markdown_bleed, check_access_dates]
-# Quote style must be judged on text that still has its quote marks.
+# Quote checks need the unmasked quote marks.
 STRUCTURAL_CHECKS_CODE_ONLY = [check_quote_consistency]
 
 
@@ -932,14 +1028,18 @@ def run_structural(raw_text: str, masked: str, code_only: str, target_format: st
     return findings
 
 
-# ------------------------------------------------------------------- reporting
+# Reporting
 
 
 def analyze(raw_text: str, categories: List[Category], target_format: str,
             profile: Optional[Profile] = None) -> List[Finding]:
     code_only = mask_code(raw_text)
     masked = apply_masks(code_only, QUOTE_MASKS)
-    findings = scan_categories(raw_text, masked, categories, target_format)
+    masked_keep_comments = apply_masks(
+        apply_masks(raw_text, CODE_MASKS_KEEP_COMMENTS), QUOTE_MASKS
+    )
+    findings = scan_categories(raw_text, masked, masked_keep_comments,
+                               categories, target_format)
     findings.extend(run_structural(raw_text, masked, code_only, target_format))
     if profile is not None:
         findings = apply_profile(findings, profile)
@@ -998,7 +1098,7 @@ def format_text_report(
             lines.append(f"    ... {hidden[category]} more hidden (use --all)")
         lines.append("")
 
-    # Notes stay one line per category so a low-priority rule cannot flood the output.
+    # Summarize notes by category so low-priority findings do not flood the report.
     if notes and not show_all:
         summary = ", ".join(
             f"{category} x{len(hits)}" for category, hits in group_by_category(notes)

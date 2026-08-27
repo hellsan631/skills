@@ -1,106 +1,27 @@
-# Judgment pass
+Now Prompted workflow: run after humanize_lint.py reports zero errors. Twelve questions must be handled in order.
 
-Eleven questions the checker cannot answer, each with a test you can apply. Run them
-after `humanize_lint.py` reports zero errors.
+1. Is every sentence providing real information? You're looking at a question that humanize_lint.py only knows how to answer by listing filler. The answer could be "nothing" if you're looking at an empty content block, such as a single-line paragraph; so if the answer is "nothing," delete the sentence (or if it starts with something like [fn][1], delete the entire paragraph).
 
-Work through them in order against the draft. The pass is done when every question has an
-answer, not when the draft starts to feel finished.
+2. Are flagged words doing real work? When you see a flagged word, you have a choice to rename it as something more generic. You want to test whether the new generic term does its job. Delete the new word entirely and see if the sentence still survives on its own merits. Similarly with any other renamed terms.
 
-## 1. Does every sentence carry information?
+3. Is the register held steady? Compare the first and last paragraphs of the draft, making sure they aim at the same level. Keep the overall grammar quality as constant as possible, matching the medium (web log entry, op-ed, etc.).
 
-The checker catches known filler phrases. It cannot catch novel filler. Read each sentence
-and ask what the reader knows after it that they did not know before. Delete any sentence
-whose answer is nothing.
+4. Is every significant claim being supported? If the evidence for a significant claim isn't in the surrounding text, consider removing the claim (don't invent a reason to justify it!). Every community carries some expectations about what kind of evidence is sufficient.
 
-This is the most common miss. A draft can be clean of banned phrases and still be 40
-percent air.
+5. Is anything invented? Line by line, compare against your source material. In particular, this is the place to zero in on names, dates, and numbers that are concrete details, and on directly quoted material. The replacement of vague general praise with specific, concrete details, such as turns out to be the source of invention information.
 
-## 2. Is a flagged word doing real work, or did it just get renamed?
+6. Is any load-bearing content lost? Keep verifiable facts, the caveats and conditions on claims, clear statements of the scope boundaries around your information, and intentional hedges. They are all content that you should keep.
 
-Check the words you kept and the words you replaced. "Crucial" cut to "important" is not a
-fix. "Serves as the primary interface" changed to "acts as the primary interface" is not a
-fix. The test is whether the sentence would survive deleting the word entirely. If it
-would, delete it.
+7. Does each heading, bullet list, and table earn its place? Every heading should denote a genuinely separate topic. Lists should usually be used when you want to group together genuinely parallel items. Tables are for genuinely tabular material. If you're working with them (as this varies per output format), you'll know when that material is truly tabular in nature.
 
-## 3. Does the register match the medium and hold steady?
+8. Is vocabulary staying workable? Avoid evasion by naming or using a pronoun for one person. Don't force a change in person when it isn't necessary. Avoid the ornamental repetition that comes from using distinctive words or distinctive constructions too often.
 
-Read the first paragraph and the last paragraph back to back. If one is looser than the
-other, the piece drifts, and drift is a stronger AI tell than any single phrase. Grammar
-quality should also be constant: do not open with clipped notes and close with textbook
-prose.
+9. Is each sentence describing a mechanism rather than suggesting a feeling? Since feeling-only phrasing is insufficient, cut any sentence that cannot be restated as a concrete instruction, or as a number, or as a measurable consequence.
 
-Match the medium. A forum reply that reads like a memo is as wrong as a memo that reads
-like a forum reply.
+10. Is there a person behind this text? Particularly where the medium allows the author to express opinion, you'll want to look for a position taken, a tradeoff admitted, or a preference stated with reason. Otherwise, you must rely on detail that is so well-tuned to this particular subject that it's only clear when you see it all together.
 
-## 4. Is every claim of significance backed by a fact in the text?
+11. Does the ending land? It lands when it stops after the point with no recap or forward-looking speculation, and it lands when the final paragraph completes an idea without trailing off.
 
-Find each sentence asserting that something matters, is influential, or is widely used.
-Confirm the surrounding text supplies the evidence. If it does not, either the evidence is
-missing or the claim is. Remove the claim rather than inventing support.
+12. Does every contrast earn its clauses? Read the second clause of every pair alone. If deleting the first clause loses you nothing, keep the plain claim. Both negation pivots and *however* pivots are scaffolds that still carry the point, so is any X rather than Y that so looks, or any mirrored affirmative clauses that merely rename the first.
 
-## 5. Did the rewrite invent anything?
-
-Compare against the source line by line for names, dates, numbers, quotations, causal
-claims, and source attributions. Fabricated specificity is the worst possible outcome of a
-humanize pass, because the prose now reads more credible while being less true.
-
-Check especially where you replaced vague praise with concrete detail. That is the exact
-place where invention happens.
-
-## 6. Did the rewrite lose anything?
-
-The reverse check. Facts, caveats, conditions, scope boundaries, and hedges that were
-load-bearing sometimes vanish when a sentence gets tightened. A hedge the author put there
-on purpose is content, not filler.
-
-## 7. Is the structure earned?
-
-Ask whether each heading, bullet list, and table is doing work that prose could not. Lists
-are for genuinely parallel items, tables for genuinely tabular data. Prose that was chopped
-into bullets reads like a slide deck and is a formatting tell the checker only partly sees.
-
-## 8. Is the vocabulary varied but not evasive?
-
-Two failures pull in opposite directions. Elegant variation cycles through "the artist,"
-"the visionary," "the celebrated creator" for one person: use the name or a pronoun and
-repeat it. The opposite failure is a distinctive word or construction reused three times in
-a short piece, which reads as generated. Repetition of plain words is fine. Repetition of
-ornamental ones is not.
-
-## 9. Does the sentence name a mechanism or only a feeling?
-
-"The database stays close at hand", "SQL you can read", and "types that follow your
-schema" all name a feeling. The fix names a mechanism or a measurable consequence:
-".toSQL() returns the exact string sent to the database", "a column rename fails the
-build".
-
-Ask what the sentence tells the reader to do or know, then write that. If you cannot
-restate it as a concrete instruction or a number, cut it.
-
-## 10. Is there a person behind it?
-
-This is the check that catches over-correction. A draft can pass every rule above and
-still read as machine-written because nothing in it commits to anything.
-
-Where the medium allows an author, look for a position taken, a tradeoff admitted, a
-preference stated with a reason. Neutral surveys of considerations are the safest thing
-to write and the most obviously generated. Where the medium is reference writing and
-opinion is out of bounds, look instead for detail specific enough that no other subject
-could carry the same sentence.
-
-## 11. Does the ending land?
-
-The piece should stop when the point is made, with no recap and no forward-looking
-speculation. It should also not stop mid-thought. Read the final paragraph alone and ask
-whether it completes an idea or trails off.
-
-## Delegating this pass
-
-For a long draft or public writing, hand this to a subagent. It works better than doing it
-yourself because the reader has no memory of writing the sentences and no investment in
-keeping them.
-
-Give the subagent the draft, the path to this file, the medium, and the audience. Ask for
-findings only, formatted as `line: problem: suggested fix`, and tell it not to return a
-rewritten draft. You apply the fixes, then re-run the checker, because applied fixes can
-reintroduce mechanical tells.
+Delegating this pass You may delegate the pass to a subagent every time, regardless of draft length or audience. Provide the subagent with the draft, the path to this file, the medium, and the audience. Request findings only, formatted as `line: problem: suggested fix`. Do not return a rewritten draft. Apply fixes, then re-run the checker. Applied fixes can reintroduce mechanical tells.
