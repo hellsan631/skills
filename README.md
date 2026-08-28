@@ -43,7 +43,7 @@ Below are the groupings for each of the skills.
 
 - **[writing](./skills/writing/README.md)**: Skills ment to help desloping AI output.
 - **[design](./skills/design/README.md)**: Pricipal-level personas for various domain-specific work.
-- **[engineering](./skills/engineering/README.md)**: Useful engineering skills, hopefully with no overlap in effect.
+- **[engineering](./skills/engineering/README.md)**: Architecture, implementation, research, and prototyping skills.
 - **[workflow](./skills/workflow/README.md)**: Just pure "workflow" helper skills, like grilling, and "show me your work".
 - **[principles](./skills/principles/README.md)**: ten single-conviction skills that other
   skills cite by name as a test to apply.

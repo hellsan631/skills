@@ -1,3 +1,4 @@
+<!-- humanize-lint: ignore-file list-density — attribution index: each source owns a parallel list of imported skills -->
 # Attribution
 
 ## Matt Pocock

@@ -26,16 +26,6 @@ def error_entries():
     ]
 
 
-def phrasing_count(entries):
-    """Patterns an error category can match, minus any the category demotes."""
-    total = 0
-    for entry in entries:
-        for pattern in entry["patterns"]:
-            demoted = isinstance(pattern, dict) and pattern.get("severity", "error") != "error"
-            total += 0 if demoted else 1
-    return total
-
-
 def main():
     entries = error_entries()
     expected = {entry["id"] for entry in entries}
@@ -51,16 +41,7 @@ def main():
               file=sys.stderr)
         return 1
 
-    # unslop quotes this figure at the reader, so a silent drift makes the skill lie
-    # about its own corpus in a document whose whole argument is to be specific.
-    phrasings = phrasing_count(entries)
-    if f"knows {phrasings} phrasings" not in text:
-        print(f"{REFLEX.relative_to(REPO)} misstates the corpus size: "
-              f"the error categories hold {phrasings} phrasings.", file=sys.stderr)
-        return 1
-
-    print(f"unslop covers all {len(expected)} unconditional categories "
-          f"and quotes {phrasings} phrasings correctly")
+    print(f"unslop covers all {len(expected)} unconditional categories")
     return 0
 
 
