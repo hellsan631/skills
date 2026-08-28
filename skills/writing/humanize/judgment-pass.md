@@ -2,9 +2,9 @@
 
 Run this workflow after `humanize_lint.py` reports zero errors. Handle all twelve questions in order.
 
-1. What does every claim add? Mark wording that sounds deliberate or insightful but names no fact, instruction, position, or relationship. Choose the smallest repair that carries the meaning: delete empty words, substitute a precise word or clause, or explain a mechanism found in the source. No repair has a minimum length.
+1. What does each sentence tell the reader? Delete words that do not change the answer. If the answer is nothing, delete the sentence unless it is the only statement of a requirement. Ask what must happen before rewriting an unclear requirement. Split the sentence only when the replacement leaves two complete statements.
 
-2. Are flagged words doing real work? Remove the flagged word and read the claim again. Delete it when the meaning survives. Name the specific action or relationship when the word hides one. Keep a domain term when the source uses it precisely.
+2. Are flagged words doing real work? Remove the flagged word and read the claim again. Leave it out when the sentence still says the same thing. Otherwise, find what the word refers to in the source and say that directly. Ask the author when the source never explains it and the claim depends on it. Keep a domain term when the source uses it precisely.
 
 3. Is the register held steady? Compare the first and last paragraphs of the draft. Confirm they aim at the same level. Keep the overall grammar quality as constant as possible and match the medium (web log entry, op-ed, etc.).
 
@@ -12,19 +12,19 @@ Run this workflow after `humanize_lint.py` reports zero errors. Handle all twelv
 
 5. Is anything invented? Compare the draft line by line with all source material. Check names, dates, numbers, and quoted text first. Then account for every added actor, action, motive, mechanism, and consequence. Specificity does not license filling a gap.
 
-6. Is any load-bearing content lost? Keep verifiable facts, the caveats and conditions on claims, clear statements of the scope boundaries around your information, and intentional hedges. They are all content that you should keep.
+6. Did the rewrite lose anything the document depends on? Keep verifiable facts, caveats and conditions, scope boundaries, and intentional hedges.
 
 7. Does each heading, bullet list, and table earn its place? Every heading should denote a separate topic. Use lists for parallel items. Use tables when rows share a stable set of columns.
 
-8. Does every technical label have a stable meaning? A compound such as `capability-oriented` is a real term only when the document defines it, the code names it, or the audience already shares its meaning. When nearby prose states the behavior, use that behavior and remove the label. Repetition alone does not establish a term. Keep person and pronoun choices steady, and avoid ornamental synonym cycling.
+8. Is each technical label defined or doing more than repeating nearby prose? Keep it when the document defines it, the code uses it as a name, or the author says the intended readers already know it. Test every other label by removing it and rereading the passage. Leave it out when the meaning stays the same, and change only the grammar affected by its deletion. Repeating a label does not explain it. Keep the same name for a person or thing throughout the passage.
 
-9. Is a phrase performing clarity instead of saying what it means? Human virtues applied to software often hide a technical claim. For "keeps the process honest," use any operation or consequence stated in the source. Delete the phrase when nearby text already carries its meaning or when it adds no unique content. Flag it for clarification when it is the only statement of a required property. A word or clause may be the complete repair.
+9. Does the draft give software a human trait such as honest, smart, or thoughtful? Replace the trait with the action or result it refers to in the source. Delete it when nearby text already says the same thing. If the trait is the only statement of a requirement, ask what the software must do.
 
-10. Is there a person behind this text? Where the medium allows opinion, check that each position, admitted tradeoff, or preference has a reason. Opinion is optional. In neutral reference writing, use details specific enough that the prose could belong only to this subject.
+10. Does an opinion have support? Only add one when the source supports it, and put the supporting fact beside it. In neutral reference writing, use details specific to the subject.
 
-11. Does the ending land? It lands when it stops after the point with no recap or forward-looking speculation, and it lands when the final paragraph completes an idea without trailing off.
+11. Does the draft stop after its final point? Remove a recap or generic prediction. End after the last claim the source supports.
 
-12. Does every contrast carry required content? Explanatory prose should lead with the affirmative mechanism. Keep a negative clause when it states a source-backed exclusion, constraint, safety rule, or correction. For rhetorical `X, not Y`, `X rather than Y`, and *however* pivots, write the useful claim directly and explain its mechanism with only the text it needs.
+12. Is every contrast needed? Start an explanation with what happens. Keep a negative clause when it states an exclusion, constraint, safety rule, or correction found in the source. For rhetorical `X, not Y`, `X rather than Y`, and *however* pivots, state what happens without the rhetorical contrast. Keep an explanation only if it adds a fact found in the source.
 
 ## Delegating this pass
 

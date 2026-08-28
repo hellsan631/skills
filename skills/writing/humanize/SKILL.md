@@ -6,26 +6,28 @@ disable-model-invocation: true
 
 # Humanize
 
-Humanization removes AI tells, especially vague claims shaped to sound deliberate or insightful. Preserve the text's meaning and register. Delete empty phrasing, replace it with a precise word or clause, or explain a source-backed mechanism. Use only as much text as the claim needs.
+Humanization removes AI tells. Preserve the text's meaning and register. Cut empty wording. When a sentence hides what happened or what must happen, replace the vague wording with details from the source. Never fill a gap with a plausible detail.
 
 ## The loop
 
 Every humanize pass goes through all six steps.
 
 1. **Choose the profile.** Match it to the text's medium and audience. Ask for clarification only when it would change the rewrite.
-2. **Draft from the source.** Treat supplied material as evidence. When no separate source exists, the original text is the source. Find vague or calculated claims, then choose the smallest repair that makes each one plain.
+2. **Draft from the source.** Treat supplied material as evidence. When no separate source exists, the original text is the source. Check each unclear claim against that source. Delete a phrase when removing it changes no fact or requirement. If the phrase is the only statement of a requirement, ask the author what the software must do.
 3. **Run the checker.** Fix every `error`. For each `review`, revise the text or give a specific reason to keep it.
 4. **Re-run until zero errors.** Sometimes applying fixes can reintroduce tells.
 5. **Add grounded voice.** Use concrete details. Editorial judgment is optional. Add it only when the medium allows it and the source supports its reason.
 6. **Run the judgment pass.** Done when every question in `judgment-pass.md` has an answer against this draft. This step is part of every humanize pass, on every draft, at every length. Delegate to a subagent if the subagent is of the same capability as you.
 
-## Unwinding vague claims
+## Vague claims
 
-A calculated statement sounds finished while leaving the relationship unnamed. "The principles transfer cleanly," "parallel work is first-class," and "version-bound approvals keep the process honest" all perform clarity without explaining the claim.
+"The principles transfer cleanly," "parallel work is first-class," and "version-bound approvals keep the process honest" leave basic questions unanswered. Which principles apply elsewhere? Which work can run at the same time? What does the approval system do? Use answers found in the source.
 
-Technical-sounding compounds can hide the same gap. "Capability-oriented `AgentFactory`" adds nothing when the following prose already says that callers request an agent by task. Use the stated behavior and remove the label. Keep a technical term when the document defines it, the code names it, or the audience already shares its meaning.
+AI prose often invents a technical label for behavior that nearby prose already explains. Remove the label if the passage still means the same thing without it. Keep it when the document defines it, the code uses it as a name, or the author says the intended readers already know it. After removing a label, change only the grammar affected by its deletion.
 
-Find the literal claim in the source. Then choose the smallest repair that carries it: delete an empty phrase, replace it with a precise word or clause, or explain the mechanism. Humanization may shorten or expand the text. Editorial judgment is optional and needs an observable fact or source-backed reason. When the source defines the operation behind a human virtue applied to software, name that operation. Delete the virtue when it adds no unique content. Flag a load-bearing commitment for clarification when no source explains it.
+Try deleting unclear words first. If the sentence keeps the same fact or requirement, stop. If it does not, replace those words with the detail they stood for in the source. Reread the whole sentence and fix its grammar. Split it only when the replacement leaves two complete statements.
+
+Only add an opinion when the source supports it. Put the supporting fact beside the opinion. When a draft calls software honest, smart, or thoughtful, replace that trait with the action or result it refers to in the source. If the trait is the only statement of a requirement, ask what the software must do.
 
 ## Profiles
 
