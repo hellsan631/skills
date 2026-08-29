@@ -4,10 +4,10 @@ description: Use when a topic needs researching, when docs or API facts need gat
 disable-model-invocation: true
 ---
 
-Spin up a **background agent** to do the research, so you keep working while it reads.
+Start a **background agent** for the research so you can keep working while it reads.
 
 Its job:
 
-1. Investigate the question against **primary sources** (official docs, source code, specs, first-party APIs), not a secondary write-up of them. Follow every claim back to the source that owns it.
-2. Write the findings to a single Markdown file, citing each claim's source. State what each finding implies for the question that sent you looking, not just the fact itself — a reader deciding whether to trust or reopen the finding needs to see why it answers what was asked, not only what was found.
-3. Save it where the repo already keeps such notes; match the existing convention, and if there is none, put it somewhere sensible and say where.
+1. Investigate the question through **primary sources**: official docs, source code, specs, and first-party APIs. Do not rely on a secondary write-up. Trace every claim to the source that owns it.
+2. Write the findings to one Markdown file and cite the source for every claim. Explain what each finding implies for the original question. A reader needs both the fact and its relevance to decide whether to trust the finding or reopen the research.
+3. Follow the repo's existing convention for research notes. If it has none, choose a location in the repo and tell the user where you saved the file.

@@ -1,33 +1,36 @@
 ---
 name: principle-prove-it-works
-description: "Apply after completing a task, before declaring done. Verify against the real artifact (run the feature, read the actual value, inspect the diff), not a proxy, self-report, or 'it compiles.'"
+description: "Apply after completing a task and before declaring it done. Verify the real artifact by running the feature, reading the actual value, or inspecting the diff. Proxies, self-reports, and successful compilation do not prove the task works."
 disable-model-invocation: true
 ---
 
-# Prove It Works
+# Prove it works
 
-Verify every task output by checking the real thing directly. Do not infer from proxies, self-reports, or "it compiles."
+Check every task's real output directly. Do not infer correctness from proxies, self-reports, or successful compilation.
 
-**Why:** Unverified work has unknown correctness. Indirect verification (file mtimes, output freshness, agent self-reports, cached screenshots) feels cheaper than direct observation. Acting on a wrong inference costs far more than checking the source.
+Until you verify the work, its correctness is unknown. File mtimes, output freshness, agent self-reports, and cached screenshots are indirect checks. They may feel cheaper than direct observation. Acting on a wrong inference costs far more than checking the source.
 
-**Pattern:** After completing any task, ask: "how do I prove this actually works?"
+After completing any task, ask, "How do I prove this actually works?"
 
-Check the real thing, not a proxy:
-- Check process liveness directly, not indirectly through derived state
-- Read the actual value, not a cached or derived representation
-- When verification fails, suspect the observation method before suspecting the system
+## Direct evidence
 
-Code and features:
-1. Build it (necessary but not sufficient)
-2. Run it and exercise the actual feature path
-3. Check the full chain: does data flow from input to output?
-4. For integrations, test the full communication path end-to-end
+- Check process liveness directly. Derived state alone does not establish liveness.
+- Read the actual value. A cached or derived representation is insufficient.
+- When verification fails, check the observation method before diagnosing the system.
 
-Delegation: trust artifacts, not self-reports.
-When verifying delegated work, inspect the actual output artifact (git diff, file contents, runtime behavior), not the delegate's summary. Agents report what they intended, not always what happened.
+## Code checks
+
+1. Build it. A successful build is necessary but insufficient.
+2. Run it and exercise the actual feature path.
+3. Check the full chain. Confirm that data flows from input to output.
+4. For integrations, test the full communication path end-to-end.
+
+## Delegated work
+
+Verify delegated work from its actual output artifact, such as the git diff, file contents, or runtime behavior. A delegate's summary reports intent and may not match what happened.
 
 ## Script the check when you can
 
-The strongest proof is a deterministic script that re-runs the same comparison, not a one-time eyeball. Write the script, run it, and keep its output as an artifact a reviewer can re-run instead of trusting your word. A script comparing the old and new compiled output catches what a glance misses.
+A deterministic script provides the strongest proof because it reruns the same comparison. Write the script, run it, and keep its output so a reviewer can rerun it without trusting your word. A script that compares the old and new compiled output catches what a glance misses.
 
-Keep the artifact visible for the human. Commit it only for large or complex work where the trail has to be auditable later, like a big port or migration (the **show-me-your-work** skill). Most work just needs it visible, not committed.
+Keep the artifact visible for the human. Commit it only for large or complex work where the trail must remain auditable, such as a big port or migration covered by the **show-me-your-work** skill. For most work, leave the artifact visible and uncommitted.

@@ -1,18 +1,18 @@
 ---
 name: principle-laziness-protocol
-description: "Apply when refactoring, evaluating diff size, or tempted to add abstractions, layers, or signal threading. Bias toward deletion and the smallest change that solves the problem."
+description: "Apply while refactoring, evaluating diff size, or considering adding abstractions, layers, or signal threading. Prefer deletion and make the smallest change that solves the problem."
 disable-model-invocation: true
 ---
 
-# Laziness Protocol
+# Laziness protocol
 
-Writing code is cheap for you, which makes over-engineering easy. Counter it by borrowing a human maintainer's fatigue. Aim for the most result with the least code and complexity.
+Code is cheap for an agent to produce, so over-engineering is easy. Judge a solution by the fatigue it would cause a human maintainer. Get the required result with the least code and complexity.
 
-- **Prefer deletion.** When asked to refactor or improve, look for removals before additions.
-- **Maintain a flat call hierarchy.** Avoid deep call chains. A rich interface that hides substantial work is not a deep call chain. If answering a question requires tracing through more than 3 files or layers, flatten it.
-- **Consolidate decisions.** Do not repeat the same choice in several places. Put it behind one source of truth and pass the result as a simple flag.
-- **Minimize the diff.** Make the smallest change that solves the problem. Fewer lines beat "elegant" boilerplate.
-- **Question the threading.** If a task asks you to pass a new signal through types, schemas, pipelines, or similar layers, stop and look for a more direct path.
-- **Sweat the small leaks.** Remove tiny pass-throughs, representation leaks, and duplicated choices before they spread. Small leaks compound into permanent coordination costs.
+- When asked to refactor or improve, look for removals before additions.
+- Keep the call hierarchy flat and avoid deep call chains. A rich interface that hides substantial work does not count as a deep call chain. If answering a question requires tracing through more than 3 files or layers, flatten it.
+- Do not repeat the same choice in several places. Put it behind one source of truth and pass the result as a simple flag.
+- Make the smallest change that solves the problem. Prefer fewer lines to "elegant" boilerplate.
+- If a task asks you to pass a new signal through types, schemas, pipelines, or similar layers, stop and look for a more direct path.
+- Remove small pass-throughs, representation leaks, and duplicated choices before they spread. These leaks compound into permanent coordination costs.
 
-**Prime directive:** If a human developer would find the code exhausting to maintain, it is a bad solution. Be lazy. Stay simple.
+Reject a solution that a human developer would find exhausting to maintain. Be lazy and keep it simple.

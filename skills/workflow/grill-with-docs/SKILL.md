@@ -1,7 +1,7 @@
 ---
 name: grill-with-docs
-description: Use when a plan needs stress-testing and the answers should be written down as they land. Runs the grilling interview and produces ADRs and glossary entries from it.
+description: Use when a plan needs stress-testing and you need to record each answer as it arrives. Runs the grilling interview and records its answers as ADRs and glossary entries.
 disable-model-invocation: true
 ---
 
-Work from two skills at once: `grilling` for the interview, `domain-modeling` for the glossary and ADRs it produces.
+Work from `grilling` for the interview and, at the same time, from `domain-modeling` for the resulting glossary entries and ADRs.

@@ -29,6 +29,12 @@ Try deleting unclear words first. If the sentence keeps the same fact or require
 
 Only add an opinion when the source supports it. Put the supporting fact beside the opinion. When a draft calls software honest, smart, or thoughtful, replace that trait with the action or result it refers to in the source. If the trait is the only statement of a requirement, ask what the software must do.
 
+## Contrasts
+
+`Not just X, but Y` says that X and Y are both true. Write `X and Y` when both matter. Write Y alone when X only sets up Y. Removing only `just` turns the first claim into its opposite.
+
+A bare `X, not Y` may state a real exclusion. Keep Y when removing it changes the document's meaning or a requirement. Drop Y when X already makes the point or another sentence already states the boundary. Rewriting Y as a separate `Do not Y` sentence does not make it necessary. Use that command only when the source states a prohibition; otherwise keep a descriptive exclusion descriptive.
+
 ## Profiles
 
 There are two humanize profiles, `doc` and `reference`. The difference between them is the structural strictness: some structural rules apply only in `reference`.

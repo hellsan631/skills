@@ -1,34 +1,38 @@
 ---
 name: principle-boundary-discipline
-description: "Apply when wiring validation, error handling, or framework adapters. Concentrate guards at system boundaries (CLI, config, network, external APIs); trust internal types and keep business logic in pure functions."
+description: "Apply when wiring validation, error handling, or framework adapters. Put guards at system boundaries such as the CLI, config, network, and external APIs. Trust internal types, and keep business logic in pure functions."
 disable-model-invocation: true
 ---
 
-# Boundary Discipline
+# Boundary discipline
 
-Place validation, type narrowing, and error handling at system boundaries. Trust internal code unconditionally. Business logic lives in pure functions; the shell is thin and mechanical.
+Put validation, type narrowing, and error handling at system boundaries. Once data has crossed a validated boundary, internal code trusts it without rechecking. Keep business logic in pure functions and the shell thin and mechanical.
 
-**Why:** Scattered validation is noisy, redundant, and gives a false sense of safety. Validate data once at the boundary. Keep logic out of framework wiring so it can be tested without the framework.
+Scattered validation adds noise, repeats work, and can suggest safety it does not provide. Validate data once at the boundary. Keep business logic out of framework wiring so tests can exercise it without the framework.
 
-**The pattern:**
-- **At boundaries** (CLI args, config files, external APIs, network protocols): validate, return errors, handle defensively.
-- **Inside the system:** typed data, error propagation, no re-validation. Trust the types.
-- **Across the boundary.** Expose domain concepts, not the boundary's private representation. Keep general-purpose mechanism inside and special-purpose policy at the edge.
+## Pattern
 
-**Applications:**
+At boundaries such as CLI args, config files, external APIs, and network protocols, validate input, return errors, and handle defensively.
 
-Validation and error handling:
-- Validate config at parse time (the boundary), not inside business logic
-- Parse raw data into domain types at the boundary
-- Do not re-export transport, storage, framework, or wire types through the public surface
-- No redundant nil checks deep in call chains if the boundary already validated
+Inside the system, work with typed data, propagate errors, and skip re-validation. Trust the types.
 
-Code organization:
-- Business logic in pure functions with no framework dependencies
-- Parse functions: pure transforms from raw bytes to typed state
-- Prompt construction: structured state in, string out
-- Scoring and assessment: pure transforms from state to results
+Across the boundary, expose domain concepts instead of the boundary's private representation. Keep general-purpose mechanism inside and special-purpose policy at the edge.
 
-**The tests:**
-- "Is this data crossing a system boundary right now?" If not, validation is redundant.
-- "Can this be a pure function that the shell just calls?" If yes, extract it.
+## Applications
+
+### Validation and error handling
+
+- Validate config at parse time, before it reaches business logic.
+- Parse raw data into domain types at the boundary.
+- Keep transport, storage, framework, and wire types out of the public surface.
+- Once the boundary has validated the data, skip redundant nil checks deep in call chains.
+
+### Code organization
+
+Keep business logic in pure functions with no framework dependencies. Make parse functions pure transforms from raw bytes to typed state. Build prompts by transforming structured state into strings. Make scoring and assessment pure transforms from state to results.
+
+## Tests
+
+Ask, "Is this data crossing a system boundary right now?" If the answer is no, validation is redundant.
+
+Ask, "Can this be a pure function that the shell just calls?" If the answer is yes, extract it.

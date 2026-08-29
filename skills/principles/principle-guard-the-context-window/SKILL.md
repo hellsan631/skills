@@ -1,17 +1,18 @@
 ---
 name: principle-guard-the-context-window
-description: "Apply when context is filling up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents; keep summaries in the main thread, not raw payloads."
+description: "Apply when large outputs, long files, repeated reads, or fan-out planning fill the context. Send bulk material to subagents. Keep summaries in the main thread and raw payloads out."
 disable-model-invocation: true
 ---
 
-# Guard the Context Window
+# Guard the context window
 
-The context window is finite and non-renewable within a session. Every token that enters should earn its place.
+A session has a fixed context window. Include only material that helps the current work.
 
-**Why:** Context overflow degrades reasoning quality, creates compression artifacts, and halts progress. Unlike compute or time, context spent inside a session cannot be reclaimed.
+Context overflow harms reasoning, creates compression artifacts, and halts progress. More compute or time cannot reclaim context already spent inside a session.
 
-**Pattern:**
-- **Isolate large payloads.** Route verbose outputs, screenshots, and large documents to subagents. The main context gets summaries, not raw data.
-- **Don't read what you won't use.** Read selectively based on relevance. If a file isn't needed for the current task, skip it.
-- **Keep frequently used content inline.** Templates and references used on every invocation belong in the skill file, not in separate files that cost a read each time.
-- **Size phases and cap scope.** Limit files per phase, set turn budgets, account for mechanism costs.
+## Pattern
+
+- Send verbose outputs, screenshots, and large documents to subagents. Put their summaries in the main context and leave out the raw data.
+- Read only the files and sections relevant to the current task. Skip any file you will not use.
+- Keep templates and references used on every invocation in the skill file. A separate file costs another read each time.
+- Limit the files in each phase, set turn budgets, and account for mechanism costs.

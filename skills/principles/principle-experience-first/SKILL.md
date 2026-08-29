@@ -1,19 +1,19 @@
 ---
 name: principle-experience-first
-description: "Apply when product, UX, or feature-scope tradeoffs come up. Choose user delight over implementation convenience; ship fewer polished features over more rough ones."
+description: "Apply when product, UX, or feature-scope tradeoffs arise. Favor user delight when it conflicts with implementation convenience. Ship fewer features at a polished level."
 disable-model-invocation: true
 ---
 
-# Experience First
+# Experience first
 
-The product is the experience. Every technical decision either helps or hurts it. When implementation convenience conflicts with user delight, choose delight.
+Judge every technical decision by its effect on the product experience. When implementation convenience conflicts with user delight, choose delight.
 
-- Say no to 1,000 things (every feature, control, and option must earn its place)
-- Ship less, ship better (a polished experience with three features beats a rough one with ten)
-- Prototype before committing (design decisions are cheaper in throwaway HTML than production code)
-- Sweat the details (transitions, alignment, spacing, feedback, error states)
-- Tighten the core loop (every feature should serve the central workflow or get out of the way)
+- Say no to 1,000 things by making every feature, control, and option earn its place.
+- Choose a polished experience with three features over a rough one with ten.
+- Prototype before committing to production code. For example, use throwaway HTML, where design decisions are cheaper than in production code.
+- Polish transitions, alignment, spacing, feedback, and error states.
+- Make every feature serve the central workflow. Keep peripheral features outside that workflow so they stay out of the way.
 
-The user is whoever consumes the work. For a UI that is the end user. For a library or an internal API it is the colleague who imports it. The engineer who maintains the code next is a user too. Weigh their experience the same way, and explain impact from their seat.
+A user is anyone who consumes the work. In a UI, that is the end user. For a library or internal API, it is the colleague who imports it. The engineer who maintains the code next is also a user. Evaluate each person's experience by the same standard, and explain the impact from that person's point of view.
 
-Foundations should serve the experience, not the other way around. Foundational thinking governs the *sequence* of work; this principle governs the *target*.
+Make foundational work serve the experience. Foundational thinking governs the *sequence* of work. This principle governs the *target*.

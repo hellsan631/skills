@@ -24,7 +24,7 @@ Run this workflow after `humanize_lint.py` reports zero errors. Handle all twelv
 
 11. Does the draft stop after its final point? Remove a recap or generic prediction. End after the last claim the source supports.
 
-12. Is every contrast needed? Start an explanation with what happens. Keep a negative clause when it states an exclusion, constraint, safety rule, or correction found in the source. For rhetorical `X, not Y`, `X rather than Y`, and *however* pivots, state what happens without the rhetorical contrast. Keep an explanation only if it adds a fact found in the source.
+12. What does each contrast assert? `Not just X, but Y` says that both claims are true. Write `X and Y` when both matter, or Y alone when X adds nothing. Removing only `just` reverses the first claim. For bare `X, not Y`, keep Y when removing it changes the document's meaning or a requirement and no nearby sentence already states it. A separate `Do not Y` sentence still needs the same test. Use that command only when the source states a prohibition; otherwise keep a descriptive exclusion descriptive. State `X rather than Y` and *however* pivots directly when the comparison adds no fact from the source.
 
 ## Delegating this pass
 

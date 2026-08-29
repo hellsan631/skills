@@ -1,46 +1,45 @@
 ---
 name: principal-game-designer
-description: Use when drafting a game system's design, revising one, critiquing a design document, or checking whether a spec is actually buildable.
+description: Use when drafting a game system's design, revising one, critiquing a design document, or checking whether a spec is buildable.
 disable-model-invocation: true
 ---
 
 # Principal game designer
 
-Two ways a design document fails. **Boring** is a rigorous spec for a system nobody
-enjoys playing: every number supplied, every edge case handled, no reason to care.
-**Unbuildable** is a compelling fantasy nobody can implement: the pitch lands, then
-engineering, art, and QA each guess differently and ship three different things.
+A design document can fail in two ways. **Boring** is a rigorous spec that supplies every
+number and handles every edge case for a system that gives players no reason to care and
+that nobody enjoys playing. **Unbuildable** is a compelling fantasy that nobody can
+implement. Engineering, art, and QA each make a different guess and ship three different
+things.
 
-Rigor protects the fun and is never the point. A document that is precise about a system
-holding no meaningful decision has failed, even with every review box ticked.
+Use rigor to protect the fun. A precise document still fails when its system offers no
+meaningful decision, even when reviewers tick every box.
 
 ## Start here, whatever the mode
 
 1. **Name the mode.** Drafting or revising goes to [`writing.md`](./writing.md).
    Reviewing a GDD section, reviewing a PRD, or auditing a doc set goes to
    [`reviewing.md`](./reviewing.md).
-2. **Read the target document in full**, along with every section it cross-references.
-   A review that quotes text you did not open is how false findings reach the author.
-3. **Match the project.** The existing docs and any nearby `AGENTS.md` are the convention
-   source: heading depth, metadata headers, placeholder syntax, scope-phase labels, who
-   the primary reader is, and the established term for each core concept. Adopt those
-   over any default in this skill, and never coin a near-synonym for a term the project
-   already settled.
+2. **Read the target document in full.** Also read every section it cross-references.
+   Open text before quoting it; otherwise the review may give the author false findings.
+3. **Follow project conventions.** Use the existing docs and any nearby `AGENTS.md` as
+   the source for heading depth, metadata headers, placeholder syntax, scope-phase
+   labels, the primary reader, and established terms for core concepts. These
+   conventions override defaults in this skill. Use the project's established term for
+   each core concept throughout.
 4. **Restate the frame before proposing anything**: core fantasy, target player,
-   constraints, and success criteria. Where the document supplies none, say so rather
-   than inventing one.
-5. **Split fixed intent from open design space.** Fixed intent is what you may not change
-   without asking: the fantasy, shipped contracts, and the section's role in the set. Open
-   design space is everything you may propose freely. Getting this pair backward is the
-   most expensive mistake available here.
+   constraints, and success criteria. If the document omits one, identify the omission;
+   do not invent it.
+5. **Separate fixed intent from open design space.** Fixed intent covers the fantasy,
+   shipped contracts, and the section's role in the set. Ask before changing any of it.
+   You may freely propose changes to everything else as open design space.
 
 Ask a clarifying question when the answer would change the design. Otherwise state your
-assumption and keep going.
+assumption and continue.
 
 ## The why stack
 
-Every rule, number, and cut carries five things. A document missing them reads as decided
-by nobody, and the next editor quietly undoes the design without knowing it was one.
+For every rule, number, and cut, record five things:
 
 - The player behavior it creates
 - The pillar it serves
@@ -48,50 +47,50 @@ by nobody, and the next editor quietly undoes the design without knowing it was 
 - The evidence that would validate it
 - The failure signal that would force a revision
 
-The stack is what survives handoff. Rules alone do not: six months later nobody
-remembers which numbers were load-bearing and which were guesses.
+Keep this stack with its rules during handoff. Six months later, the rules alone do not
+show which numbers the design depends on and which were guesses, so an editor may undo a
+deliberate choice.
 
 ## Pillars
 
-A pillar is not a slogan. Each carries an intent, a document guideline, a decision test,
-and an anti-goal. "Readable Uncertainty" on its own settles no argument. "Uncertainty
+Each pillar includes an intent, a document guideline, a decision test, and an anti-goal.
+The slogan "Readable Uncertainty" does not settle an argument on its own. "Uncertainty
 narrows through investment and match evidence, never through arbitrary reveals" settles
-several, because a reviewer can hold a rule against it and get a verdict.
+several because a reviewer can test a rule against it and reach a verdict.
 
 ## Quality bar
 
-Write in present tense. The game behaves this way, rather than will behave.
+Write in present tense and describe how the game behaves.
 
-Quantify or mark. Every quantity is a number, a defined range, or a pointer to a formula.
-When the value is undecided, write the project's placeholder form rather than a
-plausible-looking figure. A placeholder is honest, and a fake-final number is a trap for
-whoever tunes it later.
+Write every quantity as a number, a defined range, or a pointer to a formula. When a
+value remains undecided, use the project's placeholder form. Do not supply a
+plausible-looking figure; whoever tunes it later may mistake it for a final value.
 
-Stake out the design. "Might", "could", and "some kind of" are not positions. Genuine
-uncertainty belongs in the open-questions list where it gets tracked, rather than smeared
-through the prose. "Fast", "big", and "a lot" are not specifications.
+State design positions directly. "Might", "could", and "some kind of" do not state a
+position. Track genuine uncertainty in the open-questions list. "Fast", "big", and "a
+lot" are not specifications.
 
-Keep the current scope phase clean. Material for a later phase belongs in a labeled
-expansion hook. Where a system depends on a deferred feature, note the dependency and
-move on rather than designing that feature inline.
+Keep the current scope phase separate from later phases. Put later-phase material in a
+labeled expansion hook. When a system depends on a deferred feature, note the dependency
+and continue with the current scope. Do not design the deferred feature inline.
 
 ## Verify before delivering
 
-Design first, because this is the half that matters and the half that gets skipped.
-The work names a meaningful player decision, and every piece of complexity earns its
-place. When the system is not fun or not legible, say that plainly and propose a fix
-rather than documenting the problem neatly.
+Verify the design first. The work names a meaningful player decision. For each piece of
+complexity, show how the player behavior it creates and the pillar it serves justify its
+accepted cost. When the system is not fun or not legible, state the problem plainly and
+propose a fix.
 
-Then the document. Every quantity is a number or a marked placeholder. Every claimed
-contradiction was confirmed by opening the other file. Every quoted line and reference is
-accurate. Terminology matches the project's existing docs. No later-phase feature is
-designed inline. Assumptions are stated and open questions are tracked rather than
-buried.
+Then verify the document. Every quantity is a number or a marked placeholder. Open the
+other file to confirm every claimed contradiction. Check every quoted line and reference
+for accuracy. Match terminology to the project's existing docs. Do not design a
+later-phase feature inline. State assumptions and track open questions in the
+open-questions list.
 
-Deliver when both halves hold, rather than when the section starts to look finished.
+Deliver only when both the design and the document pass these checks.
 
 ## Prose
 
-Run the finished text through the prose checker before delivering, by working from
-the `humanize` skill. Use its `doc` profile, which allows the bold-header lists and title-case
-headings that most design docs use as house style.
+Before delivering, work from the `humanize` skill and run the finished text through the
+prose checker. Use its `doc` profile, which permits house-style bold-header lists and
+title-case headings.

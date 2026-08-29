@@ -43,7 +43,7 @@ A scrubbed sentence can still say nothing, so read each one for what it gives th
 
 7. **AI vocabulary.** Examples: "additionally", "crucial", "delve", "enduring", "enhance", "fostering", "garner", "interplay", "intricate", "landscape" (abstract), "pivotal", "showcase", "tapestry" (abstract), "testament", "underscore", "vibrant". Replace with plain words (`ai-vocabulary`).
 8. **Fancy ways to say "is".** "serves as", "stands as", "boasts", "features". Just say "is" or "has" (`copula-avoidance`).
-9. **"Not just X, but Y."** State the point directly instead. This also includes other forms of negative parallelism, like those that use semicolons (`negative-parallelism`, `negative-parallelism-density`).
+9. **"Not just X, but Y."** Both claims are true. Write "X and Y" when both matter, or write Y alone when X only sets it up. Removing "just" changes X from true to false. The same rewrite applies to punctuation variants such as "doesn't just X; it Y". For bare "X, not Y", drop Y when it repeats a nearby rule. Keep Y when removing it changes the meaning or a requirement. Turn Y into "Do not Y" only when the source states a prohibition (`negative-parallelism`, `negative-parallelism-density`).
 10. **Rule of three.** Forcing ideas into groups of three, or five, or ten. Use a natural number, the one that comes from what there is to say (`rule-of-three`).
 11. **Synonym cycling.** Protagonist, main character, central figure, hero all in one paragraph. Pick one, repeat it.
 12. **False ranges.** "from X to Y" where X and Y aren't on a meaningful scale. List topics directly (`false-range`).
