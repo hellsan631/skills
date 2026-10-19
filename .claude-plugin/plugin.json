@@ -21,7 +21,9 @@
     "agent-skills"
   ],
   "skills": [
+    "./skills/design/game-visual-identity",
     "./skills/design/principal-game-designer",
+    "./skills/design/visual-identity-grilling",
     "./skills/engineering/blast-radius",
     "./skills/engineering/codebase-design",
     "./skills/engineering/domain-modeling",

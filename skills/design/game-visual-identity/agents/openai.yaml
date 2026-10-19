@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game visual identity"
+  short_description: "Develop coherent game characters, icons, and art"
+  default_prompt: "Use $game-visual-identity to align global game and local asset-family design pillars, explore visual directions, and create consistent characters and icons."

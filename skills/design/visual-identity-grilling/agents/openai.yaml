@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual identity grilling"
+  short_description: "Iterate on game art through visual decision rounds"
+  default_prompt: "Use $visual-identity-grilling to challenge my visual direction, show focused comparisons, and refine the art through short decision rounds."

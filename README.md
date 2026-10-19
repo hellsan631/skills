@@ -37,12 +37,12 @@ Copies the skills into your repo as ordinary files you own and can edit. Afterwa
 
 ## What is in here
 
-`unslop` and `writing-for-agents` are the only skills here that are auto-invoked by the model. This is to improve the writing quality of the normal chat, or when you create more skills. The rest are ment to be used whenever you choose.
+`unslop`, `writing-for-agents`, `game-visual-identity`, and `visual-identity-grilling` can be selected automatically when their descriptions match the task. The other skills are invoked by the user.
 
 Below are the groupings for each of the skills.
 
 - **[writing](./skills/writing/README.md)**: Skills ment to help desloping AI output.
-- **[design](./skills/design/README.md)**: Pricipal-level personas for various domain-specific work.
+- **[design](./skills/design/README.md)**: Game systems documentation, visual identity, and iterative art direction.
 - **[engineering](./skills/engineering/README.md)**: Architecture, implementation, research, and prototyping skills.
 - **[workflow](./skills/workflow/README.md)**: Just pure "workflow" helper skills, like grilling, and "show me your work".
 - **[principles](./skills/principles/README.md)**: ten single-conviction skills that other
