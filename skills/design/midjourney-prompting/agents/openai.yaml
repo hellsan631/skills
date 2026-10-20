@@ -1,0 +1,4 @@
+interface:
+  display_name: "Midjourney Prompting"
+  short_description: "Write Midjourney prompts and refine generated images"
+  default_prompt: "Use $midjourney-prompting to prepare a prompt, guide me through the appropriate model and reference setup, and help refine the images I generate."

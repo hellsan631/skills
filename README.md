@@ -37,7 +37,7 @@ Copies the skills into your repo as ordinary files you own and can edit. Afterwa
 
 ## What is in here
 
-`unslop`, `writing-for-agents`, `game-visual-identity`, and `visual-identity-grilling` can be selected automatically when their descriptions match the task. The other skills are invoked by the user.
+`unslop`, `writing-for-agents`, `game-visual-identity`, `visual-identity-grilling`, and `midjourney-prompting` can be selected automatically when their descriptions match the task. The other skills are invoked by the user.
 
 Below are the groupings for each of the skills.
 
