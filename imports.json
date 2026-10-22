@@ -10,6 +10,11 @@
       "repo": "https://github.com/backnotprop/pstack",
       "license": "MIT",
       "imported_at": "18e0e908a13553b0e58d065ab26dbc9a972ec8ba"
+    },
+    "omer-metin": {
+      "repo": "https://github.com/omer-metin/skills-for-antigravity",
+      "license": "Apache-2.0",
+      "imported_at": "e8dcf4e8737921a10088bd5c9eb65e81f74c051f"
     }
   },
   "skills": [
@@ -154,6 +159,12 @@
       "source": "pstack",
       "upstream_path": "skills/why",
       "path": "skills/engineering/why"
+    },
+    {
+      "source": "omer-metin",
+      "upstream_path": "skills/game-ui-design",
+      "path": "skills/design/game-ui-design",
+      "humanized": true
     }
   ]
 }

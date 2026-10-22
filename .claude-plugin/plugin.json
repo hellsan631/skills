@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/hellsan631/skills",
   "repository": "https://github.com/hellsan631/skills",
-  "license": "MIT",
+  "license": "MIT AND Apache-2.0",
   "keywords": [
     "writing",
     "humanize",
@@ -21,6 +21,7 @@
     "agent-skills"
   ],
   "skills": [
+    "./skills/design/game-ui-design",
     "./skills/design/game-visual-identity",
     "./skills/design/midjourney-prompting",
     "./skills/design/principal-game-designer",

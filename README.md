@@ -42,10 +42,10 @@ Copies the skills into your repo as ordinary files you own and can edit. Afterwa
 Below are the groupings for each of the skills.
 
 - **[writing](./skills/writing/README.md)**: Skills ment to help desloping AI output.
-- **[design](./skills/design/README.md)**: Game systems documentation, visual identity, and iterative art direction.
+- **[design](./skills/design/README.md)**: Game systems documentation, screen composition, visual identity, and iterative art direction.
 - **[engineering](./skills/engineering/README.md)**: Architecture, implementation, research, and prototyping skills.
 - **[workflow](./skills/workflow/README.md)**: Just pure "workflow" helper skills, like grilling, and "show me your work".
 - **[principles](./skills/principles/README.md)**: ten single-conviction skills that other
   skills cite by name as a test to apply.
 
-I am releasing this code under the MIT License; see LICENSE for full text. See also ATTRIBUTION.md for all imported skills and their authors.
+Original code in this repo is released under the MIT License; see LICENSE for the full text. The imported game-ui-design skill and its adaptations use Apache-2.0, with a license and notice inside that skill's directory. See ATTRIBUTION.md for imported skills and their authors.

@@ -1,6 +1,12 @@
 <!-- humanize-lint: ignore-file list-density — attribution index: each source owns a parallel list of imported skills -->
 # Attribution
 
+## Omer Metin and Vibeship
+
+The [game-ui-design](./skills/design/game-ui-design/SKILL.md) skill is adapted from [omer-metin/skills-for-antigravity](https://github.com/omer-metin/skills-for-antigravity). That repository credits [Vibeship Spawner Skills](https://github.com/vibeforge1111/vibeship-spawner-skills) as its original source, Copyright (c) Vibeship (vibeforge1111).
+
+The skill and its adaptations use [Apache-2.0](./skills/design/game-ui-design/LICENSE). Its [NOTICE](./skills/design/game-ui-design/NOTICE) records the imported revision and local changes. The license and notice are kept with the skill so a standalone copy preserves attribution.
+
 ## Matt Pocock
 
 https://github.com/mattpocock/skills

@@ -17,7 +17,7 @@ A skill that ships an executable also ships `scripts/install-shim.sh` beside it,
 
 ## Importing a skill from elsewhere
 
-`python3 scripts/imports.py add <source> <upstream-path> <dest-path>` copies a skill in, generates its picker metadata, and records where it came from in `imports.json`. Credit the author in [ATTRIBUTION.md](./ATTRIBUTION.md); both current sources are MIT, and a source that is not needs checking before anything is copied.
+`python3 scripts/imports.py add <source> <upstream-path> <dest-path>` copies a skill in, generates its picker metadata, and records where it came from in `imports.json`. Check the source license before copying. Credit the author in [ATTRIBUTION.md](./ATTRIBUTION.md) and keep required licenses and notices inside the skill so they travel with standalone copies.
 
 An imported skill is ours to edit. Nothing re-syncs it, so local changes are safe. `python3 scripts/imports.py diff` shows what the original author changed since we copied, which is how a good idea upstream gets adopted on purpose rather than merged in blind.
 

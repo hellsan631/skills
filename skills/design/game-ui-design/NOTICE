@@ -1,0 +1,19 @@
+Game UI Design
+
+Adapted from omer-metin/skills-for-antigravity, skills/game-ui-design.
+Upstream: https://github.com/omer-metin/skills-for-antigravity
+Imported revision: e8dcf4e8737921a10088bd5c9eb65e81f74c051f
+Original source credited upstream: Vibeship Spawner Skills.
+Copyright (c) Vibeship (vibeforge1111).
+Upstream Markdown conversion: omer-metin.
+
+This skill and its adaptations are distributed under Apache-2.0.
+The full license is included in LICENSE in this directory.
+
+Modified by hellsan631/skills on 2026-10-15:
+Replaced the persona with guidance for designing game screens.
+Added composition, player fantasy, mechanical relationships, visual direction,
+and authored feedback states to the main instructions.
+Rewrote references around screen design and rendered-artifact critique.
+Replaced regex UI judgments and text-only evaluation with visual comparisons.
+Added practitioner sources, design evaluation briefs, and Codex picker metadata.

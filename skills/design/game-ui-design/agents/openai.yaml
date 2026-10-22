@@ -1,0 +1,6 @@
+interface:
+  display_name: "Game UI Design"
+  short_description: "Design distinctive game screens and interaction states"
+  default_prompt: "Use $game-ui-design to design this game screen, render it, and refine its composition and visual identity."
+policy:
+  allow_implicit_invocation: false
