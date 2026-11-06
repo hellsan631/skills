@@ -1,0 +1,5 @@
+interface:
+  display_name: "Brainstorm Skill Ideas"
+  short_description: "Spot the skills a chat history is asking for"
+policy:
+  allow_implicit_invocation: false

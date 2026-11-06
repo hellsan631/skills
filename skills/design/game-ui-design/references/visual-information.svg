@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Meaning made visual</title>
+  <desc id="description">Two schematic comparisons. A paragraph about archer pressure followed by expansion becomes two equal-size pictograms joined by an arrow. A load of 125 against capacity 100 becomes five solid chunks of 25, with a capacity marker after the fourth chunk. A second bar shows load 50 against capacity 100 using four wider chunks, two filled. Both bars have the same overall width and the same value per chunk.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#d5be83" stroke-width="1.5"/>
+    </marker>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #edf2f3; }
+      .muted { fill: #a8bac4; }
+      .heading { font-size: 22px; font-weight: 700; }
+      .body { font-size: 24px; }
+      .small { font-size: 18px; }
+      .icon { fill: none; stroke: #d5be83; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="800" fill="#0c1b28"/>
+  <text x="48" y="66" font-size="36" font-weight="700">Meaning made visual</text>
+  <text x="64" y="132" class="heading muted">Explained in text</text>
+  <text x="610" y="132" class="heading muted">Shown in the UI</text>
+  <path d="M48 154H1152 M48 405H1152 M552 180V726" stroke="#304653" stroke-width="1"/>
+
+  <!-- Sequence is carried by position and a directional connection. -->
+  <text x="64" y="234" class="body">
+    <tspan x="64" dy="0">Train archers to pressure</tspan>
+    <tspan x="64" dy="36">the enemy. After that,</tspan>
+    <tspan x="64" dy="36">establish a second base.</tspan>
+  </text>
+  <rect x="630" y="190" width="170" height="165" rx="9" fill="#142936" stroke="#49606c"/>
+  <rect x="940" y="190" width="170" height="165" rx="9" fill="#142936" stroke="#49606c"/>
+  <g class="icon">
+    <path d="M697 215Q756 253 697 291L718 253Z"/>
+    <path d="M679 253H751 M741 243L751 253L741 263 M679 253L670 246 M679 253L670 260"/>
+    <path d="M997 250L1025 226L1053 250V289H997Z M990 250L1025 219L1060 250"/>
+    <path d="M1017 289V267H1033V289 M1048 238V217H1070L1061 225L1070 233H1048"/>
+  </g>
+  <path d="M824 265H915" stroke="#d5be83" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <text x="715" y="332" text-anchor="middle" font-size="20">Archer pressure</text>
+  <text x="1025" y="332" text-anchor="middle" font-size="20">Expand</text>
+
+  <!-- Fixed-value chunks retain their meaning when overflow changes their width. -->
+  <text x="64" y="496" class="body">
+    <tspan x="64" dy="0">Load 125.</tspan>
+    <tspan x="64" dy="36">Capacity 100.</tspan>
+    <tspan x="64" dy="36">Over capacity by 25.</tspan>
+  </text>
+  <text x="610" y="470" font-size="28" font-weight="700">125%</text>
+  <g>
+    <rect x="610" y="494" width="97.6" height="38" fill="#62b48d"/>
+    <rect x="715.6" y="494" width="97.6" height="38" fill="#62b48d"/>
+    <rect x="821.2" y="494" width="97.6" height="38" fill="#dcb857"/>
+    <rect x="926.8" y="494" width="97.6" height="38" fill="#dc8d51"/>
+    <rect x="1032.4" y="494" width="97.6" height="38" fill="#d46666"/>
+    <path d="M1028.4 485V542" stroke="#edf2f3" stroke-width="2"/>
+  </g>
+  <text x="1028.4" y="567" text-anchor="end" class="small muted">Capacity 100</text>
+  <text x="610" y="614" font-size="28" font-weight="700">50%</text>
+  <g>
+    <rect x="610" y="636" width="124" height="38" fill="#62b48d"/>
+    <rect x="742" y="636" width="124" height="38" fill="#62b48d"/>
+    <rect x="874" y="636" width="124" height="38" fill="#243c4a" stroke="#49606c"/>
+    <rect x="1006" y="636" width="124" height="38" fill="#243c4a" stroke="#49606c"/>
+    <path d="M1130 627V684" stroke="#edf2f3" stroke-width="2"/>
+  </g>
+  <text x="1130" y="707" text-anchor="end" class="small muted">Capacity 100</text>
+  <text x="610" y="738" class="small muted">25 per chunk</text>
+  <text x="48" y="781" class="small muted">Schematic examples. Choose imagery, thresholds, and units for the game.</text>
+</svg>

@@ -1,6 +1,6 @@
 ---
 name: game-ui-design
-description: Use when designing or redesigning game HUDs, menus, inventories, character screens, maps, progression screens, or results screens; when creating their composition, art direction, visual hierarchy, and interaction storyboards.
+description: Use when designing or redesigning game HUDs, menus, inventories, character screens, maps, progression screens, or results screens; when making text-heavy game UI more visual; when creating composition, art direction, visual hierarchy, and interaction storyboards.
 disable-model-invocation: true
 license: Apache-2.0
 ---
@@ -39,11 +39,25 @@ Decide what owns the frame: the playable scene, a character, an item, a map, a b
 
 Vary scale, value, silhouette, alignment, and density to create the reading order. Reserve the strongest accents for the current choice or event. Keep supporting frames and textures subordinate to the content they organize. At thumbnail size, the main subject and hierarchy should still be recognizable.
 
+### Visuals carry information
+
+Identify what each explanation tells the player: identity, sequence, quantity, capacity, configuration, or consequence. Choose a visual relationship that communicates that meaning. An arrow can show the next step; a socket can show an assignment; aligned gauges can reveal which demand exceeds capacity. Moving the explanation into a tooltip still leaves the player reading it.
+
+Use the [visual information patterns](references/patterns.md#visual-information-and-compression) when a screen depends on prose or repeats information. Keep short names and exact rules where pictures would be ambiguous. A collection of unfamiliar symbols can demand more interpretation than a sentence.
+
 ### Information density serves the decision
 
-Keep related values visible together when the player must compare them. Favor concise labels, recognizable item imagery, and meaningful diagrams where they communicate faster than explanatory prose. Put detailed rules and lore in inspection without hiding the identity or broad purpose of a choice.
+Combine related information into a recognizable object when its parts remain distinguishable. Artwork can identify a build, socketed emblems can show its configuration, and a marking can show its state. Give each part a stable position and meaning. Keep the object recognizable at its actual display size; separate details when the combination becomes crowded or ambiguous.
+
+Keep related values visible together when the player must compare them. Show the overall result in the overview and its contributing parts on inspection. Retain enough information to choose without opening every object. Remove repeated explanations, and judge tooltips by the same visual standard as the main screen.
 
 Treat deliberate uncertainty as part of the design. A player may need to recognize a strategic role while discovering its exact interactions through play. Expose what makes a choice intentional without inventing certainty the game does not provide. Judge empty space and density by the work the player needs to do.
+
+### Text uses the player's concepts
+
+Name choices by the action, role, or outcome the player recognizes in this game. Keep established terminology consistent across the object, chooser, and inspection. Check examples against the game's actual mechanics; a reference game's technology or units do not establish what exists here.
+
+When a choice needs explanation, use one sentence that states what it does and the consequence that matters for choosing it. For example, "Attack before the enemy builds up, at the cost of a smaller economy." Keep necessary uncertainty labels short. Put calculation methods in design notes unless the player needs them to decide.
 
 ### Feedback gives an action weight
 

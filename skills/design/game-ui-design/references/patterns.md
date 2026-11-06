@@ -4,6 +4,48 @@
 
 Choose the relevant screen family, then adapt its composition to the actual mechanics, art direction, and pace of play. These are design decisions to resolve in rendered frames. Review the result with [rendered critique](critique.md).
 
+## Visual information and compression
+
+Use these patterns when explanations dominate the screen or the user asks for a more visual treatment. Start with the meaning the player needs, then choose how to draw it. Reducing word count alone can leave the same reading burden or remove the distinction that made a choice understandable.
+
+### Match the representation to the meaning
+
+| Meaning | Visual treatment | Keep clear |
+| --- | --- | --- |
+| Identity | Recognizable artwork, silhouette, or emblem | Preserve established motifs; retain a short name for unfamiliar subjects. |
+| Sequence | Aligned objects with directional connections | Arrows must express the actual order; a sequence is different from branching prerequisites. |
+| Assignment | An item seated in its socket or attached to its owner | Show the relationship directly instead of repeating it in an adjacent list. |
+| Quantity or capacity | Length, fill, countable chunks, and a capacity marker | Define the unit and scale so the visual supports comparison. |
+| Difference or tradeoff | Aligned comparisons with the changed capability and cost visible | Show what the player gains and sacrifices when the rules establish both. |
+| Fit | Current values positioned against requirements | Mark the shortfall as well as its color; preserve uncertainty in estimates. |
+| Action preview | A ghost of the resulting object in its destination | A dragged card can reveal its actual banner or socket before the player drops it. |
+
+The [illustrated examples](visual-information.svg) turn a sequence into connected objects and a capacity explanation into segmented bars. Their geometry teaches the relationship; their short labels keep the meaning explicit. These are schematic examples, not a proposed art direction or evidence of player comprehension.
+
+Use position and length for quantities the player must compare precisely. Use shape and artwork for identity. Color can reinforce status, but give a critical state another cue such as a marker, icon, or value. Keep learned meanings stable: a gem that identifies an assignment should not also change meaning to indicate selection.
+
+### Combine information around the object
+
+A build shield can carry its identity in the artwork, its chosen assignments in socketed gems, and its workload in edge markings. The combination earns its space when players can distinguish those meanings without a nearby paragraph explaining the arrangement. Preserve the accepted asset treatment when adding marks so they belong to the object.
+
+Give peer objects consistent geometry and align comparable details. Selection can use an outline or focus cue while the shield keeps its size. Inspect the combined object beside its peers at actual display size. If the gems merge into the artwork or the markings obscure the silhouette, reduce their prominence or move a secondary detail into inspection.
+
+Compare three treatments when compression is uncertain: a text-heavy object, a bare object with unclear symbols, and a composed object with enough labeling to identify its parts. Keep the same decision-relevant information in the comparison. The useful middle treatment preserves both recognition and meaning.
+
+### Make inspection visual too
+
+Give the overview the result the player is judging. Use inspection to show the contributing parts. For a combined technical demand, two aligned gauges labeled "APM" and "Attention" can expose the overloaded component. A paragraph describing those two readings adds reading without improving the comparison. Use a short explanation only for a relationship the graphic cannot express reliably.
+
+Apply the same restraint to choosers. Show recognizable options with matching dimensions and a short name; add one sentence when their difference needs explanation. A compact chooser can hold a growing unit catalog beside its tree node while the tree retains the strategic relationships. Add search when locating an option becomes a real task. Keep the current configuration recognizable when the chooser closes.
+
+### Give gauges a stable meaning
+
+Specify the measured quantity, capacity, amount per segment, color bands, and overflow behavior before drawing a segmented meter. For fixed-value chunks, keep the amount per chunk constant as capacity changes. When the bar has a fixed overall width, more chunks occupy less width each. Show capacity separately from demand so overflow remains visible, and retain an uncapped value when the ratio can exceed 100%.
+
+Choose a whole-chunk rounding rule and keep each filled chunk a solid color when using an RPG health-bar treatment. The exact label can preserve precision between chunk boundaries. Explain the scale on inspection when needed. Keep thresholds and formulas in the game's design reference; the illustration's values are examples.
+
+For a combined gauge, use the game's aggregation rule and expose its components where the player inspects it. Check the case where one component is overloaded and another is comfortable. The summary must communicate the supported conclusion without suggesting that spare capacity in one component automatically solves the other.
+
 ## Action HUD
 
 Let the playable scene own the composition. Identify where the player watches movement, anticipates threats, aims, or reads an opponent. Place persistent groups around that activity using a representative scene, including terrain and effects. Empty corners in a blank mockup provide little evidence about the eventual composition.

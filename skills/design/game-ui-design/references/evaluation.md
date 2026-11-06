@@ -18,7 +18,9 @@ Provide the same scene, icons, fonts, and permissible asset-generation tools to 
 
 Design a 16:9 preparation screen for a squad tactics game. The player chooses a specialist, equips two tools, and spends a shared allowance on upgrades before a mission. The selected specialist's role, current build, candidate upgrade, cost, and remaining allowance must be legible. Use the supplied character art and upgrade relationships. Deliver a selected-build frame and an upgrade-preview frame.
 
-Keep content, assets, and mechanics identical across runs. Judge how the composition conveys the specialist and build, supports the current choice, and shows the proposed change. Reward a visible connection between investment and capability. A collection of equally prominent cards needs a reason rooted in the choice structure.
+Keep content, assets, and mechanics identical across runs. Judge how the composition conveys the specialist and build, supports the current choice, and shows the proposed change. Reward a visible connection between investment and capability. Equal-size peer objects can support comparison; judge whether selection and the wider hierarchy remain clear.
+
+For a visual-information revision, use an accepted screen with explanations of sequence, configuration, and capacity. Preserve its established artwork, meanings, and interactions. Ask for a revised overview and one inspection state with the same decision-relevant information. Examine which meanings the graphics now carry, which still require prose, and which became ambiguous. A shorter paragraph or a hidden explanation alone does not demonstrate a more visual design. Include an overloaded component when evaluating a combined gauge.
 
 ## Results screen brief
 
@@ -35,7 +37,7 @@ Score only what the artifact demonstrates. Use 0 for absent or contradictory, 1 
 | Gameplay expression | The screen shows the relationships behind the player's choice and the consequence of changing it |
 | Focal composition | Scale, visual mass, contrast, and quiet space establish a purposeful reading order |
 | Fantasy and identity | Imagery, geometry, type, and materials reinforce the specific role and game moment |
-| Information design | Density, grouping, labels, and diagrams support the task without unnecessary explanatory prose |
+| Information design | Graphics communicate identity, relationships, and quantities; combined objects remain legible; concise player-facing labels resolve ambiguity |
 | Graphic craft | Type hierarchy, alignment, spacing, icon treatment, edges, and asset quality work together at the target size |
 | Feedback and emotion | The authored states give selection, commitment, or accomplishment the intended emphasis |
 

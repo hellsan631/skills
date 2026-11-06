@@ -47,6 +47,7 @@
     "./skills/principles/principle-redesign-from-first-principles",
     "./skills/principles/principle-separate-before-serializing-shared-state",
     "./skills/workflow/arena",
+    "./skills/workflow/brainstorm-skill-ideas",
     "./skills/workflow/bro",
     "./skills/workflow/grill-with-docs",
     "./skills/workflow/grilling",
